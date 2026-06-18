@@ -68,20 +68,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 #s6 .cta-online{background:transparent;border:2px solid var(--gold);color:var(--gold);box-shadow:0 4px 20px rgba(212,175,55,.12);animation:ctaSlam .6s .9s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes ctaSlam{0%{opacity:0;transform:translateY(30px) scale(.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @media(min-width:768px){#s6 .cta-test-desc{font-size:13px;max-width:360px}}
-
-/* 인트로 SKIP 버튼 */
 .intro-skip{position:fixed;top:calc(16px + env(safe-area-inset-top));right:16px;z-index:150;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);color:var(--white);font-size:12px;font-weight:700;padding:8px 16px;border-radius:20px;cursor:pointer;letter-spacing:.05em;opacity:0;animation:fadeUp .6s 1s forwards;transition:opacity .3s,transform .2s}
 .intro-skip:active{transform:scale(.94)}
 .intro-skip.hidden{opacity:0!important;pointer-events:none;animation:none}
 @media(min-width:768px){.intro-skip{font-size:13px;padding:10px 20px;top:24px;right:24px}}
-
-/* ── 오프라인 랜딩 ── */
 #offlineLanding{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow:hidden}
 #offlineLanding.show{display:block}
 #offlineIntro{position:absolute;inset:0;z-index:10;background:#000}
 #offlineIntro video{width:100%;height:100%;object-fit:cover;display:block}
 #offlineIntro .skip-btn{position:absolute;bottom:32px;right:20px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:600;padding:8px 18px;border-radius:20px;cursor:pointer;z-index:20}
-/* 소리 켜기 버튼 */
 #unmuteBtn{position:absolute;top:16px;left:20px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:13px;font-weight:700;padding:8px 16px;border-radius:20px;cursor:pointer;z-index:20;display:none;align-items:center;gap:6px;animation:fadeUp .4s ease}
 #unmuteBtn.show{display:flex}
 #offlineIntro .fade-out{animation:fadeBlack .8s ease forwards}
@@ -127,7 +122,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 .of-archive-desc{font-size:11px;color:var(--dim);line-height:1.7;margin-bottom:14px}
 .of-archive-imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .of-archive-imgs img{width:100%;border-radius:10px;display:block}
-/* 온라인 랜딩 */
 #onlineLanding{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}#onlineLanding.show{display:block}
 .ol{padding:0 20px;max-width:480px;margin:0 auto}.ol-hero{text-align:center;padding:60px 0 40px}
 .ol-hero img{width:80px;height:auto;border-radius:12px;object-fit:contain;filter:drop-shadow(0 0 16px var(--gold-glow));margin-bottom:16px}
@@ -170,7 +164,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 <div class="scene" id="s5"><div style="position:relative"><div class="cd-ring"></div><div class="countdown" id="cdNum">3</div></div></div>
 <div class="scene" id="s6">
   <div class="video-wrap" id="videoWrap">
-    <iframe id="ytPlayer" src="https://www.youtube.com/embed/ipM78EnPTTU?autoplay=0&mute=0&playsinline=1&rel=0&modestbranding=1" allow="autoplay;fullscreen" allowfullscreen></iframe>
+    <iframe id="ytPlayer" src="https://www.youtube.com/embed/ipM78EnPTTU?autoplay=0&mute=0&playsinline=1&rel=0&modestbranding=1&enablejsapi=1" allow="autoplay;fullscreen" allowfullscreen></iframe>
     <button class="video-fs" onclick="goFullscreen()" title="크게보기">⛶</button>
   </div>
   <div class="cta-wrap">
@@ -252,7 +246,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 </div>
 
 <!-- 온라인 랜딩 -->
-<div id="onlineLanding"><button class="ol-back" onclick="hideOnline()">← 돌아가기</button><a class="ol-switch" href="javascript:void(0)" onclick="hideOnline();showOffline()">오프라인 프로그램 확인하기 →</a><div class="ol"><div class="ol-hero"><img src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="GFIELD"><h1><em>필즈 더 클래식</em> 입학 대비<br>6세 온라인 진단</h1><p>12월 입학시험 완벽 대비를 통해 단순한 합격을 넘어<br>최상위권 학습 능력까지 갖춘 진짜 실력을 키웁니다.</p><p style="margin-top:12px;color:var(--white);font-size:14px;font-weight:600">이제 지필드 영재교육의 정확한 진단을<br>온라인으로 경험해보세요.</p><a class="ol-cta-top" href="https://naver.me/FfBeWW3O" target="_blank">상담 및 온라인 모의고사 신청하기</a></div><div class="ol-stats"><div class="ol-stat"><div class="num">100</div><div class="unit">%</div><div class="desc">합격률<br>지난해 수업 학생 기준</div></div><div class="ol-stat"><div class="num">58</div><div class="unit">%</div><div class="desc">S반·프리미어<br>E1 합격생 중 배정률</div></div><div class="ol-stat"><div class="num">80</div><div class="unit">%</div><div class="desc">성적 향상<br>3개월 후 레벨업 비율</div></div></div><div class="ol-section"><h2>입시 성공을 위한 데이터 기반 접근</h2><div class="ol-feat"><h3>최신 입시 데이터 분석</h3><p>지난 3년간의 필즈 더 클래식 입학시험 데이터를 철저히 분석하여 출제 경향과 난이도 변화를 정확히 파악합니다. 이를 바탕으로 효율적인 학습 전략을 수립합니다.</p></div></div><div class="ol-section"><h2>차별화된 전략으로 확실한 결과</h2><div class="ol-features"><div class="ol-feat"><h3>첫 시험 점수의 중요성</h3><p>입학 후 첫 시험 성적이 향후 학습 과정과 반 배정에 결정적 영향을 미칩니다. 이 중요한 첫 관문을 철저히 준비합니다.</p></div><div class="ol-feat"><h3>상승하는 컷라인 완벽 분석</h3><p>매년 높아지는 E1 80점, E2 60점 컷라인을 정확히 분석하여 전략적 학습 계획을 수립합니다.</p></div><div class="ol-feat"><h3>S반 선발까지 확실 보장</h3><p>단순 합격을 넘어 최상위권 반인 S반 합격을 목표로 체계적인 실력 향상 프로그램을 제공합니다.</p></div></div></div><div class="ol-section"><h2>수업 진행 방식</h2><div class="ol-steps"><div class="ol-step"><span class="step-num">1단계</span><h3>온라인 진단 모의고사</h3><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/b40ffd6446a44e3da9d239b945e4bc3d/original/image.png" alt="진단 모의고사"><p>현재 실력을 정확히 파악하기 위한 진단평가</p><ul><li>결제 후 제공된 승인번호 입력 후 응시 가능</li><li>실제 시험 유사 레벨 테스트를 통해 현재 아이의 정확한 수준 파악</li><li>오프라인 응시도 가능</li></ul></div><div class="ol-step"><span class="step-num">2단계</span><h3>온라인 진단 분석지</h3><div class="ol-img-row"><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/eda230121c9842c7a122c8411479abd4/original/image.png" alt="진단 분석지 1"><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/7827a440dca5405ba4e75aeb29f7de0f/original/image.png" alt="진단 분석지 2"></div><ul><li>영역별 강점과 약점을 세부적으로 분석하여 개인별 진단표 작성</li><li>목표 레벨과 현재 실력 간의 격차를 수치화하여 명확한 목표 설정</li><li>학습 성향과 특성을 고려한 맞춤형 학습 계획 수립의 기초 마련</li></ul></div><div class="ol-step"><span class="step-num">3단계</span><h3>풀이 영상</h3><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/6229abd7036743ada181a4ace995db48/original/image.png" alt="풀이 영상"><ul><li>응시한 테스트의 풀이 영상으로 부족 유형 완전 학습</li><li>부족한 유형에 대한 이해도 체크</li></ul></div></div></div><div class="ol-section"><h2>맞춤형 학습 시스템</h2><div class="ol-approach"><div class="ol-approach-card"><h3>개인별 학습 계획</h3><p>진단 결과를 바탕으로 아이의 현재 수준과 목표에 맞는 맞춤형 커리큘럼을 설계합니다. 약점은 보완하고 강점은 더욱 발전시키는 전략적 접근법을 적용합니다.</p></div><div class="ol-approach-card"><h3>약점 집중 보완</h3><p>개인별로 드러난 취약 영역에 대해 집중적인 보완 학습을 진행합니다. 단순 문제 풀이가 아닌 개념부터 탄탄하게 이해할 수 있도록 지도합니다.</p></div><div class="ol-approach-card"><h3>실전 문제 훈련</h3><p>실제 시험과 유사한 환경에서의 문제 풀이 훈련을 통해 시간 관리 능력과 문제 해결 전략을 체득하도록 합니다.</p></div></div></div><div class="ol-section"><h2>학부모님의 생생한 후기</h2><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/2320140728b64e2c8f83313f5d122286/original/image.png" alt="학부모 후기" style="border-radius:14px;border:1px solid rgba(212,175,55,.15)"></div><div class="ol-section"><h2>필즈 더 클래식 입학 성공의 열쇠</h2><div class="ol-pillars"><div class="ol-pillar"><h3>철저한 기초 다지기</h3><p>학습의 근본이 되는 핵심 개념과 원리를 탄탄하게 이해합니다. 암기가 아닌 이해를 통해 어떤 문제도 해결할 수 있는 사고력을 키웁니다.</p></div><div class="ol-pillar"><h3>실전 문제 해결 능력 강화</h3><p>다양한 유형의 문제를 접하고 해결하는 과정에서 문제 해결 전략과 시간 관리 능력을 체득합니다. 실제 시험과 유사한 환경에서의 연습을 통해 시험 불안감을 극복합니다.</p></div><div class="ol-pillar"><h3>자기주도학습 습관 형성</h3><p>단순히 수업 시간에만 공부하는 것이 아니라, 스스로 학습 계획을 세우고 실천하는 습관을 길러 평생 학습자로 성장할 수 있는 기반을 마련합니다.</p></div></div></div><div class="ol-final"><h2>진짜 실력으로 승부하는<br><em>지필드 영재교육</em></h2><p>단순한 합격이 아닌, 입학 후에도<br>최상위권에서 빛나는 아이의 미래를<br>함께 만들어가겠습니다.</p><a class="ol-cta-bottom" href="https://naver.me/xDCjR8k4" target="_blank">지금 상담 및 테스트 예약하기</a></div></div></div>
+<div id="onlineLanding"><button class="ol-back" onclick="hideOnline()">← 돌아가기</button><a class="ol-switch" href="javascript:void(0)" onclick="hideOnline();showOffline()">오프라인 프로그램 확인하기 →</a><div class="ol"><div class="ol-hero"><img src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="GFIELD"><h1><em>필즈 더 클래식</em> 입학 대비<br>6세 온라인 진단</h1><p>12월 입학시험 완벽 대비를 통해 단순한 합격을 넘어<br>최상위권 학습 능력까지 갖춘 진짜 실력을 키웁니다.</p><p style="margin-top:12px;color:var(--white);font-size:14px;font-weight:600">이제 지필드 영재교육의 정확한 진단을<br>온라인으로 경험해보세요.</p><a class="ol-cta-top" href="https://naver.me/FfBeWW3O" target="_blank">상담 및 온라인 모의고사 신청하기</a></div><div class="ol-stats"><div class="ol-stat"><div class="num">100</div><div class="unit">%</div><div class="desc">합격률<br>지난해 수업 학생 기준</div></div><div class="ol-stat"><div class="num">58</div><div class="unit">%</div><div class="desc">S반·프리미어<br>E1 합격생 중 배정률</div></div><div class="ol-stat"><div class="num">80</div><div class="unit">%</div><div class="desc">성적 향상<br>3개월 후 레벨업 비율</div></div></div><div class="ol-section"><h2>입시 성공을 위한 데이터 기반 접근</h2><div class="ol-feat"><h3>최신 입시 데이터 분석</h3><p>지난 3년간의 필즈 더 클래식 입학시험 데이터를 철저히 분석하여 출제 경향과 난이도 변화를 정확히 파악합니다. 이를 바탕으로 효율적인 학습 전략을 수립합니다.</p></div></div><div class="ol-section"><h2>차별화된 전략으로 확실한 결과</h2><div class="ol-features"><div class="ol-feat"><h3>첫 시험 점수의 중요성</h3><p>입학 후 첫 시험 성적이 향후 학습 과정과 반 배정에 결정적 영향을 미칩니다. 이 중요한 첫 관문을 철저히 준비합니다.</p></div><div class="ol-feat"><h3>상승하는 컷라인 완벽 분석</h3><p>매년 높아지는 E1 80점, E2 60점 컷라인을 정확히 분석하여 전략적 학습 계획을 수립합니다.</p></div><div class="ol-feat"><h3>S반 선발까지 확실 보장</h3><p>단순 합격을 넘어 최상위권 반인 S반 합격을 목표로 체계적인 실력 향상 프로그램을 제공합니다.</p></div></div></div><div class="ol-section"><h2>수업 진행 방식</h2><div class="ol-steps"><div class="ol-step"><span class="step-num">1단계</span><h3>온라인 진단 모의고사</h3><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/b40ffd6446a44e3da9d239b945e4bc3d/original/image.png" alt="진단 모의고사"><p>현재 실력을 정확히 파악하기 위한 진단평가</p><ul><li>결제 후 제공된 승인번호 입력 후 응시 가능</li><li>실제 시험 유사 레벨 테스트를 통해 현재 아이의 정확한 수준 파악</li><li>오프라인 응시도 가능</li></ul></div><div class="ol-step"><span class="step-num">2단계</span><h3>온라인 진단 분석지</h3><div class="ol-img-row"><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/eda230121c9842c7a122c8411479abd4/original/image.png" alt="진단 분석지 1"><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/7827a440dca5405ba4e75aeb29f7de0f/original/image.png" alt="진단 분석지 2"></div><ul><li>영역별 강점과 약점을 세부적으로 분석하여 개인별 진단표 작성</li><li>목표 레벨과 현재 실력 간의 격차를 수치화하여 명확한 목표 설정</li><li>학습 성향과 특성을 고려한 맞춤형 학습 계획 수립의 기초 마련</li></ul></div><div class="ol-step"><span class="step-num">3단계</span><h3>풀이 영상</h3><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/6229abd7036743ada181a4ace995db48/original/image.png" alt="풀이 영상"><ul><li>응시한 테스트의 풀이 영상으로 부족 유형 완전 학습</li><li>부족한 유형에 대한 이해도 체크</li></ul></div></div></div><div class="ol-section"><h2>맞춤형 학습 시스템</h2><div class="ol-approach"><div class="ol-approach-card"><h3>개인별 학습 계획</h3><p>진단 결과를 바탕으로 아이의 현재 수준과 목표에 맞는 맞춤형 커리큘럼을 설계합니다. 약점은 보완하고 강점은 더욱 발전시키는 전략적 접근법을 적용합니다.</p></div><div class="ol-approach-card"><h3>약점 집중 보완</h3><p>개인별로 드러난 취약 영역에 대해 집중적인 보완 학습을 진행합니다. 단순 문제 풀이가 아닌 개념부터 탄탄하게 이해할 수 있도록 지도합니다.</p></div><div class="ol-approach-card"><h3>실전 문제 훈련</h3><p>실제 시험과 유사한 환경에서의 문제 풀이 훈련을 통해 시간 관리 능력과 문제 해결 전략을 체득하도록 합니다.</p></div></div></div><div class="ol-section"><h2>학부모님의 생생한 후기</h2><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/2320140728b64e2c8mj81fk/2320140728b64e2c8f83313f5d122286/original/image.png" alt="학부모 후기" style="border-radius:14px;border:1px solid rgba(212,175,55,.15)"></div><div class="ol-section"><h2>필즈 더 클래식 입학 성공의 열쇠</h2><div class="ol-pillars"><div class="ol-pillar"><h3>철저한 기초 다지기</h3><p>학습의 근본이 되는 핵심 개념과 원리를 탄탄하게 이해합니다. 암기가 아닌 이해를 통해 어떤 문제도 해결할 수 있는 사고력을 키웁니다.</p></div><div class="ol-pillar"><h3>실전 문제 해결 능력 강화</h3><p>다양한 유형의 문제를 접하고 해결하는 과정에서 문제 해결 전략과 시간 관리 능력을 체득합니다. 실제 시험과 유사한 환경에서의 연습을 통해 시험 불안감을 극복합니다.</p></div><div class="ol-pillar"><h3>자기주도학습 습관 형성</h3><p>단순히 수업 시간에만 공부하는 것이 아니라, 스스로 학습 계획을 세우고 실천하는 습관을 길러 평생 학습자로 성장할 수 있는 기반을 마련합니다.</p></div></div></div><div class="ol-final"><h2>진짜 실력으로 승부하는<br><em>지필드 영재교육</em></h2><p>단순한 합격이 아닌, 입학 후에도<br>최상위권에서 빛나는 아이의 미래를<br>함께 만들어가겠습니다.</p><a class="ol-cta-bottom" href="https://naver.me/xDCjR8k4" target="_blank">지금 상담 및 테스트 예약하기</a></div></div></div>
 
 <div class="lightbox" id="lightbox" onclick="closeLB()"><button class="lb-close" onclick="closeLB()">✕</button><img id="lbImg" src="" alt=""></div>
 
@@ -262,7 +256,25 @@ const recordData={left:[{title:'생각하는 황소 경시합격',years:[['2021'
 function panel(item){const max=Math.max(...item.years.map(y=>y[1]),1);return`<div class="record"><div class="recordTitle"><span>${item.title}</span><small>RECORD</small></div>${item.years.map(y=>`<div class="year" data-count="${y[1]}" data-max="${max}"><span>${y[0]}</span><div class="bar"><span></span></div><b class="ynum">0</b></div>`).join('')}<div class="total"><b data-total="${item.total}">0</b><span>명</span></div></div>`}
 function countTo(el,target,duration){const start=performance.now();function tick(now){const p=Math.min((now-start)/duration,1);const ease=1-Math.pow(1-p,3);el.textContent=Math.round(ease*target);if(p<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)}
 const scenes=['s0','s1','s2','s3','s4','s5','s6'];let cur=0;let autoplayTimers=[];let skipped=false;
-function go(i){if(skipped&&i!==6)return;scenes.forEach(s=>document.getElementById(s).classList.remove('on'));document.getElementById(scenes[i]).classList.add('on');cur=i;if(i===6){document.getElementById('introSkip').classList.add('hidden')}if(i===2)startKakao();if(i===3)runRecords();if(i===5)startCountdown();if(i===6){const f=document.getElementById('ytPlayer');f.src=f.src.replace('autoplay=0','autoplay=1')}}
+
+/* YouTube iframe 정지 — src에서 autoplay 제거 */
+function stopYoutube(){
+  const f=document.getElementById('ytPlayer');
+  f.src=f.src.replace('autoplay=1','autoplay=0');
+}
+
+function go(i){
+  if(skipped&&i!==6)return;
+  scenes.forEach(s=>document.getElementById(s).classList.remove('on'));
+  document.getElementById(scenes[i]).classList.add('on');
+  cur=i;
+  if(i===6){
+    document.getElementById('introSkip').classList.add('hidden');
+    const f=document.getElementById('ytPlayer');
+    f.src=f.src.replace('autoplay=0','autoplay=1');
+  }
+}
+
 const timing=[3200,3500,7000,7500,3500,4500,0];
 function autoPlay(){let delay=0;for(let i=0;i<scenes.length;i++){((idx,d)=>{autoplayTimers.push(setTimeout(()=>go(idx),d))})(i,delay);delay+=timing[i]}let s4start=3200+3500+7000+7500;autoplayTimers.push(setTimeout(()=>document.getElementById('s4').classList.add('burst'),s4start+2200))}
 function skipIntro(){if(skipped)return;skipped=true;autoplayTimers.forEach(t=>clearTimeout(t));autoplayTimers=[];document.getElementById('introSkip').classList.add('hidden');document.getElementById('s4').classList.remove('burst');go(6)}
@@ -274,6 +286,7 @@ function startCountdown(){const el=document.getElementById('cdNum');let n=3;el.t
 window.addEventListener('load',()=>setTimeout(autoPlay,300));
 
 function showOffline(){
+  stopYoutube(); /* YouTube 정지 */
   const landing=document.getElementById('offlineLanding');
   landing.classList.add('show');
   document.getElementById('particles').style.display='none';
@@ -285,30 +298,43 @@ function showOffline(){
   v.volume=1;
   const p=v.play();
   if(p){
-    p.then(()=>{
-      /* 소리 있는 자동재생 성공 → 버튼 숨김 */
-      btn.classList.remove('show');
-    }).catch(()=>{
-      /* 소리 있는 자동재생 차단 → 음소거로 재생 후 버튼 표시 */
-      v.muted=true;
-      v.play().catch(()=>{});
-      btn.classList.add('show');
-    });
+    p.then(()=>{btn.classList.remove('show')})
+     .catch(()=>{v.muted=true;v.play().catch(()=>{});btn.classList.add('show')});
   }
   v.onended=()=>revealBody();
 }
 
 function unmuteVideo(){
   const v=document.getElementById('introVideo');
-  v.muted=false;
-  v.volume=1;
+  v.muted=false;v.volume=1;
   document.getElementById('unmuteBtn').classList.remove('show');
 }
 
 function skipOfflineIntro(){revealBody()}
-function revealBody(){const intro=document.getElementById('offlineIntro');const body=document.getElementById('offlineBody');intro.classList.add('fade-out');setTimeout(()=>{intro.style.display='none';body.classList.add('show')},800)}
-function hideOffline(){document.getElementById('offlineLanding').classList.remove('show');document.getElementById('particles').style.display='';const v=document.getElementById('introVideo');v.pause();v.currentTime=0;document.getElementById('offlineIntro').style.display='';document.getElementById('offlineIntro').classList.remove('fade-out');document.getElementById('offlineBody').classList.remove('show');document.getElementById('unmuteBtn').classList.remove('show')}
-function showOnline(){document.getElementById('onlineLanding').classList.add('show');document.getElementById('particles').style.display='none';document.getElementById('onlineLanding').scrollTop=0}
+function revealBody(){
+  const intro=document.getElementById('offlineIntro');
+  const body=document.getElementById('offlineBody');
+  const v=document.getElementById('introVideo');
+  v.pause(); /* 건너뛰기 시 MP4 정지 */
+  intro.classList.add('fade-out');
+  setTimeout(()=>{intro.style.display='none';body.classList.add('show')},800);
+}
+function hideOffline(){
+  document.getElementById('offlineLanding').classList.remove('show');
+  document.getElementById('particles').style.display='';
+  const v=document.getElementById('introVideo');
+  v.pause();v.currentTime=0;
+  document.getElementById('offlineIntro').style.display='';
+  document.getElementById('offlineIntro').classList.remove('fade-out');
+  document.getElementById('offlineBody').classList.remove('show');
+  document.getElementById('unmuteBtn').classList.remove('show');
+}
+function showOnline(){
+  stopYoutube(); /* YouTube 정지 */
+  document.getElementById('onlineLanding').classList.add('show');
+  document.getElementById('particles').style.display='none';
+  document.getElementById('onlineLanding').scrollTop=0;
+}
 function hideOnline(){document.getElementById('onlineLanding').classList.remove('show');document.getElementById('particles').style.display=''}
 function goFullscreen(){const w=document.getElementById('videoWrap');if(w.requestFullscreen)w.requestFullscreen();else if(w.webkitRequestFullscreen)w.webkitRequestFullscreen()}
 function openLB(src){document.getElementById("lbImg").src=src;document.getElementById("lightbox").classList.add("open")}function closeLB(){document.getElementById("lightbox").classList.remove("open")}document.querySelectorAll(".ol-img").forEach(img=>{img.style.cursor="pointer";img.addEventListener("click",()=>openLB(img.src))})
