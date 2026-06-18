@@ -21,7 +21,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .header p{margin:8px 0 0;font-size:13px;color:#c8d0dd}
 .progress-container{width:100%;background:rgba(255,255,255,.15);height:6px;border-radius:999px;margin-top:15px;overflow:hidden}
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--gold-light));width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
-.slide-container{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--paper)}
+/* 음성 설정 바 */
+.voice-bar{background:rgba(13,27,42,.95);border-bottom:1px solid rgba(212,175,55,.15);padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.voice-bar label{font-size:11px;color:#c8d0dd;white-space:nowrap}
+.voice-bar select{flex:1;min-width:120px;background:#1a2d44;color:#f0ece2;border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:5px 8px;font-size:11px;font-family:inherit;cursor:pointer}
+.voice-bar input[type=range]{flex:1;min-width:60px;accent-color:var(--accent-gold)}
+.voice-bar .rate-val{font-size:11px;color:var(--accent-gold);min-width:28px;text-align:right}
+.slide-container{position:relative;height:calc(100vh - 210px);overflow:hidden;background:var(--paper)}
 .slide{position:absolute;top:0;left:100%;width:100%;height:100%;padding:30px 20px 160px;transition:left .4s cubic-bezier(.4,0,.2,1);background:var(--paper);display:flex;flex-direction:column;overflow-y:auto}
 .slide.active{left:0}.slide.prev{left:-100%}
 .q-badge{display:inline-block;align-self:flex-start;background:var(--primary-navy);color:var(--accent-gold);padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:12px;letter-spacing:.05em}
@@ -40,7 +46,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .selected-display{text-align:center;font-size:18px;font-weight:700;color:var(--primary-navy);margin-bottom:20px;min-height:28px}
 .action-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent-gold),#c5982e);color:var(--primary-navy);border:none;border-radius:12px;font-size:18px;font-weight:800;margin-top:auto;cursor:pointer;font-family:inherit;letter-spacing:-.02em;box-shadow:0 8px 24px rgba(212,175,55,.3)}
 .action-btn:active{transform:scale(.97)}
-/* 다음으로 넘어가기 버튼 */
 .skip-q-btn{display:block;width:100%;padding:12px;margin-top:12px;background:transparent;border:1px solid #ccc;border-radius:10px;font-size:14px;font-weight:600;color:#888;cursor:pointer;font-family:inherit;text-align:center;letter-spacing:-.01em;transition:all .2s}
 .skip-q-btn:active{background:#f0f0f0;color:#555;border-color:#aaa}
 .ai-doc-wrapper{position:fixed;bottom:20px;right:calc(50% - 280px);z-index:100;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none}
@@ -72,18 +77,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <p>연산 3문항 + 사고력 4문항</p>
     <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
   </div>
+
+  <!-- 음성 설정 바 -->
+  <div class="voice-bar" id="voice-bar">
+    <label>🔊 목소리</label>
+    <select id="voice-select"><option value="">로딩 중...</option></select>
+    <label>속도</label>
+    <input type="range" id="rate-slider" min="0.5" max="1.3" step="0.05" value="0.75"
+           oninput="document.getElementById('rate-val').innerText=this.value;currentRate=+this.value">
+    <span class="rate-val" id="rate-val">0.75</span>
+  </div>
+
   <div class="ai-doc-wrapper" id="ai-wrapper">
     <div class="speech-bubble" id="ai-speech">준비됐으면 시작해 주세요.</div>
     <img src="../ai-doc.png" alt="AI-DOC" class="ai-character">
   </div>
-  <div class="slide-container" id="quiz-container">
 
+  <div class="slide-container" id="quiz-container">
     <div class="slide active" id="slide-0" style="justify-content:center;align-items:center;text-align:center">
       <h2 style="color:var(--primary-navy);margin-bottom:15px;line-height:1.35;font-weight:900">AI-DOC과 함께하는<br>사고력 진단 챌린지</h2>
       <p style="color:#666;margin-bottom:30px;line-height:1.6">준비가 되었다면<br>아래 시작 버튼을 눌러 주세요.</p>
       <button class="action-btn" onclick="startTest()">시작하기</button>
     </div>
-
     <div class="slide" id="slide-1">
       <div class="q-badge">연산 1/3</div>
       <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
@@ -92,7 +107,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <div class="keypad-grid" id="keypad-1"></div>
       <button class="skip-q-btn" onclick="skipQuestion(1)">잘 모르겠어요 → 다음 문제로</button>
     </div>
-
     <div class="slide" id="slide-2">
       <div class="q-badge">연산 2/3</div>
       <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
@@ -101,7 +115,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <div class="keypad-grid" id="keypad-2"></div>
       <button class="skip-q-btn" onclick="skipQuestion(2)">잘 모르겠어요 → 다음 문제로</button>
     </div>
-
     <div class="slide" id="slide-3">
       <div class="q-badge">연산 3/3</div>
       <div class="q-title">빈칸에 들어갈 수를 구하시오.</div>
@@ -110,7 +123,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <div class="keypad-grid" id="keypad-3"></div>
       <button class="skip-q-btn" onclick="skipQuestion(3)">잘 모르겠어요 → 다음 문제로</button>
     </div>
-
     <div class="slide" id="slide-4">
       <div class="q-badge">사고력 1/4</div>
       <div class="problem-box">
@@ -122,7 +134,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <div class="keypad-grid" id="keypad-4"></div>
       <button class="skip-q-btn" onclick="skipQuestion(4)">잘 모르겠어요 → 다음 문제로</button>
     </div>
-
     <div class="slide" id="slide-5">
       <div class="q-badge">사고력 2/4</div>
       <div class="problem-box">유빈이와 유준이가 사탕을 똑같이 나누어 먹으려고 합니다. 유빈이가 유준이에게 사탕을 몇 개 주어야 하는지 구하세요.</div>
@@ -131,7 +142,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <div class="keypad-grid" id="keypad-5"></div>
       <button class="skip-q-btn" onclick="skipQuestion(5)">잘 모르겠어요 → 다음 문제로</button>
     </div>
-
     <div class="slide" id="slide-6">
       <div class="q-badge">사고력 3/4</div>
       <div class="problem-box" style="text-align:center">
@@ -146,7 +156,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       </div>
       <button class="skip-q-btn" onclick="skipQuestion(6)" style="margin-top:16px">잘 모르겠어요 → 다음 문제로</button>
     </div>
-
     <div class="slide" id="slide-7">
       <div class="q-badge">사고력 4/4</div>
       <div class="problem-box" style="text-align:center">
@@ -160,7 +169,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <button class="option-btn" onclick="checkAnswer7(4,this)">④ 1, 15</button>
       <button class="skip-q-btn" onclick="skipQuestion(7)">잘 모르겠어요 → 다음 문제로</button>
     </div>
-
     <div class="slide" id="slide-final">
       <div class="q-title" style="text-align:center;margin-top:40px;font-size:22px;color:var(--primary-navy)">🎉 모든 문항을 완료했어요!</div>
       <div style="text-align:center;margin:24px 0">
@@ -179,7 +187,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <p style="font-size:14px;font-weight:700;color:var(--primary-navy);margin-top:18px;line-height:1.6">학생의 끈기와 사고력이 돋보입니다.<br>자세한 로드맵은 원장님과 상담해 주세요.</p>
     <p style="font-size:11px;color:#aaa;margin-top:14px;letter-spacing:2px">G-FIELD GIFTED EDUCATION</p>
   </div>
-
   <div id="post-capture-guide">
     <h3>🎉 진단 결과가 저장되었습니다</h3>
     <div class="guide-box">아래 <strong>[신청서 작성하기]</strong> 버튼을 눌러<br>네이버 설문을 작성하실 때,<br>방금 저장된 <strong>진단 결과 이미지</strong>를<br>마지막 문항에 첨부해 주세요.</div>
@@ -198,19 +205,56 @@ const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산
 let animalOrder=[];
 const correctAnimalOrder=['다람쥐','거북이','토끼'];
 
-/* ── 음성 ── */
+/* ── 음성 설정 ── */
 let voicesReady=false;
-function getVoices(){return new Promise(resolve=>{const v=speechSynthesis.getVoices();if(v.length){voicesReady=true;resolve(v);return}speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}})}
-window.addEventListener('load',()=>getVoices());
+let currentRate=0.75;
+let selectedVoice=null;
+let allKoVoices=[];
+
+function getVoices(){
+  return new Promise(resolve=>{
+    const v=speechSynthesis.getVoices();
+    if(v.length){voicesReady=true;resolve(v);return}
+    speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}
+  });
+}
+
+function populateVoiceSelect(voices){
+  const sel=document.getElementById('voice-select');
+  /* 한국어 목소리 필터 */
+  allKoVoices=voices.filter(v=>v.lang.startsWith('ko')||v.lang.includes('KR'));
+  if(allKoVoices.length===0){
+    /* 한국어 없으면 전체 목록 */
+    allKoVoices=voices;
+  }
+  sel.innerHTML='';
+  allKoVoices.forEach((v,i)=>{
+    const opt=document.createElement('option');
+    opt.value=i;
+    opt.textContent=v.name.replace('Microsoft ','').replace(' Online (Natural)','').replace('(ko-KR)','').trim();
+    sel.appendChild(opt);
+  });
+  selectedVoice=allKoVoices[0]||null;
+  sel.onchange=()=>{selectedVoice=allKoVoices[+sel.value]||null};
+}
+
+window.addEventListener('load',()=>{
+  document.getElementById('progress-bar').style.width='0%';
+  setupAllKeypads();
+  getVoices().then(voices=>{
+    populateVoiceSelect(voices);
+  });
+});
+
 function speak(text){
   if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
   const say=()=>{
     const u=new SpeechSynthesisUtterance(text);
-    u.lang='ko-KR';u.rate=.95;u.pitch=1;
-    const voices=speechSynthesis.getVoices();
-    const ko=voices.find(v=>v.lang.startsWith('ko'))||voices.find(v=>v.lang.includes('KR'))||null;
-    if(ko)u.voice=ko;
+    u.lang='ko-KR';
+    u.rate=currentRate;
+    u.pitch=1;
+    if(selectedVoice)u.voice=selectedVoice;
     window.speechSynthesis.speak(u);
   };
   if(voicesReady){say()}else{getVoices().then(say)}
@@ -249,7 +293,6 @@ function skipQuestion(slideIndex){
   const nextEl=document.getElementById(nextId);
   if(nextEl)nextEl.classList.add('active');
   updateProgress(Math.min(nextIdx,totalQuestions));
-  /* 동물 선택 초기화 (6번 스킵 시) */
   if(slideIndex===6){animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"}
 }
 
@@ -324,12 +367,8 @@ function generateReportAndCapture(){
   let html=`<table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;text-align:center"><thead><tr style="background:var(--primary-navy);color:var(--accent-gold)"><th style="padding:10px 5px;border:1px solid #ddd">문항</th><th style="padding:10px 5px;border:1px solid #ddd">문제 유형</th><th style="padding:10px 5px;border:1px solid #ddd">정답 기록</th></tr></thead><tbody>`;
   for(let i=1;i<=7;i++){
     let t;
-    if(skipped[i]){
-      t=`<span style="color:#aaa;font-weight:700">미응답 (건너뜀)</span>`;
-    }else{
-      const a=(errorCounts[i]||0)+1;
-      t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`;
-    }
+    if(skipped[i]){t=`<span style="color:#aaa;font-weight:700">미응답 (건너뜀)</span>`}
+    else{const a=(errorCounts[i]||0)+1;t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`}
     html+=`<tr><td style="padding:8px 5px;border:1px solid #ddd;font-weight:700">${i}번</td><td style="padding:8px 5px;border:1px solid #ddd;text-align:left">${problemTypes[i]}</td><td style="padding:8px 5px;border:1px solid #ddd">${t}</td></tr>`;
   }
   html+=`</tbody></table>`;
@@ -341,6 +380,7 @@ function submitAndCapture(){
   document.getElementById('ai-wrapper').style.display='none';
   document.getElementById('quiz-container').style.display='none';
   document.getElementById('header-area').style.display='none';
+  document.getElementById('voice-bar').style.display='none';
   const cap=document.getElementById('capture-area');
   cap.style.display='block';
   setTimeout(()=>{
@@ -357,11 +397,6 @@ function submitAndCapture(){
     });
   },500);
 }
-
-window.onload=function(){
-  document.getElementById('progress-bar').style.width='0%';
-  setupAllKeypads();
-};
 </script>
 </body>
 </html>
