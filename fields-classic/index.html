@@ -68,19 +68,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 /* ── 오프라인 랜딩 ── */
 #offlineLanding{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow:hidden}
 #offlineLanding.show{display:block}
-
-/* 인트로 영상 */
 #offlineIntro{position:absolute;inset:0;z-index:10;background:#000}
 #offlineIntro video{width:100%;height:100%;object-fit:cover;display:block}
 #offlineIntro .skip-btn{position:absolute;bottom:32px;right:20px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:600;padding:8px 18px;border-radius:20px;cursor:pointer;z-index:20}
 #offlineIntro .fade-out{animation:fadeBlack .8s ease forwards}
 @keyframes fadeBlack{from{opacity:1}to{opacity:0;pointer-events:none}}
-
-/* 오프라인 소개 본문 */
 #offlineBody{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;pointer-events:none;transition:opacity .8s ease}
 #offlineBody.show{opacity:1;pointer-events:auto}
 .of{padding:0 20px;max-width:480px;margin:0 auto}
-
 .of-hero{text-align:center;padding:60px 0 40px;position:relative}
 .of-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:48px;background:linear-gradient(to bottom,transparent,var(--gold))}
 .of-hero img{width:72px;height:auto;border-radius:12px;filter:drop-shadow(0 0 16px var(--gold-glow));margin-bottom:16px}
@@ -90,32 +85,31 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 .of-hero p{font-size:13px;color:var(--dim);line-height:1.8}
 .of-hero .of-cta-top{display:inline-block;margin-top:24px;padding:14px 28px;background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;font-weight:800;font-size:15px;border-radius:12px;text-decoration:none;box-shadow:0 6px 24px rgba(212,175,55,.3)}
 .of-hero .of-cta-top:active{transform:scale(.96)}
-
 .of-section{margin-bottom:36px}
 .of-section h2{font-size:15px;font-weight:900;color:var(--gold);margin-bottom:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
 .of-section h2::before{content:'';display:inline-block;width:3px;height:16px;background:var(--gold);border-radius:2px;flex-shrink:0}
-
 .of-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;margin-bottom:10px}
 .of-card h3{font-size:13px;font-weight:800;color:var(--white);margin-bottom:6px}
 .of-card p{font-size:11px;color:var(--dim);line-height:1.7}
-
 .of-gold-card{background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:16px;margin-bottom:10px}
 .of-gold-card h3{font-size:13px;font-weight:800;color:var(--gold-light);margin-bottom:6px}
 .of-gold-card p{font-size:11px;color:var(--dim);line-height:1.7}
-
 .of-quote{border-left:3px solid var(--gold);padding:12px 16px;margin:10px 0;background:rgba(212,175,55,.05);border-radius:0 10px 10px 0}
 .of-quote p{font-size:12px;color:var(--white);line-height:1.8;font-style:italic}
 .of-quote span{font-size:10px;color:var(--dim);margin-top:6px;display:block}
-
 .of-final{text-align:center;padding:32px 0 80px}
 .of-final h2{font-size:18px;font-weight:900;color:var(--white);line-height:1.5;margin-bottom:8px}
 .of-final h2 em{font-style:normal;color:var(--gold)}
 .of-final p{font-size:12px;color:var(--dim);line-height:1.7;margin-bottom:24px}
 .of-final .of-cta-bottom{display:inline-block;padding:16px 32px;background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;font-weight:800;font-size:16px;border-radius:14px;text-decoration:none;box-shadow:0 8px 32px rgba(212,175,55,.35)}
 .of-final .of-cta-bottom:active{transform:scale(.96)}
-
 .of-back{position:fixed;top:16px;left:16px;z-index:210;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);color:var(--white);font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;cursor:pointer;display:none}
 #offlineLanding.show .of-back{display:block}
+/* Secret Archive 카드 */
+.of-archive-card{background:rgba(13,11,30,.85);border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:16px;margin-bottom:10px}
+.of-archive-tag{display:inline-block;background:var(--gold);color:#0a0a0a;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:.04em}
+.of-archive-imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.of-archive-imgs img{width:100%;border-radius:10px;display:block}
 
 /* 온라인 랜딩 */
 #onlineLanding{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}#onlineLanding.show{display:block}
@@ -161,78 +155,92 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 <!-- 오프라인 랜딩 -->
 <div id="offlineLanding">
   <button class="of-back" onclick="hideOffline()">← 돌아가기</button>
-
-  <!-- 인트로 영상 -->
   <div id="offlineIntro">
     <video id="introVideo" autoplay muted playsinline webkit-playsinline x5-playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:block">
       <source src="KakaoTalk_20260619_023621724.mp4" type="video/mp4">
     </video>
     <button class="skip-btn" onclick="skipIntro()">건너뛰기 →</button>
   </div>
-
-  <!-- 소개 본문 -->
   <div id="offlineBody">
     <div class="of">
       <div class="of-hero">
         <img src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="GFIELD">
         <div class="of-eyebrow">GFIELD GIFTED EDUCATION</div>
-        <h1>10년, <em>한 자리</em>에서<br>지켜온 약속</h1>
-        <p>성공하는 공부습관의 비밀이 있는 곳.<br>지필드 영재교육의 오프라인 프로그램을 소개합니다.</p>
-        <a class="of-cta-top" href="https://naver.me/xy7bsjyb" target="_blank">오프라인 수업 상담 신청하기</a>
+        <h1>지필드 정규 대비<br>프로그램은 <em>다릅니다</em></h1>
+        <p>아이만 가르치지 않습니다.<br>단순 문제풀이를 하지 않습니다.</p>
+        <a class="of-cta-top" href="https://naver.me/Ge7B7WcJ" target="_blank">오프라인 수업 상담 신청하기</a>
       </div>
 
       <div class="of-section">
-        <h2>왜 지필드인가</h2>
+        <h2>6년이 증명합니다</h2>
         <div class="of-gold-card">
-          <h3>합격만이 아닌, 합격 후를 준비합니다</h3>
-          <p>필즈 더 클래식 E1반 배정률 58%, 누적 합격생 400명+.<br>단순 입시 대비가 아닌 최상위권에서 살아남는 실력을 키웁니다.</p>
+          <h3>필즈 대비과정 학생 <span style="color:var(--gold-light);font-size:18px">100%</span> 주 2회반 합격</h3>
         </div>
         <div class="of-gold-card">
-          <h3>원장 직강 소수 정예</h3>
-          <p>분원 없이 한 자리에서 10년. 원장이 직접 수업하며 아이 한 명 한 명의 성장을 책임집니다.</p>
-        </div>
-        <div class="of-gold-card">
-          <h3>데이터 기반 맞춤 커리큘럼</h3>
-          <p>Hyper-Focus 진단 시스템으로 아이의 약점 유형을 정확히 파악하고 개인별 학습 경로를 설계합니다.</p>
+          <h3>필즈 대비과정 학생 <span style="color:var(--gold-light);font-size:18px">80%</span> E1반 합격</h3>
         </div>
       </div>
 
       <div class="of-section">
-        <h2>수업 방식</h2>
+        <h2>합격을 넘어</h2>
         <div class="of-card">
-          <h3>📍 오프라인 집중 수업</h3>
-          <p>소수 정예 그룹 수업으로 아이들이 서로 자극받고 성장하는 환경을 만듭니다. 수업 중 실시간 오답 분석과 즉각적인 피드백이 이루어집니다.</p>
+          <h3>아이만 가르치지 않습니다</h3>
+          <p>부모님과 함께 성장 방향을 설계합니다. 수업 후 매번 리포트를 전달하고, 가정에서의 학습 방향까지 함께 고민합니다.</p>
         </div>
         <div class="of-card">
-          <h3>📊 Hyper-Focus 진단</h3>
-          <p>54개 유형별 정밀 진단으로 아이의 현재 위치를 파악합니다. 강점은 더 강하게, 약점은 집중 보완합니다.</p>
+          <h3>단순 문제풀이를 하지 않습니다</h3>
+          <p>Hyper-Focus 진단 시스템으로 아이의 약점 유형을 정확히 파악하고, 개념부터 탄탄하게 쌓아가는 맞춤 커리큘럼을 운영합니다.</p>
+        </div>
+      </div>
+
+      <div class="of-section">
+        <h2>재원생 전용 혜택</h2>
+        <div class="of-archive-card">
+          <div class="of-archive-tag">SECRET ARCHIVE</div>
+          <div class="of-archive-imgs">
+            <img src="2026-06-19 035828.png" alt="G-FIELD Secret Archive 1">
+            <img src="2026-06-19 035854.png" alt="G-FIELD Secret Archive 2">
+          </div>
         </div>
         <div class="of-card">
-          <h3>📝 매 수업 리포트</h3>
-          <p>수업 후 학부모님께 상세한 학습 리포트를 전달합니다. 아이의 변화를 수치로 확인하실 수 있습니다.</p>
+          <h3>🏥 클리닉 수업 할인 적용</h3>
+          <p>정규 대비 과정 외 클리닉 수업 할인 혜택이 적용됩니다.</p>
+        </div>
+      </div>
+
+      <div class="of-section">
+        <h2>로드맵</h2>
+        <div class="of-gold-card">
+          <h3>STEP 1 · 7~8월말</h3>
+          <p>탑시크릿 필즈 개념 8주 완성</p>
+        </div>
+        <div class="of-gold-card">
+          <h3>STEP 2 · 8월말</h3>
+          <p>실전 진단 평가</p>
+        </div>
+        <div class="of-gold-card">
+          <h3>STEP 3 · 9월</h3>
+          <p>실전 심화 과정</p>
+        </div>
+        <div class="of-gold-card">
+          <h3>STEP 4 · 9월말~10월</h3>
+          <p>S-TOPCLASS 만들기 + 실전 모의고사 6회</p>
+        </div>
+        <div class="of-gold-card">
+          <h3>STEP 5 · 10월말~11월말</h3>
+          <p>파이널 모의고사 3회</p>
         </div>
       </div>
 
       <div class="of-section">
         <h2>학부모 후기</h2>
-        <div class="of-quote">
-          <p>"원장님 덕분입니다 정말로ㅠㅠ E1반 됐어요!!"</p>
-          <span>— 필즈 더 클래식 합격 학부모</span>
-        </div>
-        <div class="of-quote">
-          <p>"12월생을 이렇게 끌어올려주시다니ㅠㅠ 지필드 다닌 이유가 정말 컸어요"</p>
-          <span>— 필즈 더 클래식 합격 학부모</span>
-        </div>
-        <div class="of-quote">
-          <p>"아이가 자신감을 갖게 되었어요. 주변에도 꼭 추천하겠습니다!!"</p>
-          <span>— 필즈 더 클래식 합격 학부모</span>
-        </div>
+        <img src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/2320140728b64e2c8f83313f5d122286/original/image.png" alt="학부모 후기" style="width:100%;border-radius:14px;border:1px solid rgba(212,175,55,.15);display:block">
       </div>
 
       <div class="of-final">
         <h2>진짜 실력으로 승부하는<br><em>지필드 영재교육</em></h2>
         <p>단순한 합격이 아닌, 입학 후에도<br>최상위권에서 빛나는 아이의 미래를<br>함께 만들어가겠습니다.</p>
-        <a class="of-cta-bottom" href="https://naver.me/xy7bsjyb" target="_blank">오프라인 수업 상담 신청하기</a>
+        <a class="of-cta-bottom" href="https://naver.me/Ge7B7WcJ" target="_blank">오프라인 수업 상담 신청하기</a>
       </div>
     </div>
   </div>
@@ -258,39 +266,10 @@ function startKakao(){const box=document.getElementById('kakaoBox');box.innerHTM
 let recordsStarted=false;function runRecords(){if(recordsStarted)return;recordsStarted=true;const grid=document.getElementById('recordGrid');const allCards=[...recordData.left,...recordData.right];grid.innerHTML=allCards.map(panel).join('');[...grid.querySelectorAll('.record')].forEach((card,i)=>{setTimeout(()=>{card.classList.add('on','pop');card.querySelectorAll('.year').forEach((row,j)=>{setTimeout(()=>{const c=+row.dataset.count,mx=+row.dataset.max;row.querySelector('.bar span').style.width=Math.max(18,Math.round(c/mx*100))+'%';countTo(row.querySelector('.ynum'),c,430)},j*135)});setTimeout(()=>countTo(card.querySelector('[data-total]'),+card.querySelector('[data-total]').dataset.total,720),420);setTimeout(()=>card.classList.remove('pop'),500)},i*360)});setTimeout(()=>countTo(document.getElementById('grandNum'),recordData.grand,1850),680);setTimeout(()=>document.getElementById('grandNum')?.classList.add('hit'),2600);setTimeout(()=>document.getElementById('grandNum')?.classList.remove('hit'),3200)}
 function startCountdown(){const el=document.getElementById('cdNum');let n=3;el.textContent=n;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');const iv=setInterval(()=>{n--;if(n<=0){clearInterval(iv);el.textContent='';const flash=document.createElement('div');flash.style.cssText='position:fixed;inset:0;background:var(--gold);z-index:999;opacity:0;animation:burstFlash .8s ease forwards';document.body.appendChild(flash);setTimeout(()=>{flash.remove();go(6)},800);return}el.classList.remove('pop');void el.offsetWidth;el.textContent=n;el.classList.add('pop')},1000)}
 window.addEventListener('load',()=>setTimeout(autoPlay,300));
-
-// 오프라인 랜딩
-function showOffline(){
-  const landing=document.getElementById('offlineLanding');
-  landing.classList.add('show');
-  document.getElementById('particles').style.display='none';
-  landing.scrollTop=0;
-  // 영상 재생
-  const v=document.getElementById('introVideo');
-  v.currentTime=0;
-  v.play().catch(()=>{});
-  // 영상 끝나면 본문 표시
-  v.onended=()=>revealBody();
-}
+function showOffline(){const landing=document.getElementById('offlineLanding');landing.classList.add('show');document.getElementById('particles').style.display='none';landing.scrollTop=0;const v=document.getElementById('introVideo');v.currentTime=0;v.play().catch(()=>{});v.onended=()=>revealBody()}
 function skipIntro(){revealBody()}
-function revealBody(){
-  const intro=document.getElementById('offlineIntro');
-  const body=document.getElementById('offlineBody');
-  intro.classList.add('fade-out');
-  setTimeout(()=>{intro.style.display='none';body.classList.add('show')},800);
-}
-function hideOffline(){
-  document.getElementById('offlineLanding').classList.remove('show');
-  document.getElementById('particles').style.display='';
-  // 영상 초기화
-  const v=document.getElementById('introVideo');
-  v.pause();v.currentTime=0;
-  document.getElementById('offlineIntro').style.display='';
-  document.getElementById('offlineIntro').classList.remove('fade-out');
-  document.getElementById('offlineBody').classList.remove('show');
-}
-
-// 온라인 랜딩
+function revealBody(){const intro=document.getElementById('offlineIntro');const body=document.getElementById('offlineBody');intro.classList.add('fade-out');setTimeout(()=>{intro.style.display='none';body.classList.add('show')},800)}
+function hideOffline(){document.getElementById('offlineLanding').classList.remove('show');document.getElementById('particles').style.display='';const v=document.getElementById('introVideo');v.pause();v.currentTime=0;document.getElementById('offlineIntro').style.display='';document.getElementById('offlineIntro').classList.remove('fade-out');document.getElementById('offlineBody').classList.remove('show')}
 function showOnline(){document.getElementById('onlineLanding').classList.add('show');document.getElementById('particles').style.display='none';document.getElementById('onlineLanding').scrollTop=0}
 function hideOnline(){document.getElementById('onlineLanding').classList.remove('show');document.getElementById('particles').style.display=''}
 function goFullscreen(){const w=document.getElementById('videoWrap');if(w.requestFullscreen)w.requestFullscreen();else if(w.webkitRequestFullscreen)w.webkitRequestFullscreen()}
