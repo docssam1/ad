@@ -112,8 +112,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 .of-back{position:fixed;top:16px;left:16px;z-index:210;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);color:var(--white);font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;cursor:pointer;display:none}
 #offlineLanding.show .of-back{display:block}
 /* Secret Archive 카드 */
-.of-archive-card{background:rgba(13,11,30,.85);border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:16px;margin-bottom:10px}
-.of-archive-tag{display:inline-block;background:var(--gold);color:#0a0a0a;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:.04em}
+.of-archive-card{background:rgba(13,11,30,.85);border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:18px;margin-bottom:10px}
+.of-archive-eyebrow{display:inline-block;background:rgba(212,175,55,.18);color:var(--gold);font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:10px;letter-spacing:.05em}
+.of-archive-title{font-size:16px;font-weight:900;color:var(--white);line-height:1.45;margin-bottom:14px;letter-spacing:-.01em}
+.of-archive-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.of-archive-tag{display:inline-block;background:var(--gold);color:#0a0a0a;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;letter-spacing:.04em}
+.of-archive-label{font-size:12px;font-weight:700;color:var(--gold-light)}
+.of-archive-desc{font-size:11px;color:var(--dim);line-height:1.7;margin-bottom:14px}
 .of-archive-imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .of-archive-imgs img{width:100%;border-radius:10px;display:block}
 
@@ -148,6 +153,21 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 
 /* ── PC (1024px+) 확대 레이아웃 ── */
 @media(min-width:1024px){
+  /* s3 전광판 PC 한 화면 */
+  #s3{padding:24px}
+  .grand-mini{max-width:260px;padding:12px 22px;margin:0 auto 14px;border-radius:22px}
+  .glabel{font-size:10px;letter-spacing:3px}
+  .gnum{font-size:56px!important}
+  .gunit{font-size:12px;margin-top:0}
+  .records-grid{max-width:900px;grid-template-columns:1fr 1fr;gap:14px}
+  .record{padding:14px 18px;border-radius:16px}
+  .recordTitle{font-size:13px;margin-bottom:6px}
+  .recordTitle small{font-size:9px}
+  .year{grid-template-columns:54px 1fr 32px;gap:8px;font-size:10px;min-height:16px;margin-top:3px}
+  .bar{height:4px}
+  .ynum{font-size:11px}
+  .total{font-size:11px;margin-top:6px;padding-top:4px}
+  .total b{font-size:22px}
   /* 오프라인 PC */
   #offlineBody .of{max-width:960px;padding:0 40px}
   .of-hero{padding:100px 0 70px}
@@ -167,8 +187,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
   .of-gold-card h3{font-size:18px;margin-bottom:12px}
   .of-gold-card h3 span{font-size:26px!important}
   .of-gold-card p{font-size:14px;line-height:1.8}
-  .of-archive-card{padding:32px;border-radius:20px;margin-bottom:16px}
-  .of-archive-tag{font-size:13px;padding:6px 18px;margin-bottom:22px}
+  .of-archive-card{padding:36px;border-radius:20px;margin-bottom:16px}
+  .of-archive-eyebrow{font-size:12px;padding:5px 14px;margin-bottom:16px}
+  .of-archive-title{font-size:26px;margin-bottom:20px;line-height:1.4}
+  .of-archive-tag{font-size:13px;padding:6px 18px}
+  .of-archive-label{font-size:15px}
+  .of-archive-desc{font-size:14px;line-height:1.9;margin-bottom:22px}
   .of-archive-imgs{gap:16px}
   .of-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   .of-roadmap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
@@ -283,7 +307,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
       <div class="of-section">
         <h2>재원생 전용 혜택</h2>
         <div class="of-archive-card">
-          <div class="of-archive-tag">SECRET ARCHIVE</div>
+          <div class="of-archive-eyebrow">재원생 전용</div>
+          <h3 class="of-archive-title">오프라인 재원생만을 위한<br>특별 혜택</h3>
+          <div class="of-archive-row">
+            <span class="of-archive-tag">SECRET ARCHIVE</span>
+            <span class="of-archive-label">G-FIELD Secret Archive</span>
+          </div>
+          <p class="of-archive-desc">지필드 정규 재원생에게는 외부에 공개되지 않는 G-FIELD Secret Archive를 통해 필즈 대비 핵심 자료와 누적 관리 자료를 제공합니다.</p>
           <div class="of-archive-imgs">
             <img src="2026-06-19 035828.png" alt="G-FIELD Secret Archive 1">
             <img src="2026-06-19 035854.png" alt="G-FIELD Secret Archive 2">
