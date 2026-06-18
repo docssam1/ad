@@ -58,12 +58,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 #s6 .video-wrap{width:100%;max-width:480px;aspect-ratio:16/9;border-radius:14px;overflow:hidden;margin-bottom:20px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.5);opacity:0;animation:fadeUp .6s .2s forwards}
 #s6 .video-wrap iframe{width:100%;height:100%;border:0}
 #s6 .video-fs{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;border:none;font-size:18px;padding:6px 10px;border-radius:8px;cursor:pointer;z-index:2;backdrop-filter:blur(4px)}
-#s6 .cta-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
+#s6 .cta-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
 #s6 .cta-btn{display:block;width:min(300px,85vw);padding:16px 24px;border-radius:14px;font-size:16px;font-weight:800;text-decoration:none;text-align:center;letter-spacing:-.02em;opacity:0;transform:translateY(20px);transition:transform .2s,box-shadow .2s}
 #s6 .cta-btn:active{transform:scale(.96)!important}
-#s6 .cta-offline{background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;box-shadow:0 8px 32px rgba(212,175,55,.35);animation:ctaSlam .6s .6s cubic-bezier(.22,1,.36,1) forwards}
-#s6 .cta-online{background:transparent;border:2px solid var(--gold);color:var(--gold);box-shadow:0 4px 20px rgba(212,175,55,.12);animation:ctaSlam .6s .8s cubic-bezier(.22,1,.36,1) forwards}
+#s6 .cta-test-desc{font-size:12px;color:#c8d0dd;text-align:center;line-height:1.55;margin:6px 0 -2px;letter-spacing:-.01em;padding:0 12px;opacity:0;animation:fadeUp .6s .4s forwards;max-width:300px}
+#s6 .cta-test{background:linear-gradient(135deg,#1a2d44,#0d1b2a);color:var(--gold-light);border:2px solid var(--gold);box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 16px rgba(212,175,55,.18);animation:ctaSlam .6s .5s cubic-bezier(.22,1,.36,1) forwards,goldPulse 2.8s ease-in-out 1.6s infinite}
+@keyframes goldPulse{0%,100%{box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 16px rgba(212,175,55,.18)}50%{box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 32px rgba(212,175,55,.55)}}
+#s6 .cta-offline{background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;box-shadow:0 8px 32px rgba(212,175,55,.35);animation:ctaSlam .6s .7s cubic-bezier(.22,1,.36,1) forwards}
+#s6 .cta-online{background:transparent;border:2px solid var(--gold);color:var(--gold);box-shadow:0 4px 20px rgba(212,175,55,.12);animation:ctaSlam .6s .9s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes ctaSlam{0%{opacity:0;transform:translateY(30px) scale(.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@media(min-width:768px){#s6 .cta-test-desc{font-size:13px;max-width:360px}}
 
 /* 인트로 SKIP 버튼 */
 .intro-skip{position:fixed;top:calc(16px + env(safe-area-inset-top));right:16px;z-index:150;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);color:var(--white);font-size:12px;font-weight:700;padding:8px 16px;border-radius:20px;cursor:pointer;letter-spacing:.05em;opacity:0;animation:fadeUp .6s 1s forwards;transition:opacity .3s,transform .2s}
@@ -257,7 +261,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 <div class="scene" id="s3"><div style="width:100%"><div class="grand-mini"><div class="glabel">연도별 누적 실적</div><div class="gnum" id="grandNum">0</div><div class="gunit">명</div></div><div class="records-grid" id="recordGrid"></div></div></div>
 <div class="scene" id="s4"><div class="program-wrap"><h2 class="program-title">필즈 더 클래식</h2><div class="divider"></div><p class="program-sub">선발 대비과정 안내</p></div></div>
 <div class="scene" id="s5"><div style="position:relative"><div class="cd-ring"></div><div class="countdown" id="cdNum">3</div></div></div>
-<div class="scene" id="s6"><div class="video-wrap" id="videoWrap"><iframe id="ytPlayer" src="https://www.youtube.com/embed/ipM78EnPTTU?autoplay=0&mute=1&playsinline=1&rel=0&modestbranding=1" allow="autoplay;fullscreen" allowfullscreen></iframe><button class="video-fs" onclick="goFullscreen()" title="크게보기">⛶</button></div><div class="cta-wrap"><a class="cta-btn cta-offline" href="javascript:void(0)" onclick="showOffline()">오프라인 프로그램 확인하기</a><a class="cta-btn cta-online" href="javascript:void(0)" onclick="showOnline()">온라인 프로그램 확인하기</a></div></div>
+<div class="scene" id="s6"><div class="video-wrap" id="videoWrap"><iframe id="ytPlayer" src="https://www.youtube.com/embed/ipM78EnPTTU?autoplay=0&mute=1&playsinline=1&rel=0&modestbranding=1" allow="autoplay;fullscreen" allowfullscreen></iframe><button class="video-fs" onclick="goFullscreen()" title="크게보기">⛶</button></div><div class="cta-wrap"><p class="cta-test-desc">테스트 결과를 보내주시면 상담 및 수업 시 참고할 수 있습니다.</p><a class="cta-btn cta-test" href="./mini-test/">✨ 필즈 대비 사전 미니 테스트</a><a class="cta-btn cta-offline" href="javascript:void(0)" onclick="showOffline()">오프라인 프로그램 확인하기</a><a class="cta-btn cta-online" href="javascript:void(0)" onclick="showOnline()">온라인 프로그램 확인하기</a></div></div>
 
 <!-- 오프라인 랜딩 -->
 <div id="offlineLanding">
