@@ -53,8 +53,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 #s4.burst .program-title,#s4.burst .divider,#s4.burst .program-sub{animation:zoomBurst .8s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes titleSlam{0%{opacity:0;transform:scale(.6);filter:blur(8px)}60%{opacity:1;transform:scale(1.08);filter:blur(0)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
 @keyframes zoomBurst{0%{opacity:1;transform:scale(1);filter:blur(0)}100%{opacity:0;transform:scale(3);filter:blur(16px)}}
-#s5{overflow:hidden}
-#s5 .countdown{font-family:'DM Serif Display',serif;font-size:clamp(120px,35vw,200px);color:var(--gold);text-shadow:0 0 60px var(--gold-glow),0 0 120px rgba(212,175,55,.25),0 0 200px rgba(212,175,55,.1);line-height:1}
+#s5{overflow:hidden}#s5 .countdown{font-family:'DM Serif Display',serif;font-size:clamp(120px,35vw,200px);color:var(--gold);text-shadow:0 0 60px var(--gold-glow),0 0 120px rgba(212,175,55,.25),0 0 200px rgba(212,175,55,.1);line-height:1}
 #s5 .countdown.pop{animation:countSlam .7s cubic-bezier(.22,1,.36,1)}
 @keyframes countSlam{0%{transform:scale(2.5);opacity:0;filter:blur(12px)}30%{transform:scale(.9);opacity:1;filter:blur(0)}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
 #s5 .cd-ring{position:absolute;width:200px;height:200px;border:2px solid rgba(212,175,55,.3);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:ringPulse 1s ease infinite}
@@ -99,6 +98,26 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 #onlineLanding.show .ol-back{display:block}
 .ol-switch{position:fixed;top:16px;right:16px;z-index:210;background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;font-size:11px;font-weight:800;padding:8px 14px;border-radius:10px;text-decoration:none;display:none;box-shadow:0 4px 16px rgba(212,175,55,.3)}
 #onlineLanding.show .ol-switch{display:block}
+@media(min-width:768px){
+#s0 .logo{width:120px;height:120px;margin-bottom:32px}#s0 .sub{font-size:16px;letter-spacing:3px}#s0 h1{font-size:32px}
+#s1 .line{font-size:30px;line-height:2}
+#s2 .kakao-container{max-width:480px;left:50%;transform:translateX(-50%);right:auto;width:100%}.k-bubble{font-size:15px}
+#s3{padding:40px 24px}.grand-mini{max-width:320px;margin:0 auto 24px;padding:20px 24px;border-radius:28px}.glabel{font-size:12px}.gnum{font-size:clamp(72px,10vw,120px)}.gunit{font-size:16px;margin-top:4px}
+.records-grid{grid-template-columns:1fr 1fr;gap:12px;max-width:700px}.record{padding:14px 16px;border-radius:20px}.recordTitle{font-size:14px}.recordTitle small{font-size:9px}
+.year{grid-template-columns:60px 1fr 36px;gap:6px;margin-top:5px;font-size:11px;min-height:18px}.bar{height:5px}.ynum{font-size:12px}
+.total{margin-top:8px;padding-top:6px;font-size:12px}.total b{font-size:28px}
+#s4 .program-title{font-size:52px}#s4 .program-sub{font-size:24px}
+#s5 .countdown{font-size:clamp(160px,20vw,280px)}#s5 .cd-ring{width:280px;height:280px}
+#s6{padding:32px!important}#s6 .video-wrap{max-width:640px;border-radius:18px;margin-bottom:28px}#s6 .cta-btn{width:360px;padding:18px 28px;font-size:18px;border-radius:16px}#s6 .cta-note{font-size:13px}
+.ol{max-width:680px;padding:0 32px}.ol-hero{padding:80px 0 50px}.ol-hero img{width:80px;height:80px}.ol-hero h1{font-size:30px}.ol-hero p{font-size:15px}.ol-hero .ol-cta-top{padding:16px 36px;font-size:17px}
+.ol-stats{gap:14px}.ol-stat{padding:24px 12px}.ol-stat .num{font-size:42px}.ol-stat .desc{font-size:11px}
+.ol-section h2{font-size:20px;margin-bottom:20px}.ol-feat{padding:18px 22px}.ol-feat h3{font-size:15px}.ol-feat p{font-size:13px}
+.ol-step{padding:22px}.ol-step h3{font-size:15px}.ol-step p,.ol-step ul{font-size:13px}
+.ol-approach-card{padding:18px 22px}.ol-approach-card h3{font-size:15px}.ol-approach-card p{font-size:13px}
+.ol-pillar{padding:18px 22px}.ol-pillar h3{font-size:15px}.ol-pillar p{font-size:13px}
+.ol-final h2{font-size:24px}.ol-final p{font-size:14px}.ol-final .ol-cta-bottom{padding:18px 40px;font-size:18px}
+.ol-back{font-size:14px;padding:10px 18px}.ol-switch{font-size:13px;padding:10px 18px}
+}
 .particles{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
 .particle{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0;animation:drift linear infinite}
 @keyframes drift{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.6}90%{opacity:.6}100%{opacity:0;transform:translateY(-20px)}}
