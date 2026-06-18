@@ -8,15 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-:root{
-  --bg:#02050b;
-  --primary-navy:#0d1b2a;
-  --accent-gold:#d4af37;
-  --gold-light:#f8dd83;
-  --gold-glow:rgba(212,175,55,.35);
-  --text-main:#333;
-  --paper:#fafaf7;
-}
+:root{--bg:#02050b;--primary-navy:#0d1b2a;--accent-gold:#d4af37;--gold-light:#f8dd83;--gold-glow:rgba(212,175,55,.35);--text-main:#333;--paper:#fafaf7}
 *{box-sizing:border-box}
 body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text-main);overflow-x:hidden;min-height:100vh}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 50% 0%,rgba(212,175,55,.08),transparent 60%);pointer-events:none;z-index:0}
@@ -31,8 +23,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--gold-light));width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
 .slide-container{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--paper)}
 .slide{position:absolute;top:0;left:100%;width:100%;height:100%;padding:30px 20px 140px;transition:left .4s cubic-bezier(.4,0,.2,1);background:var(--paper);display:flex;flex-direction:column;overflow-y:auto}
-.slide.active{left:0}
-.slide.prev{left:-100%}
+.slide.active{left:0}.slide.prev{left:-100%}
 .q-badge{display:inline-block;align-self:flex-start;background:var(--primary-navy);color:var(--accent-gold);padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:12px;letter-spacing:.05em}
 .q-title{font-size:18px;font-weight:700;line-height:1.45;margin-bottom:20px;color:var(--primary-navy)}
 .problem-box{margin-bottom:18px;font-size:16px;background:#fff;padding:20px;border-radius:12px;border:1px solid #e8e2d4;line-height:1.7;color:var(--text-main);box-shadow:0 2px 8px rgba(0,0,0,.03)}
@@ -53,7 +44,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 @media(max-width:600px){.ai-doc-wrapper{right:20px}}
 .speech-bubble{background:#fff;border:2px solid var(--accent-gold);padding:10px 15px;border-radius:15px 15px 0 15px;font-size:14px;font-weight:700;color:var(--primary-navy);margin-bottom:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);animation:float 3s ease-in-out infinite;max-width:220px;word-break:keep-all;line-height:1.45}
 .ai-character{width:100px;height:auto;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))}
-.ai-fallback{width:80px;height:80px;background:linear-gradient(135deg,var(--primary-navy),#1a2d44);border:3px solid var(--accent-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent-gold);font-family:'DM Serif Display',serif;font-size:22px;animation:float 3s ease-in-out infinite reverse;box-shadow:0 4px 16px rgba(212,175,55,.25)}
+/* 이모지 fallback — 동그라미 없음 */
+.ai-emoji{font-size:64px;line-height:1;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 8px rgba(212,175,55,.4));display:block;text-align:center}
 @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
 #capture-area{display:none;padding:30px 24px;background:#fff;color:var(--text-main);text-align:center;border-radius:14px;margin:20px;border:2px solid var(--primary-navy);box-shadow:0 8px 32px rgba(0,0,0,.1)}
 #capture-area .cap-brand{font-family:'DM Serif Display',serif;color:var(--accent-gold);font-size:13px;letter-spacing:3px;margin-bottom:8px}
@@ -74,25 +66,22 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <div class="brand">G-FIELD</div>
     <div class="brand-sub">GIFTED EDUCATION</div>
   </div>
-
   <div class="header" id="header-area">
     <h1>필즈 대비 사전 미니 테스트</h1>
     <p>연산 3문항 + 사고력 4문항</p>
     <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
   </div>
-
   <div class="ai-doc-wrapper" id="ai-wrapper">
     <div class="speech-bubble" id="ai-speech">준비됐으면 시작해 주세요.</div>
-    <img src="ai-doc.png" alt="AI-DOC 쌤" class="ai-character" id="ai-img" onerror="this.outerHTML='<div class=&quot;ai-fallback&quot;>AI</div>'">
+    <img src="ai-doc.png" alt="AI-DOC" class="ai-character" id="ai-img"
+         onerror="this.outerHTML='<span class=&quot;ai-emoji&quot;>🤖</span>'">
   </div>
-
   <div class="slide-container" id="quiz-container">
     <div class="slide active" id="slide-0" style="justify-content:center;align-items:center;text-align:center">
       <h2 style="color:var(--primary-navy);margin-bottom:15px;line-height:1.35;font-weight:900">AI-DOC과 함께하는<br>사고력 진단 챌린지</h2>
       <p style="color:#666;margin-bottom:30px;line-height:1.6">준비가 되었다면<br>아래 시작 버튼을 눌러 주세요.</p>
       <button class="action-btn" onclick="startTest()">시작하기</button>
     </div>
-
     <div class="slide" id="slide-1">
       <div class="q-badge">연산 1/3</div>
       <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
@@ -100,7 +89,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-1"></div>
     </div>
-
     <div class="slide" id="slide-2">
       <div class="q-badge">연산 2/3</div>
       <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
@@ -108,7 +96,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-2"></div>
     </div>
-
     <div class="slide" id="slide-3">
       <div class="q-badge">연산 3/3</div>
       <div class="q-title">빈칸에 들어갈 수를 구하시오.</div>
@@ -116,7 +103,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-3"></div>
     </div>
-
     <div class="slide" id="slide-4">
       <div class="q-badge">사고력 1/4</div>
       <div class="problem-box">
@@ -127,7 +113,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-4"></div>
     </div>
-
     <div class="slide" id="slide-5">
       <div class="q-badge">사고력 2/4</div>
       <div class="problem-box">유빈이와 유준이가 사탕을 똑같이 나누어 먹으려고 합니다. 유빈이가 유준이에게 사탕을 몇 개 주어야 하는지 구하세요.</div>
@@ -135,7 +120,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-5"></div>
     </div>
-
     <div class="slide" id="slide-6">
       <div class="q-badge">사고력 3/4</div>
       <div class="problem-box" style="text-align:center">
@@ -149,7 +133,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
         <button class="key-btn" onclick="selectAnimal('다람쥐')">다람쥐</button>
       </div>
     </div>
-
     <div class="slide" id="slide-7">
       <div class="q-badge">사고력 4/4</div>
       <div class="problem-box" style="text-align:center">
@@ -162,17 +145,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <button class="option-btn" onclick="checkAnswer7(3,this)">③ 4, 13</button>
       <button class="option-btn" onclick="checkAnswer7(4,this)">④ 1, 15</button>
     </div>
-
     <div class="slide" id="slide-final">
       <div class="q-title" style="text-align:center;margin-top:40px;font-size:22px;color:var(--primary-navy)">🎉 모든 문항을 완료했어요!</div>
       <div style="text-align:center;margin:24px 0">
-        <img src="ai-doc.png" alt="AI-DOC 쌤" style="width:120px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))" onerror="this.outerHTML='<div class=&quot;ai-fallback&quot; style=&quot;width:110px;height:110px;font-size:30px;margin:0 auto&quot;>AI</div>'">
+        <img src="ai-doc.png" alt="AI-DOC" style="width:120px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))"
+             onerror="this.outerHTML='<span style=&quot;font-size:80px;display:block;text-align:center;animation:float 3s ease-in-out infinite&quot;>🤖</span>'">
       </div>
       <div style="text-align:center;font-size:17px;font-weight:700;color:var(--text-main);margin-bottom:32px;line-height:1.6">정말 잘했어요!<br>선생님은 지필드에서 기다리고 있을게요.</div>
       <button class="action-btn" onclick="generateReportAndCapture()">진단 결과 보기 및 화면 캡처</button>
     </div>
   </div>
-
   <div id="capture-area">
     <div class="cap-brand">G · FIELD</div>
     <h2 style="color:var(--primary-navy);margin:0 0 5px;font-weight:900;letter-spacing:-.02em">사고력 진단 결과 리포트</h2>
@@ -181,7 +163,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <p style="font-size:14px;font-weight:700;color:var(--primary-navy);margin-top:18px;line-height:1.6">학생의 끈기와 사고력이 돋보입니다.<br>자세한 로드맵은 원장님과 상담해 보세요.</p>
     <p style="font-size:11px;color:#aaa;margin-top:14px;letter-spacing:2px">G-FIELD GIFTED EDUCATION</p>
   </div>
-
   <div id="post-capture-guide">
     <h3>🎉 진단 결과가 저장되었습니다</h3>
     <div class="guide-box">아래 <strong>[신청서 작성하기]</strong> 버튼을 눌러<br>네이버 설문을 작성하실 때,<br>방금 저장된 <strong>진단 결과 이미지</strong>를<br>마지막 문항에 첨부해 주세요.</div>
@@ -191,7 +172,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <br><a href="../" class="back-link">← 메인으로 돌아가기</a>
   </div>
 </div>
-
 <script>
 const totalQuestions=7;
 let errorCounts={1:0,2:0,3:0,4:0,5:0,6:0,7:0};
@@ -199,10 +179,31 @@ const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산
 let animalOrder=[];
 const correctAnimalOrder=['다람쥐','거북이','토끼'];
 
-function speak(text){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=.95;u.pitch=1;window.speechSynthesis.speak(u)}
+/* ── 음성: voices 비동기 로드 대기 후 speak ── */
+let voicesReady=false;
+function getVoices(){return new Promise(resolve=>{const v=speechSynthesis.getVoices();if(v.length){voicesReady=true;resolve(v);return}speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}})}
+window.addEventListener('load',()=>getVoices());
+
+function speak(text){
+  if(!window.speechSynthesis)return;
+  window.speechSynthesis.cancel();
+  const say=()=>{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ko-KR';
+    u.rate=.95;
+    u.pitch=1;
+    /* 한국어 보이스 우선 선택 */
+    const voices=speechSynthesis.getVoices();
+    const koVoice=voices.find(v=>v.lang.startsWith('ko'))||voices.find(v=>v.lang.includes('KR'))||null;
+    if(koVoice)u.voice=koVoice;
+    window.speechSynthesis.speak(u);
+  };
+  /* voices 아직 로드 안 됐으면 대기 */
+  if(voicesReady){say()}else{getVoices().then(say)}
+}
 
 function startTest(){
-  const intro="안녕하세요. 저는 AI-DOC입니다. 지금부터 필즈 대비 사전 미니 테스트를 시작하겠습니다. 연산 문항과 사고력 문항을 차례대로 풀어보세요.";
+  const intro="안녕하세요. 저는 AI-DOC입니다. 지금부터 필즈 대비 사전 미니 테스트를 시작하겠습니다.";
   document.getElementById('ai-speech').innerText="AI-DOC 진단을 시작합니다.";
   speak(intro);
   document.getElementById('slide-0').classList.remove('active');
