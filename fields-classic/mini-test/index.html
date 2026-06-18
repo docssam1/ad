@@ -44,8 +44,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 @media(max-width:600px){.ai-doc-wrapper{right:20px}}
 .speech-bubble{background:#fff;border:2px solid var(--accent-gold);padding:10px 15px;border-radius:15px 15px 0 15px;font-size:14px;font-weight:700;color:var(--primary-navy);margin-bottom:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);animation:float 3s ease-in-out infinite;max-width:220px;word-break:keep-all;line-height:1.45}
 .ai-character{width:100px;height:auto;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))}
-/* 이모지 fallback — 동그라미 없음 */
-.ai-emoji{font-size:64px;line-height:1;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 8px rgba(212,175,55,.4));display:block;text-align:center}
 @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
 #capture-area{display:none;padding:30px 24px;background:#fff;color:var(--text-main);text-align:center;border-radius:14px;margin:20px;border:2px solid var(--primary-navy);box-shadow:0 8px 32px rgba(0,0,0,.1)}
 #capture-area .cap-brand{font-family:'DM Serif Display',serif;color:var(--accent-gold);font-size:13px;letter-spacing:3px;margin-bottom:8px}
@@ -73,8 +71,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
   </div>
   <div class="ai-doc-wrapper" id="ai-wrapper">
     <div class="speech-bubble" id="ai-speech">준비됐으면 시작해 주세요.</div>
-    <img src="ai-doc.png" alt="AI-DOC" class="ai-character" id="ai-img"
-         onerror="this.outerHTML='<span class=&quot;ai-emoji&quot;>🤖</span>'">
+    <img src="../ai-doc.png" alt="AI-DOC" class="ai-character">
   </div>
   <div class="slide-container" id="quiz-container">
     <div class="slide active" id="slide-0" style="justify-content:center;align-items:center;text-align:center">
@@ -116,7 +113,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <div class="slide" id="slide-5">
       <div class="q-badge">사고력 2/4</div>
       <div class="problem-box">유빈이와 유준이가 사탕을 똑같이 나누어 먹으려고 합니다. 유빈이가 유준이에게 사탕을 몇 개 주어야 하는지 구하세요.</div>
-      <img src="q5_image.png" class="q-image" alt="유빈이와 유준이 사탕 문제" onerror="this.style.display='none'">
+      <img src="../q5_image.png" class="q-image" alt="유빈이와 유준이 사탕 문제">
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-5"></div>
     </div>
@@ -124,7 +121,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <div class="q-badge">사고력 3/4</div>
       <div class="problem-box" style="text-align:center">
         다음 시소 그림을 보고, 가장 <strong>가벼운</strong> 동물부터 순서대로 버튼을 누르세요.<br>
-        <img src="seesaw_image.png" class="q-image" alt="시소 동물 비교 문제" style="max-height:150px;margin-top:15px" onerror="this.style.display='none'">
+        <img src="../seesaw_image.png" class="q-image" alt="시소 동물 비교 문제" style="max-height:150px;margin-top:15px">
       </div>
       <div id="selected-animals" class="selected-display">여기에 순서가 표시돼요</div>
       <div class="animal-buttons">
@@ -148,8 +145,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <div class="slide" id="slide-final">
       <div class="q-title" style="text-align:center;margin-top:40px;font-size:22px;color:var(--primary-navy)">🎉 모든 문항을 완료했어요!</div>
       <div style="text-align:center;margin:24px 0">
-        <img src="ai-doc.png" alt="AI-DOC" style="width:120px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))"
-             onerror="this.outerHTML='<span style=&quot;font-size:80px;display:block;text-align:center;animation:float 3s ease-in-out infinite&quot;>🤖</span>'">
+        <img src="../ai-doc.png" alt="AI-DOC" style="width:120px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))">
       </div>
       <div style="text-align:center;font-size:17px;font-weight:700;color:var(--text-main);margin-bottom:32px;line-height:1.6">정말 잘했어요!<br>선생님은 지필드에서 기다리고 있을게요.</div>
       <button class="action-btn" onclick="generateReportAndCapture()">진단 결과 보기 및 화면 캡처</button>
@@ -179,7 +175,7 @@ const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산
 let animalOrder=[];
 const correctAnimalOrder=['다람쥐','거북이','토끼'];
 
-/* ── 음성: voices 비동기 로드 대기 후 speak ── */
+/* ── 음성: voices 비동기 로드 대기 ── */
 let voicesReady=false;
 function getVoices(){return new Promise(resolve=>{const v=speechSynthesis.getVoices();if(v.length){voicesReady=true;resolve(v);return}speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}})}
 window.addEventListener('load',()=>getVoices());
@@ -189,23 +185,18 @@ function speak(text){
   window.speechSynthesis.cancel();
   const say=()=>{
     const u=new SpeechSynthesisUtterance(text);
-    u.lang='ko-KR';
-    u.rate=.95;
-    u.pitch=1;
-    /* 한국어 보이스 우선 선택 */
+    u.lang='ko-KR';u.rate=.95;u.pitch=1;
     const voices=speechSynthesis.getVoices();
     const koVoice=voices.find(v=>v.lang.startsWith('ko'))||voices.find(v=>v.lang.includes('KR'))||null;
     if(koVoice)u.voice=koVoice;
     window.speechSynthesis.speak(u);
   };
-  /* voices 아직 로드 안 됐으면 대기 */
   if(voicesReady){say()}else{getVoices().then(say)}
 }
 
 function startTest(){
-  const intro="안녕하세요. 저는 AI-DOC입니다. 지금부터 필즈 대비 사전 미니 테스트를 시작하겠습니다.";
   document.getElementById('ai-speech').innerText="AI-DOC 진단을 시작합니다.";
-  speak(intro);
+  speak("안녕하세요. 저는 AI-DOC입니다. 지금부터 필즈 대비 사전 미니 테스트를 시작하겠습니다.");
   document.getElementById('slide-0').classList.remove('active');
   document.getElementById('slide-0').classList.add('prev');
   document.getElementById('slide-1').classList.add('active');
@@ -228,12 +219,10 @@ function updateProgress(n){document.getElementById('progress-bar').style.width=(
 
 function setupKeypad(slideIndex,correctAnswer,successMessage){
   const c=document.getElementById('keypad-'+slideIndex);
-  if(!c)return;
-  c.innerHTML="";
+  if(!c)return;c.innerHTML="";
   for(let i=0;i<=9;i++){
     const btn=document.createElement('button');
-    btn.className='key-btn';
-    btn.innerText=i;
+    btn.className='key-btn';btn.innerText=i;
     btn.onclick=()=>{
       if(i===correctAnswer){
         if(navigator.vibrate)navigator.vibrate(30);
@@ -241,8 +230,7 @@ function setupKeypad(slideIndex,correctAnswer,successMessage){
       }else{
         errorCounts[slideIndex]=(errorCounts[slideIndex]||0)+1;
         const r="다시 한 번 천천히 생각해 보세요.";
-        document.getElementById('ai-speech').innerText=r;
-        speak(r);
+        document.getElementById('ai-speech').innerText=r;speak(r);
         btn.style.transform="translateX(5px)";
         setTimeout(()=>btn.style.transform="translateX(-5px)",100);
         setTimeout(()=>btn.style.transform="translateX(0)",200);
@@ -273,8 +261,7 @@ function selectAnimal(animal){
     }else{
       errorCounts[6]=(errorCounts[6]||0)+1;
       const r="앗, 순서가 조금 다른 것 같아요. 가장 가벼운 동물부터 다시 골라볼까요?";
-      document.getElementById('ai-speech').innerText=r;
-      speak(r);
+      document.getElementById('ai-speech').innerText=r;speak(r);
       setTimeout(()=>{animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"},1500);
     }
   }
@@ -286,8 +273,7 @@ function checkAnswer7(answerIdx,btn){
   }else{
     errorCounts[7]=(errorCounts[7]||0)+1;
     const r="숫자들의 규칙을 다시 한번 천천히 살펴볼까요? 거의 다 왔어요!";
-    document.getElementById('ai-speech').innerText=r;
-    speak(r);
+    document.getElementById('ai-speech').innerText=r;speak(r);
     btn.style.transform="translateX(5px)";
     setTimeout(()=>btn.style.transform="translateX(-5px)",100);
     setTimeout(()=>btn.style.transform="translateX(0)",200);
@@ -297,12 +283,7 @@ function checkAnswer7(answerIdx,btn){
 }
 
 function generateReportAndCapture(){
-  let html=`<table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;text-align:center">
-    <thead><tr style="background:var(--primary-navy);color:var(--accent-gold)">
-      <th style="padding:10px 5px;border:1px solid #ddd">문항</th>
-      <th style="padding:10px 5px;border:1px solid #ddd">문제 유형</th>
-      <th style="padding:10px 5px;border:1px solid #ddd">정답 기록</th>
-    </tr></thead><tbody>`;
+  let html=`<table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;text-align:center"><thead><tr style="background:var(--primary-navy);color:var(--accent-gold)"><th style="padding:10px 5px;border:1px solid #ddd">문항</th><th style="padding:10px 5px;border:1px solid #ddd">문제 유형</th><th style="padding:10px 5px;border:1px solid #ddd">정답 기록</th></tr></thead><tbody>`;
   for(let i=1;i<=7;i++){
     const a=(errorCounts[i]||0)+1;
     const t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`;
@@ -325,13 +306,9 @@ function submitAndCapture(){
       const data=canvas.toDataURL('image/png');
       const p=document.getElementById('img-preview');
       p.innerHTML="";
-      const img=document.createElement('img');
-      img.src=data;
-      p.appendChild(img);
+      const img=document.createElement('img');img.src=data;p.appendChild(img);
       const link=document.createElement('a');
-      link.download='지필드_사고력진단_결과.png';
-      link.href=data;
-      link.click();
+      link.download='지필드_사고력진단_결과.png';link.href=data;link.click();
       document.getElementById('post-capture-guide').style.display='block';
       speak("진단 결과가 저장되었습니다. 네이버 설문 마지막 문항에 결과 이미지를 첨부해 주세요.");
     });
