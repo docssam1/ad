@@ -13,7 +13,152 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 .scene{position:fixed;inset:0;display:grid;place-items:center;text-align:center;padding:calc(28px + env(safe-area-inset-top)) 24px 28px;opacity:0;transform:translateY(26px) scale(.975);filter:blur(10px);transition:opacity .82s ease,transform .82s cubic-bezier(.16,1,.3,1),filter .82s ease;pointer-events:none;z-index:1}
 .scene.on{opacity:1;transform:none;filter:none;pointer-events:auto;z-index:10}
 #s0 .logo{width:120px;height:auto;border-radius:16px;object-fit:contain;margin-bottom:24px;filter:drop-shadow(0 0 20px var(--gold-glow));animation:logoPulse 2s ease-in-out infinite}
+#s0 .sub{font-size:14px;color:var(--dim);letter-spacing:2px;margin-bottom:8px;opacity:0;animation:fadeUp .8s .3s forwards}
+#s0 h1{font-size:22px;font-weight:700;text-align:center;line-height:1.6;opacity:0;animation:fadeUp .8s .6s forwards}
+#s0 h1 em{font-style:normal;color:var(--gold);font-weight:900}
+@keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 20px var(--gold-glow))}50%{filter:drop-shadow(0 0 40px var(--gold))}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+#s1 .line{font-size:20px;font-weight:700;text-align:center;line-height:1.8;opacity:0}
+#s1 .line:first-child{animation:fadeUp .8s .2s forwards}#s1 .line:last-child{animation:fadeUp .8s .8s forwards;color:var(--gold)}#s1 .line em{font-style:normal;color:var(--gold-light)}
+#s2{overflow:hidden;display:block!important;padding:0!important}
+#s2 .kakao-container{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;gap:6px;overflow:hidden}
+.k-row{display:flex;align-items:flex-end;gap:6px;opacity:0;transform:translateY(40px)}.k-row.from-parent{justify-content:flex-start}.k-row.from-me{justify-content:flex-end}
+.k-name{font-size:10px;color:var(--dim);margin-bottom:2px}.k-name .blur{background:var(--dim);color:transparent;border-radius:2px;padding:0 12px;font-size:9px;filter:blur(3px);display:inline-block}
+.k-bubble{max-width:72%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-break:keep-all}
+.k-row.from-parent .k-bubble{background:#fff;color:#333;border-bottom-left-radius:2px}.k-row.from-me .k-bubble{background:#f8dd83;color:#1a1a1a;border-bottom-right-radius:2px}
+.k-row.visible{animation:bubbleIn .35s ease forwards}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+#s2 .burst-overlay{position:absolute;inset:0;background:var(--gold);opacity:0;z-index:20;pointer-events:none}
+#s2 .burst-overlay.flash{animation:burstFlash .6s ease forwards}
+@keyframes burstFlash{0%{opacity:0}15%{opacity:.8}100%{opacity:0}}
+#s3{overflow:hidden;align-items:center;padding:20px 10px}
+.grand-mini{text-align:center;margin-bottom:12px;padding:10px 16px;border:1px solid rgba(212,175,55,.28);border-radius:20px;background:radial-gradient(circle at 50% 45%,rgba(212,175,55,.18),transparent 64%),rgba(0,0,0,.26);box-shadow:0 0 60px rgba(212,175,55,.1)}
+.glabel{font-size:10px;color:var(--dim);letter-spacing:2px}.gnum{font-size:clamp(48px,16vw,80px);font-weight:900;letter-spacing:-.08em;line-height:1;transition:.34s cubic-bezier(.22,1,.36,1)}
+.gnum.hit{transform:scale(1.1);color:var(--gold);text-shadow:0 0 52px var(--gold-glow)}.gunit{font-size:14px;color:var(--gold);letter-spacing:.1em;margin-top:2px}
+.records-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;max-width:420px;margin:0 auto}
+.record{border:1px solid rgba(255,255,255,.14);background:rgba(2,6,23,.52);backdrop-filter:blur(16px);border-radius:14px;padding:8px 10px;text-align:left;box-shadow:0 12px 40px rgba(0,0,0,.36);opacity:0;transform:translateY(16px) scale(.97);transition:.52s cubic-bezier(.22,1,.36,1)}
+.record.on{opacity:1;transform:translateY(0) scale(1);border-color:rgba(212,175,55,.38)}.record.pop{animation:introPop .36s cubic-bezier(.22,1,.36,1)}
+@keyframes introPop{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+.recordTitle{font-size:10px;font-weight:900;letter-spacing:-.03em;margin-bottom:4px;color:var(--white)}.recordTitle small{font-size:7px;color:var(--gold);letter-spacing:.06em;margin-left:4px}
+.year{display:grid;grid-template-columns:32px 1fr 20px;gap:3px;align-items:center;margin-top:2px;font-size:8px;color:var(--dim);min-height:12px}
+.bar{height:3px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#60a5fa,var(--gold));border-radius:999px;transition:.55s cubic-bezier(.22,1,.36,1)}
+.ynum{text-align:right;color:white;font-weight:900;font-size:9px}
+.total{text-align:right;margin-top:4px;padding-top:3px;border-top:1px solid rgba(255,255,255,.08);color:var(--gold);font-weight:900;font-size:9px;letter-spacing:-.04em}.total b{font-size:18px}
+#s4{overflow:hidden}#s4 .program-wrap{position:relative}
+#s4 .program-title{font-family:'DM Serif Display',serif;font-size:36px;color:var(--gold);text-align:center;opacity:0;transform:scale(.6);animation:titleSlam .6s .2s cubic-bezier(.22,1,.36,1) forwards;text-shadow:0 0 40px var(--gold-glow)}
+#s4 .divider{width:60px;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:16px auto;opacity:0;animation:fadeUp .5s .5s forwards}
+#s4 .program-sub{font-size:18px;color:var(--white);margin-top:8px;text-align:center;opacity:0;animation:fadeUp .6s .7s forwards;line-height:1.6;font-weight:700;letter-spacing:.05em}
+#s4.burst .program-title,#s4.burst .divider,#s4.burst .program-sub{animation:zoomBurst .8s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes titleSlam{0%{opacity:0;transform:scale(.6);filter:blur(8px)}60%{opacity:1;transform:scale(1.08);filter:blur(0)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes zoomBurst{0%{opacity:1;transform:scale(1);filter:blur(0)}100%{opacity:0;transform:scale(3);filter:blur(16px)}}
+#s5{overflow:hidden}#s5 .countdown{font-family:'DM Serif Display',serif;font-size:clamp(120px,35vw,200px);color:var(--gold);text-shadow:0 0 60px var(--gold-glow),0 0 120px rgba(212,175,55,.25),0 0 200px rgba(212,175,55,.1);line-height:1}
+#s5 .countdown.pop{animation:countSlam .7s cubic-bezier(.22,1,.36,1)}
+@keyframes countSlam{0%{transform:scale(2.5);opacity:0;filter:blur(12px)}30%{transform:scale(.9);opacity:1;filter:blur(0)}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
+#s5 .cd-ring{position:absolute;width:200px;height:200px;border:2px solid rgba(212,175,55,.3);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:ringPulse 1s ease infinite}
+@keyframes ringPulse{0%{transform:translate(-50%,-50%) scale(1);opacity:.4}100%{transform:translate(-50%,-50%) scale(2.5);opacity:0}}
+#s6{background:var(--bg);display:flex!important;flex-direction:column;align-items:center;justify-content:center;padding:16px!important}
+#s6 .video-wrap{width:100%;max-width:480px;aspect-ratio:16/9;border-radius:14px;overflow:hidden;margin-bottom:20px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.5);opacity:0;animation:fadeUp .6s .2s forwards}
+#s6 .video-wrap iframe{width:100%;height:100%;border:0}
+#s6 .video-fs{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;border:none;font-size:18px;padding:6px 10px;border-radius:8px;cursor:pointer;z-index:2;backdrop-filter:blur(4px)}
+#s6 .cta-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
+#s6 .cta-btn{display:block;width:min(300px,85vw);padding:16px 24px;border-radius:14px;font-size:16px;font-weight:800;text-decoration:none;text-align:center;letter-spacing:-.02em;opacity:0;transform:translateY(20px);transition:transform .2s,box-shadow .2s}
+#s6 .cta-btn:active{transform:scale(.96)!important}
+#s6 .cta-offline{background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;box-shadow:0 8px 32px rgba(212,175,55,.35);animation:ctaSlam .6s .6s cubic-bezier(.22,1,.36,1) forwards}
+#s6 .cta-online{background:transparent;border:2px solid var(--gold);color:var(--gold);box-shadow:0 4px 20px rgba(212,175,55,.12);animation:ctaSlam .6s .8s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes ctaSlam{0%{opacity:0;transform:translateY(30px) scale(.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+#s6 .cta-note{font-size:11px;color:var(--dim);margin-top:8px;opacity:0;animation:fadeUp .5s 1s forwards}
+#onlineLanding{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}#onlineLanding.show{display:block}
+.ol{padding:0 20px;max-width:480px;margin:0 auto}.ol-hero{text-align:center;padding:60px 0 40px}
+.ol-hero img{width:80px;height:auto;border-radius:12px;object-fit:contain;filter:drop-shadow(0 0 16px var(--gold-glow));margin-bottom:16px}
+.ol-hero h1{font-size:22px;font-weight:900;line-height:1.5;margin-bottom:8px}.ol-hero h1 em{font-style:normal;color:var(--gold)}
+.ol-hero p{font-size:13px;color:var(--dim);line-height:1.7}
+.ol-hero .ol-cta-top{display:inline-block;margin-top:20px;padding:14px 28px;background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;font-weight:800;font-size:15px;border-radius:12px;text-decoration:none;box-shadow:0 6px 24px rgba(212,175,55,.3)}
+.ol-section{margin-bottom:36px}.ol-section h2{font-size:16px;font-weight:900;color:var(--gold);margin-bottom:16px;letter-spacing:-.02em}
+.ol-section h2::before{content:"";display:inline-block;width:3px;height:16px;background:var(--gold);margin-right:8px;vertical-align:middle;border-radius:2px}
+.ol-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:36px}
+.ol-stat{background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:16px 8px;text-align:center}
+.ol-stat .num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--gold-light);line-height:1}.ol-stat .unit{font-size:12px;color:var(--gold)}.ol-stat .desc{font-size:9px;color:var(--dim);margin-top:6px;line-height:1.4}
+.ol-features{display:grid;gap:10px;margin-bottom:36px}.ol-feat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 16px}
+.ol-feat h3{font-size:13px;font-weight:800;color:var(--white);margin-bottom:6px}.ol-feat p{font-size:11px;color:var(--dim);line-height:1.6}
+.ol-steps{display:grid;gap:12px;margin-bottom:36px}.ol-step{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.15);border-radius:14px;padding:16px;position:relative}
+.ol-step .step-num{position:absolute;top:-8px;left:16px;background:var(--gold);color:#0a0a0a;font-size:10px;font-weight:900;padding:2px 10px;border-radius:8px}
+.ol-step h3{font-size:13px;font-weight:800;color:var(--gold-light);margin-top:6px;margin-bottom:6px}.ol-step p{font-size:11px;color:var(--dim);line-height:1.7}
+.ol-step ul{margin:6px 0 0 16px;font-size:11px;color:var(--dim);line-height:1.8}
+.ol-img{width:100%;border-radius:10px;margin:10px 0 6px;display:block}.ol-img-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 6px}
+.ol-approach{display:grid;gap:10px;margin-bottom:36px}.ol-approach-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 16px}
+.ol-approach-card h3{font-size:13px;font-weight:800;color:var(--white);margin-bottom:6px}.ol-approach-card p{font-size:11px;color:var(--dim);line-height:1.6}
+.ol-pillars{display:grid;gap:10px;margin-bottom:36px}.ol-pillar{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.12);border-radius:14px;padding:14px 16px}
+.ol-pillar h3{font-size:13px;font-weight:800;color:var(--gold-light);margin-bottom:6px}.ol-pillar p{font-size:11px;color:var(--dim);line-height:1.6}
+.ol-final{text-align:center;padding:32px 0 60px}.ol-final h2{font-size:18px;font-weight:900;color:var(--white);line-height:1.5;margin-bottom:6px}.ol-final h2 em{font-style:normal;color:var(--gold)}
+.ol-final p{font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:20px}
+.ol-final .ol-cta-bottom{display:inline-block;padding:16px 32px;background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;font-weight:800;font-size:16px;border-radius:14px;text-decoration:none;box-shadow:0 8px 32px rgba(212,175,55,.35)}.ol-final .ol-cta-bottom:active{transform:scale(.96)}
+.ol-back{position:fixed;top:16px;left:16px;z-index:210;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);color:var(--white);font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;cursor:pointer;display:none}
+#onlineLanding.show .ol-back{display:block}
+.ol-switch{position:fixed;top:16px;right:16px;z-index:210;background:linear-gradient(135deg,var(--gold),#c5982e);color:#0a0a0a;font-size:11px;font-weight:800;padding:8px 14px;border-radius:10px;text-decoration:none;display:none;box-shadow:0 4px 16px rgba(212,175,55,.3)}
+#onlineLanding.show .ol-switch{display:block}
+@media(min-width:768px){
+#s0 .logo{width:160px;margin-bottom:32px}#s0 .sub{font-size:16px;letter-spacing:3px}#s0 h1{font-size:32px}
+#s1 .line{font-size:30px;line-height:2}
+#s2 .kakao-container{max-width:480px;left:50%;transform:translateX(-50%);right:auto;width:100%}.k-bubble{font-size:15px}
+#s3{padding:40px 24px}.grand-mini{max-width:320px;margin:0 auto 24px;padding:20px 24px;border-radius:28px}.glabel{font-size:12px}.gnum{font-size:clamp(72px,10vw,120px)}.gunit{font-size:16px;margin-top:4px}
+.records-grid{grid-template-columns:1fr 1fr;gap:12px;max-width:700px}.record{padding:14px 16px;border-radius:20px}.recordTitle{font-size:14px}.recordTitle small{font-size:9px}
+.year{grid-template-columns:60px 1fr 36px;gap:6px;margin-top:5px;font-size:11px;min-height:18px}.bar{height:5px}.ynum{font-size:12px}
+.total{margin-top:8px;padding-top:6px;font-size:12px}.total b{font-size:28px}
+#s4 .program-title{font-size:52px}#s4 .program-sub{font-size:24px}
+#s5 .countdown{font-size:clamp(160px,20vw,280px)}#s5 .cd-ring{width:280px;height:280px}
+#s6{padding:32px!important}#s6 .video-wrap{max-width:640px;border-radius:18px;margin-bottom:28px}#s6 .cta-btn{width:360px;padding:18px 28px;font-size:18px;border-radius:16px}#s6 .cta-note{font-size:13px}
+.ol{max-width:680px;padding:0 32px}.ol-hero{padding:80px 0 50px}.ol-hero img{width:100px}.ol-hero h1{font-size:30px}.ol-hero p{font-size:15px}.ol-hero .ol-cta-top{padding:16px 36px;font-size:17px}
+.ol-stats{gap:14px}.ol-stat{padding:24px 12px}.ol-stat .num{font-size:42px}.ol-stat .desc{font-size:11px}
+.ol-section h2{font-size:20px;margin-bottom:20px}.ol-feat{padding:18px 22px}.ol-feat h3{font-size:15px}.ol-feat p{font-size:13px}
+.ol-step{padding:22px}.ol-step h3{font-size:15px}.ol-step p,.ol-step ul{font-size:13px}
+.ol-approach-card{padding:18px 22px}.ol-approach-card h3{font-size:15px}.ol-approach-card p{font-size:13px}
+.ol-pillar{padding:18px 22px}.ol-pillar h3{font-size:15px}.ol-pillar p{font-size:13px}
+.ol-final h2{font-size:24px}.ol-final p{font-size:14px}.ol-final .ol-cta-bottom{padding:18px 40px;font-size:18px}
+.ol-back{font-size:14px;padding:10px 18px}.ol-switch{font-size:13px;padding:10px 18px}
+}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0;animation:drift linear infinite}
+@keyframes drift{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.6}90%{opacity:.6}100%{opacity:0;transform:translateY(-20px)}}
 </style>
 </head>
-<body>test</body>
+<body>
+<div class="particles" id="particles"></div>
+<div class="scene on" id="s0"><div><img class="logo" src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="GFIELD"><p class="sub">GFIELD GIFTED EDUCATION</p><h1>성공하는 공부습관을 위한<br><em>지필드 영재교육</em></h1></div></div>
+<div class="scene" id="s1"><div><p class="line">합격만이 아닙니다.</p><p class="line"><em>합격 후의 과정</em>을 생각합니다.</p></div></div>
+<div class="scene" id="s2"><div class="kakao-container" id="kakaoBox"></div><div class="burst-overlay" id="burst"></div></div>
+<div class="scene" id="s3"><div style="width:100%"><div class="grand-mini"><div class="glabel">연도별 누적 실적</div><div class="gnum" id="grandNum">0</div><div class="gunit">명</div></div><div class="records-grid" id="recordGrid"></div></div></div>
+<div class="scene" id="s4"><div class="program-wrap"><h2 class="program-title">필즈 더 클래식</h2><div class="divider"></div><p class="program-sub">선발 대비과정 안내</p></div></div>
+<div class="scene" id="s5"><div style="position:relative"><div class="cd-ring"></div><div class="countdown" id="cdNum">3</div></div></div>
+<div class="scene" id="s6"><div class="video-wrap" id="videoWrap"><iframe id="ytPlayer" src="https://www.youtube.com/embed/ipM78EnPTTU?autoplay=0&mute=1&playsinline=1&rel=0&modestbranding=1" allow="autoplay;fullscreen" allowfullscreen></iframe><button class="video-fs" onclick="goFullscreen()" title="크게보기">⛶</button></div><div class="cta-wrap"><a class="cta-btn cta-offline" href="#">오프라인 프로그램 확인하기</a><a class="cta-btn cta-online" href="javascript:void(0)" onclick="showOnline()">온라인 프로그램 확인하기</a><p class="cta-note">지필드 영재교육</p></div></div>
+<div id="onlineLanding"><button class="ol-back" onclick="hideOnline()">← 돌아가기</button><a class="ol-switch" href="#">오프라인 프로그램 확인하기 →</a><div class="ol">
+<div class="ol-hero"><img src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="GFIELD"><h1><em>필즈 더 클래식</em> 입학 대비<br>6세 온라인 진단</h1><p>12월 입학시험 완벽 대비를 통해 단순한 합격을 넘어<br>최상위권 학습 능력까지 갖춘 진짜 실력을 키웁니다.</p><p style="margin-top:12px;color:var(--white);font-size:14px;font-weight:600">이제 지필드 영재교육의 정확한 진단을<br>온라인으로 경험해보세요.</p><a class="ol-cta-top" href="https://naver.me/FfBeWW3O" target="_blank">상담 및 온라인 모의고사 신청하기</a></div>
+<div class="ol-stats"><div class="ol-stat"><div class="num">100</div><div class="unit">%</div><div class="desc">합격률<br>지난해 수업 학생 기준</div></div><div class="ol-stat"><div class="num">58</div><div class="unit">%</div><div class="desc">S반·프리미어<br>E1 합격생 중 배정률</div></div><div class="ol-stat"><div class="num">80</div><div class="unit">%</div><div class="desc">성적 향상<br>3개월 후 레벨업 비율</div></div></div>
+<div class="ol-section"><h2>입시 성공을 위한 데이터 기반 접근</h2><div class="ol-feat"><h3>최신 입시 데이터 분석</h3><p>지난 3년간의 필즈 더 클래식 입학시험 데이터를 철저히 분석하여 출제 경향과 난이도 변화를 정확히 파악합니다. 이를 바탕으로 효율적인 학습 전략을 수립합니다.</p></div></div>
+<div class="ol-section"><h2>차별화된 전략으로 확실한 결과</h2><div class="ol-features"><div class="ol-feat"><h3>첫 시험 점수의 중요성</h3><p>입학 후 첫 시험 성적이 향후 학습 과정과 반 배정에 결정적 영향을 미칩니다. 이 중요한 첫 관문을 철저히 준비합니다.</p></div><div class="ol-feat"><h3>상승하는 컷라인 완벽 분석</h3><p>매년 높아지는 E1 80점, E2 60점 컷라인을 정확히 분석하여 전략적 학습 계획을 수립합니다.</p></div><div class="ol-feat"><h3>S반 선발까지 확실 보장</h3><p>단순 합격을 넘어 최상위권 반인 S반 합격을 목표로 체계적인 실력 향상 프로그램을 제공합니다.</p></div></div></div>
+<div class="ol-section"><h2>수업 진행 방식</h2><div class="ol-steps"><div class="ol-step"><span class="step-num">1단계</span><h3>온라인 진단 모의고사</h3><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/b40ffd6446a44e3da9d239b945e4bc3d/original/image.png" alt="진단 모의고사"><p>현재 실력을 정확히 파악하기 위한 진단평가</p><ul><li>결제 후 제공된 승인번호 입력 후 응시 가능</li><li>실제 시험 유사 레벨 테스트를 통해 현재 아이의 정확한 수준 파악</li><li>오프라인 응시도 가능</li></ul></div><div class="ol-step"><span class="step-num">2단계</span><h3>온라인 진단 분석지</h3><div class="ol-img-row"><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/eda230121c9842c7a122c8411479abd4/original/image.png" alt="진단 분석지 1"><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/7827a440dca5405ba4e75aeb29f7de0f/original/image.png" alt="진단 분석지 2"></div><ul><li>영역별 강점과 약점을 세부적으로 분석하여 개인별 진단표 작성</li><li>목표 레벨과 현재 실력 간의 격차를 수치화하여 명확한 목표 설정</li><li>학습 성향과 특성을 고려한 맞춤형 학습 계획 수립의 기초 마련</li></ul></div><div class="ol-step"><span class="step-num">3단계</span><h3>풀이 영상</h3><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/6229abd7036743ada181a4ace995db48/original/image.png" alt="풀이 영상"><ul><li>응시한 테스트의 풀이 영상으로 부족 유형 완전 학습</li><li>부족한 유형에 대한 이해도 체크</li></ul></div></div></div>
+<div class="ol-section"><h2>맞춤형 학습 시스템</h2><div class="ol-approach"><div class="ol-approach-card"><h3>개인별 학습 계획</h3><p>진단 결과를 바탕으로 아이의 현재 수준과 목표에 맞는 맞춤형 커리큘럼을 설계합니다. 약점은 보완하고 강점은 더욱 발전시키는 전략적 접근법을 적용합니다.</p></div><div class="ol-approach-card"><h3>약점 집중 보완</h3><p>개인별로 드러난 취약 영역에 대해 집중적인 보완 학습을 진행합니다. 단순 문제 풀이가 아닌 개념부터 탄탄하게 이해할 수 있도록 지도합니다.</p></div><div class="ol-approach-card"><h3>실전 문제 훈련</h3><p>실제 시험과 유사한 환경에서의 문제 풀이 훈련을 통해 시간 관리 능력과 문제 해결 전략을 체득하도록 합니다.</p></div></div></div>
+<div class="ol-section"><h2>학부모님의 생생한 후기</h2><img class="ol-img" src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:2000/https://cdn.gamma.app/iw0nmj1c8mj81fk/2320140728b64e2c8f83313f5d122286/original/image.png" alt="학부모 후기" style="border-radius:14px;border:1px solid rgba(212,175,55,.15)"></div>
+<div class="ol-section"><h2>필즈 더 클래식 입학 성공의 열쇠</h2><div class="ol-pillars"><div class="ol-pillar"><h3>철저한 기초 다지기</h3><p>학습의 근본이 되는 핵심 개념과 원리를 탄탄하게 이해합니다. 암기가 아닌 이해를 통해 어떤 문제도 해결할 수 있는 사고력을 키웁니다.</p></div><div class="ol-pillar"><h3>실전 문제 해결 능력 강화</h3><p>다양한 유형의 문제를 접하고 해결하는 과정에서 문제 해결 전략과 시간 관리 능력을 체득합니다. 실제 시험과 유사한 환경에서의 연습을 통해 시험 불안감을 극복합니다.</p></div><div class="ol-pillar"><h3>자기주도학습 습관 형성</h3><p>단순히 수업 시간에만 공부하는 것이 아니라, 스스로 학습 계획을 세우고 실천하는 습관을 길러 평생 학습자로 성장할 수 있는 기반을 마련합니다.</p></div></div></div>
+<div class="ol-final"><h2>진짜 실력으로 승부하는<br><em>지필드 영재교육</em></h2><p>단순한 합격이 아닌, 입학 후에도<br>최상위권에서 빛나는 아이의 미래를<br>함께 만들어가겠습니다.</p><a class="ol-cta-bottom" href="https://naver.me/xDCjR8k4" target="_blank">지금 상담 및 테스트 예약하기</a></div>
+</div></div>
+<script>
+(function(){const c=document.getElementById('particles');for(let i=0;i<25;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(6+Math.random()*8)+'s';p.style.animationDelay=Math.random()*10+'s';p.style.width=p.style.height=(1+Math.random()*3)+'px';c.appendChild(p)}})();
+const recordData={left:[{title:'생각하는 황소 경시합격',years:[['2021',15],['2022',14],['2023',18],['2024',29],['2025',20],['2026',12]],total:108},{title:'대치 소마 프리미어',years:[['2020',10],['2021',11],['2022',5],['2023',12],['2024',7],['2025',8],['2026',8]],total:61}],right:[{title:'대치 필즈 더 클래식 TOP CLASS',years:[['2021',8],['2023',13],['2024',17],['2025',10]],total:48},{title:'영재원 & 성대경시',years:[['교육청 영재원',89],['대학부설 영재원',78],['성대경시 대상',13]],total:180}],grand:400};
+function panel(item){const max=Math.max(...item.years.map(y=>y[1]),1);return`<div class="record"><div class="recordTitle"><span>${item.title}</span><small>RECORD</small></div>${item.years.map(y=>`<div class="year" data-count="${y[1]}" data-max="${max}"><span>${y[0]}</span><div class="bar"><span></span></div><b class="ynum">0</b></div>`).join('')}<div class="total"><b data-total="${item.total}">0</b><span>명</span></div></div>`}
+function countTo(el,target,duration){const start=performance.now();function tick(now){const p=Math.min((now-start)/duration,1);const ease=1-Math.pow(1-p,3);el.textContent=Math.round(ease*target);if(p<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)}
+const scenes=['s0','s1','s2','s3','s4','s5','s6'];let cur=0;
+function go(i){scenes.forEach(s=>document.getElementById(s).classList.remove('on'));document.getElementById(scenes[i]).classList.add('on');cur=i;if(i===2)startKakao();if(i===3)runRecords();if(i===5)startCountdown();if(i===6){const f=document.getElementById('ytPlayer');f.src=f.src.replace('autoplay=0','autoplay=1')}}
+const timing=[3200,3500,7000,7500,3500,4500,0];
+function autoPlay(){let delay=0;for(let i=0;i<scenes.length;i++){((idx,d)=>{setTimeout(()=>go(idx),d)})(i,delay);delay+=timing[i]}let s4start=3200+3500+7000+7500;setTimeout(()=>document.getElementById('s4').classList.add('burst'),s4start+2200)}
+const kakaoMsgs=[{type:'parent',name:true,text:'원장님!! E1반 합격했습니다!!'},{type:'parent',name:true,text:'88점 e1반 나왔습니다!! ㅠㅠㅠ'},{type:'me',text:'^^ 최고'},{type:'parent',name:true,text:'정말 감사합니다 원장님 ㅠㅠㅠㅠ'},{type:'parent',name:true,text:'E1됐어요 원장님~'},{type:'parent',name:true,text:'이원반 됐어요!!'},{type:'me',text:'우리 프리미어까지 꼭~~~~'},{type:'parent',name:true,text:'소마 고득점 a반 알파 필즈 e1반ㅜㅜ'},{type:'parent',name:true,text:'진심으로 감사드립니다ㅠㅠㅠㅠ'},{type:'parent',name:true,text:'너무너무감사드립니다'},{type:'parent',name:true,text:'원장님 얼른 반짜서 공지 부탁드려요!'},{type:'me',text:'당연 붙을 건데요'},{type:'parent',name:true,text:'84점으로 e1반에 합격했습니다ㅠㅠ'},{type:'parent',name:true,text:'정말 올해 목표 다 이루었어요ㅠㅠ'},{type:'parent',name:true,text:'고득점으로 합격했습니다!!'},{type:'parent',name:true,text:'E1 레벨로 배정되었습니다!'},{type:'me',text:'준비했던 친구들 모두 e1이라 정말 다행'},{type:'parent',name:true,text:'원장님 덕분입니다 정말로ㅠㅠ'},{type:'parent',name:true,text:'드디어 합격 소식 전합니다!!'},{type:'parent',name:true,text:'원장님!! 최종 합격이요!!'},{type:'parent',name:true,text:'원장님 감사드려요ㅠㅠ'},{type:'parent',name:true,text:'감동이 끊이지않습니다ㅠㅠ'},{type:'me',text:'우리 프리미어까지 꼭~~~~'},{type:'parent',name:true,text:'수업 가능 시간 배정 감사합니다!'},{type:'parent',name:true,text:'12월생을 이렇게 끌어올려주시다니ㅠㅠ'},{type:'parent',name:true,text:'원장님께 의지하며 힘든 시간 잘 견뎠습니다'},{type:'parent',name:true,text:'지필드 다닌 이유가 정말 컸어요'},{type:'me',text:'^^ 정말 고생 많으셨어요'},{type:'parent',name:true,text:'e1반 되었네요 감사합니다^^'},{type:'parent',name:true,text:'합격 소식에 온 가족이 기뻐하고 있어요!'},{type:'parent',name:true,text:'원장님 정말 최고세요ㅠㅠ'},{type:'me',text:'당연 붙을 건데요'},{type:'parent',name:true,text:'아이가 자신감을 갖게 되었어요 감사합니다'},{type:'parent',name:true,text:'주변에도 꼭 추천하겠습니다!!'}];
+const blurNames=['████ 어머님','██ 학부모님','████ 어머님','███ 아버님','████ 어머님','███ 학부모님','████ 어머님','██ 어머님'];let nameIdx=0;
+function startKakao(){const box=document.getElementById('kakaoBox');box.innerHTML='';nameIdx=0;let i=0;const iv=setInterval(()=>{if(i>=kakaoMsgs.length){clearInterval(iv);setTimeout(()=>document.getElementById('burst').classList.add('flash'),400);return}const m=kakaoMsgs[i];const row=document.createElement('div');row.className='k-row '+(m.type==='me'?'from-me':'from-parent');let html='';if(m.type==='parent'&&m.name){html+=`<div style="display:flex;flex-direction:column"><div class="k-name"><span class="blur">${blurNames[nameIdx%blurNames.length]}</span></div><div class="k-bubble">${m.text}</div></div>`;nameIdx++}else{html+=`<div class="k-bubble">${m.text}</div>`}row.innerHTML=html;const rows=box.querySelectorAll('.k-row');if(rows.length>13){rows[0].style.transition='opacity .2s';rows[0].style.opacity='0';setTimeout(()=>rows[0].remove(),200)}box.appendChild(row);requestAnimationFrame(()=>row.classList.add('visible'));i++},170)}
+let recordsStarted=false;function runRecords(){if(recordsStarted)return;recordsStarted=true;const grid=document.getElementById('recordGrid');const allCards=[...recordData.left,...recordData.right];grid.innerHTML=allCards.map(panel).join('');[...grid.querySelectorAll('.record')].forEach((card,i)=>{setTimeout(()=>{card.classList.add('on','pop');card.querySelectorAll('.year').forEach((row,j)=>{setTimeout(()=>{const c=+row.dataset.count,mx=+row.dataset.max;row.querySelector('.bar span').style.width=Math.max(18,Math.round(c/mx*100))+'%';countTo(row.querySelector('.ynum'),c,430)},j*135)});setTimeout(()=>countTo(card.querySelector('[data-total]'),+card.querySelector('[data-total]').dataset.total,720),420);setTimeout(()=>card.classList.remove('pop'),500)},i*360)});setTimeout(()=>countTo(document.getElementById('grandNum'),recordData.grand,1850),680);setTimeout(()=>document.getElementById('grandNum')?.classList.add('hit'),2600);setTimeout(()=>document.getElementById('grandNum')?.classList.remove('hit'),3200)}
+function startCountdown(){const el=document.getElementById('cdNum');let n=3;el.textContent=n;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');const iv=setInterval(()=>{n--;if(n<=0){clearInterval(iv);el.textContent='';const flash=document.createElement('div');flash.style.cssText='position:fixed;inset:0;background:var(--gold);z-index:999;opacity:0;animation:burstFlash .8s ease forwards';document.body.appendChild(flash);setTimeout(()=>{flash.remove();go(6)},800);return}el.classList.remove('pop');void el.offsetWidth;el.textContent=n;el.classList.add('pop')},1000)}
+window.addEventListener('load',()=>setTimeout(autoPlay,300));
+function showOnline(){document.getElementById('onlineLanding').classList.add('show');document.getElementById('particles').style.display='none';document.getElementById('onlineLanding').scrollTop=0}
+function hideOnline(){document.getElementById('onlineLanding').classList.remove('show');document.getElementById('particles').style.display=''}
+function goFullscreen(){const w=document.getElementById('videoWrap');if(w.requestFullscreen)w.requestFullscreen();else if(w.webkitRequestFullscreen)w.webkitRequestFullscreen()}
+</script>
+</body>
 </html>
