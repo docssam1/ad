@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>필즈 대비 사전 미니 테스트 | G-FIELD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --bg:#02050b;
+  --primary-navy:#0d1b2a;
+  --accent-gold:#d4af37;
+  --gold-light:#f8dd83;
+  --gold-glow:rgba(212,175,55,.35);
+  --text-main:#333;
+  --paper:#fafaf7;
+}
+*{box-sizing:border-box}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text-main);overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 50% 0%,rgba(212,175,55,.08),transparent 60%);pointer-events:none;z-index:0}
+.container{max-width:600px;margin:0 auto;background:var(--paper);min-height:100vh;position:relative;box-shadow:0 0 60px rgba(0,0,0,.4);overflow:hidden;z-index:1}
+.brand-bar{background:#000;padding:10px 20px;text-align:center;border-bottom:1px solid rgba(212,175,55,.2)}
+.brand-bar .brand{font-family:'DM Serif Display',serif;font-size:14px;color:var(--accent-gold);letter-spacing:3px}
+.brand-bar .brand-sub{font-size:9px;color:#888;letter-spacing:2px;margin-top:2px}
+.header{background:var(--primary-navy);color:#fff;padding:20px;text-align:center;position:relative;border-bottom:3px solid var(--accent-gold)}
+.header h1{margin:0;font-size:20px;color:var(--accent-gold);line-height:1.35;letter-spacing:-.4px;font-weight:900}
+.header p{margin:8px 0 0;font-size:13px;color:#c8d0dd}
+.progress-container{width:100%;background:rgba(255,255,255,.15);height:6px;border-radius:999px;margin-top:15px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--gold-light));width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.slide-container{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--paper)}
+.slide{position:absolute;top:0;left:100%;width:100%;height:100%;padding:30px 20px 140px;transition:left .4s cubic-bezier(.4,0,.2,1);background:var(--paper);display:flex;flex-direction:column;overflow-y:auto}
+.slide.active{left:0}
+.slide.prev{left:-100%}
+.q-badge{display:inline-block;align-self:flex-start;background:var(--primary-navy);color:var(--accent-gold);padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:12px;letter-spacing:.05em}
+.q-title{font-size:18px;font-weight:700;line-height:1.45;margin-bottom:20px;color:var(--primary-navy)}
+.problem-box{margin-bottom:18px;font-size:16px;background:#fff;padding:20px;border-radius:12px;border:1px solid #e8e2d4;line-height:1.7;color:var(--text-main);box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.math-formula{font-family:'DM Serif Display',serif;font-size:48px;font-weight:900;text-align:center;margin:32px 0 12px;color:var(--primary-navy);letter-spacing:-.5px}
+.math-guide{text-align:center;color:#666;font-size:14px;margin-bottom:20px}
+.q-image{display:block;width:100%;max-height:210px;object-fit:contain;margin:0 auto 18px;border-radius:12px;background:#fff;border:1px solid #e8e2d4}
+.keypad-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:24px}
+.key-btn{background:var(--primary-navy);color:#fff;border:none;border-radius:12px;padding:15px 0;font-size:24px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #061124;transition:all .1s;font-family:inherit}
+.key-btn:active{transform:translateY(4px);box-shadow:none;background:var(--accent-gold);color:var(--primary-navy)}
+.option-btn{display:block;width:100%;padding:15px;margin-bottom:12px;background:#fff;border:2px solid #e8e2d4;border-radius:10px;font-size:16px;text-align:left;cursor:pointer;transition:all .2s;line-height:1.45;font-family:inherit;color:var(--text-main)}
+.option-btn:active{transform:scale(.98);background:#f5efe0;border-color:var(--accent-gold)}
+.animal-buttons{display:flex;gap:10px;justify-content:space-between}
+.animal-buttons .key-btn{flex:1;font-size:18px;padding:15px 4px}
+.selected-display{text-align:center;font-size:18px;font-weight:700;color:var(--primary-navy);margin-bottom:20px;min-height:28px}
+.action-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent-gold),#c5982e);color:var(--primary-navy);border:none;border-radius:12px;font-size:18px;font-weight:800;margin-top:auto;cursor:pointer;font-family:inherit;letter-spacing:-.02em;box-shadow:0 8px 24px rgba(212,175,55,.3)}
+.action-btn:active{transform:scale(.97)}
+.ai-doc-wrapper{position:fixed;bottom:20px;right:calc(50% - 280px);z-index:100;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none}
+@media(max-width:600px){.ai-doc-wrapper{right:20px}}
+.speech-bubble{background:#fff;border:2px solid var(--accent-gold);padding:10px 15px;border-radius:15px 15px 0 15px;font-size:14px;font-weight:700;color:var(--primary-navy);margin-bottom:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);animation:float 3s ease-in-out infinite;max-width:220px;word-break:keep-all;line-height:1.45}
+.ai-character{width:100px;height:auto;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))}
+.ai-fallback{width:80px;height:80px;background:linear-gradient(135deg,var(--primary-navy),#1a2d44);border:3px solid var(--accent-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent-gold);font-family:'DM Serif Display',serif;font-size:22px;animation:float 3s ease-in-out infinite reverse;box-shadow:0 4px 16px rgba(212,175,55,.25)}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+#capture-area{display:none;padding:30px 24px;background:#fff;color:var(--text-main);text-align:center;border-radius:14px;margin:20px;border:2px solid var(--primary-navy);box-shadow:0 8px 32px rgba(0,0,0,.1)}
+#capture-area .cap-brand{font-family:'DM Serif Display',serif;color:var(--accent-gold);font-size:13px;letter-spacing:3px;margin-bottom:8px}
+#post-capture-guide{display:none;padding:24px 20px 50px;text-align:center;background:var(--paper)}
+#post-capture-guide h3{color:var(--primary-navy);margin-top:0;font-size:22px;font-weight:900}
+.guide-box{background:#fff;border:1px solid #e8e2d4;padding:18px;border-radius:12px;font-size:15px;line-height:1.7;color:#495057;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+#img-preview{margin-top:20px;border:2px dashed #d4af37;padding:10px;border-radius:8px;background:#fff}
+#img-preview img{max-width:100%;height:auto;border-radius:4px}
+.save-guide{color:#c0392b;font-weight:700;font-size:13px;margin-top:12px;line-height:1.5}
+.cta-apply{display:inline-block;background:linear-gradient(135deg,var(--accent-gold),#c5982e);color:var(--primary-navy);padding:16px 36px;border-radius:30px;text-decoration:none;font-weight:800;font-size:16px;margin-top:24px;box-shadow:0 8px 24px rgba(212,175,55,.35);letter-spacing:-.02em}
+.cta-apply:active{transform:scale(.96)}
+.back-link{display:inline-block;margin-top:18px;font-size:12px;color:#888;text-decoration:none;border-bottom:1px solid #ccc}
+</style>
+</head>
+<body>
+<div class="container" id="main-app">
+  <div class="brand-bar">
+    <div class="brand">G-FIELD</div>
+    <div class="brand-sub">GIFTED EDUCATION</div>
+  </div>
+
+  <div class="header" id="header-area">
+    <h1>필즈 대비 사전 미니 테스트</h1>
+    <p>연산 3문항 + 사고력 4문항</p>
+    <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+  </div>
+
+  <div class="ai-doc-wrapper" id="ai-wrapper">
+    <div class="speech-bubble" id="ai-speech">준비됐으면 시작해 주세요.</div>
+    <img src="ai-doc.png" alt="AI-DOC 쌤" class="ai-character" id="ai-img" onerror="this.outerHTML='<div class=&quot;ai-fallback&quot;>AI</div>'">
+  </div>
+
+  <div class="slide-container" id="quiz-container">
+    <div class="slide active" id="slide-0" style="justify-content:center;align-items:center;text-align:center">
+      <h2 style="color:var(--primary-navy);margin-bottom:15px;line-height:1.35;font-weight:900">AI-DOC과 함께하는<br>사고력 진단 챌린지</h2>
+      <p style="color:#666;margin-bottom:30px;line-height:1.6">준비가 되었다면<br>아래 시작 버튼을 눌러 주세요.</p>
+      <button class="action-btn" onclick="startTest()">시작하기</button>
+    </div>
+
+    <div class="slide" id="slide-1">
+      <div class="q-badge">연산 1/3</div>
+      <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
+      <div class="math-formula">13 − 9 = ?</div>
+      <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
+      <div class="keypad-grid" id="keypad-1"></div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <div class="q-badge">연산 2/3</div>
+      <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
+      <div class="math-formula">21 − 17 = ?</div>
+      <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
+      <div class="keypad-grid" id="keypad-2"></div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="q-badge">연산 3/3</div>
+      <div class="q-title">빈칸에 들어갈 수를 구하시오.</div>
+      <div class="math-formula">8 + ( ? ) = 13</div>
+      <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
+      <div class="keypad-grid" id="keypad-3"></div>
+    </div>
+
+    <div class="slide" id="slide-4">
+      <div class="q-badge">사고력 1/4</div>
+      <div class="problem-box">
+        다음 글을 읽고 주연이가 가진 사탕의 개수를 구하세요.<br><br>
+        <strong>· 관호</strong> : 나는 5개의 사탕을 가지고 있어.<br>
+        <strong>· 주연</strong> : 나는 관호보다 사탕 3개를 더 가지고 있어.
+      </div>
+      <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
+      <div class="keypad-grid" id="keypad-4"></div>
+    </div>
+
+    <div class="slide" id="slide-5">
+      <div class="q-badge">사고력 2/4</div>
+      <div class="problem-box">유빈이와 유준이가 사탕을 똑같이 나누어 먹으려고 합니다. 유빈이가 유준이에게 사탕을 몇 개 주어야 하는지 구하세요.</div>
+      <img src="q5_image.png" class="q-image" alt="유빈이와 유준이 사탕 문제" onerror="this.style.display='none'">
+      <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
+      <div class="keypad-grid" id="keypad-5"></div>
+    </div>
+
+    <div class="slide" id="slide-6">
+      <div class="q-badge">사고력 3/4</div>
+      <div class="problem-box" style="text-align:center">
+        다음 시소 그림을 보고, 가장 <strong>가벼운</strong> 동물부터 순서대로 버튼을 누르세요.<br>
+        <img src="seesaw_image.png" class="q-image" alt="시소 동물 비교 문제" style="max-height:150px;margin-top:15px" onerror="this.style.display='none'">
+      </div>
+      <div id="selected-animals" class="selected-display">여기에 순서가 표시돼요</div>
+      <div class="animal-buttons">
+        <button class="key-btn" onclick="selectAnimal('거북이')">거북이</button>
+        <button class="key-btn" onclick="selectAnimal('토끼')">토끼</button>
+        <button class="key-btn" onclick="selectAnimal('다람쥐')">다람쥐</button>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+      <div class="q-badge">사고력 4/4</div>
+      <div class="problem-box" style="text-align:center">
+        다음 수 패턴 규칙을 찾아 빈칸에 알맞은 수를 고르세요.<br><br>
+        <div style="font-size:20px;font-weight:700;color:var(--primary-navy);margin-bottom:15px">1, 3, 4, 1, 3, 4, 1, 3, 4, 1, 3, <span style="color:#c0392b">( ? )</span></div>
+        <div style="font-size:20px;font-weight:700;color:var(--primary-navy)">1, 3, 5, 7, 9, 11, <span style="color:#1f6feb">( ? )</span>, 15, 17</div>
+      </div>
+      <button class="option-btn" onclick="checkAnswer7(1,this)">① 4, 12</button>
+      <button class="option-btn" onclick="checkAnswer7(2,this)">② 3, 13</button>
+      <button class="option-btn" onclick="checkAnswer7(3,this)">③ 4, 13</button>
+      <button class="option-btn" onclick="checkAnswer7(4,this)">④ 1, 15</button>
+    </div>
+
+    <div class="slide" id="slide-final">
+      <div class="q-title" style="text-align:center;margin-top:40px;font-size:22px;color:var(--primary-navy)">🎉 모든 문항을 완료했어요!</div>
+      <div style="text-align:center;margin:24px 0">
+        <img src="ai-doc.png" alt="AI-DOC 쌤" style="width:120px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))" onerror="this.outerHTML='<div class=&quot;ai-fallback&quot; style=&quot;width:110px;height:110px;font-size:30px;margin:0 auto&quot;>AI</div>'">
+      </div>
+      <div style="text-align:center;font-size:17px;font-weight:700;color:var(--text-main);margin-bottom:32px;line-height:1.6">정말 잘했어요!<br>선생님은 지필드에서 기다리고 있을게요.</div>
+      <button class="action-btn" onclick="generateReportAndCapture()">진단 결과 보기 및 화면 캡처</button>
+    </div>
+  </div>
+
+  <div id="capture-area">
+    <div class="cap-brand">G · FIELD</div>
+    <h2 style="color:var(--primary-navy);margin:0 0 5px;font-weight:900;letter-spacing:-.02em">사고력 진단 결과 리포트</h2>
+    <p style="color:#666;margin:0 0 22px;font-size:13px">필즈 더 클래식 입학 대비 과정</p>
+    <div id="report-table-container"></div>
+    <p style="font-size:14px;font-weight:700;color:var(--primary-navy);margin-top:18px;line-height:1.6">학생의 끈기와 사고력이 돋보입니다.<br>자세한 로드맵은 원장님과 상담해 보세요.</p>
+    <p style="font-size:11px;color:#aaa;margin-top:14px;letter-spacing:2px">G-FIELD GIFTED EDUCATION</p>
+  </div>
+
+  <div id="post-capture-guide">
+    <h3>🎉 진단 결과가 저장되었습니다</h3>
+    <div class="guide-box">아래 <strong>[신청서 작성하기]</strong> 버튼을 눌러<br>네이버 설문을 작성하실 때,<br>방금 저장된 <strong>진단 결과 이미지</strong>를<br>마지막 문항에 첨부해 주세요.</div>
+    <div id="img-preview"></div>
+    <p class="save-guide">휴대폰에서 자동 저장이 되지 않는 경우,<br>위 결과 이미지를 길게 눌러 사진 앱에 저장해 주세요.</p>
+    <a href="https://naver.me/Ge7B7WcJ" target="_blank" class="cta-apply">신청서 작성하기</a>
+    <br><a href="../" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+</div>
+
+<script>
+const totalQuestions=7;
+let errorCounts={1:0,2:0,3:0,4:0,5:0,6:0,7:0};
+const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산 (덧셈 빈칸)",4:"사고력 (문장제 이해)",5:"사고력 (상황에 맞게 나누기)",6:"사고력 (무게 비교 추론)",7:"사고력 (수 패턴 규칙)"};
+let animalOrder=[];
+const correctAnimalOrder=['다람쥐','거북이','토끼'];
+
+function speak(text){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=.95;u.pitch=1;window.speechSynthesis.speak(u)}
+
+function startTest(){
+  const intro="안녕하세요. 저는 AI-DOC입니다. 지금부터 필즈 대비 사전 미니 테스트를 시작하겠습니다. 연산 문항과 사고력 문항을 차례대로 풀어보세요.";
+  document.getElementById('ai-speech').innerText="AI-DOC 진단을 시작합니다.";
+  speak(intro);
+  document.getElementById('slide-0').classList.remove('active');
+  document.getElementById('slide-0').classList.add('prev');
+  document.getElementById('slide-1').classList.add('active');
+  updateProgress(1);
+}
+
+function nextSlide(currentIndex,aiMessage){
+  document.getElementById('ai-speech').innerText=aiMessage;
+  speak(aiMessage);
+  const cur=document.getElementById('slide-'+currentIndex);
+  if(cur){cur.classList.remove('active');cur.classList.add('prev')}
+  const nextIdx=currentIndex+1;
+  const nextId=nextIdx<=totalQuestions?'slide-'+nextIdx:'slide-final';
+  const nextEl=document.getElementById(nextId);
+  if(nextEl)nextEl.classList.add('active');
+  updateProgress(Math.min(nextIdx,totalQuestions));
+}
+
+function updateProgress(n){document.getElementById('progress-bar').style.width=(n/totalQuestions)*100+'%'}
+
+function setupKeypad(slideIndex,correctAnswer,successMessage){
+  const c=document.getElementById('keypad-'+slideIndex);
+  if(!c)return;
+  c.innerHTML="";
+  for(let i=0;i<=9;i++){
+    const btn=document.createElement('button');
+    btn.className='key-btn';
+    btn.innerText=i;
+    btn.onclick=()=>{
+      if(i===correctAnswer){
+        if(navigator.vibrate)navigator.vibrate(30);
+        nextSlide(slideIndex,successMessage);
+      }else{
+        errorCounts[slideIndex]=(errorCounts[slideIndex]||0)+1;
+        const r="다시 한 번 천천히 생각해 보세요.";
+        document.getElementById('ai-speech').innerText=r;
+        speak(r);
+        btn.style.transform="translateX(5px)";
+        setTimeout(()=>btn.style.transform="translateX(-5px)",100);
+        setTimeout(()=>btn.style.transform="translateX(0)",200);
+        btn.style.backgroundColor="#ffebee";
+        setTimeout(()=>btn.style.backgroundColor="var(--primary-navy)",500);
+      }
+    };
+    c.appendChild(btn);
+  }
+}
+
+function setupAllKeypads(){
+  setupKeypad(1,4,'좋습니다. 다음 문항으로 넘어가겠습니다.');
+  setupKeypad(2,4,'좋습니다. 다음 문항으로 넘어가겠습니다.');
+  setupKeypad(3,5,'연산 문항을 마쳤습니다. 이제 사고력 문항으로 넘어갑니다.');
+  setupKeypad(4,8,'좋습니다. 문장 속 비교 관계를 잘 확인했습니다. 다음 문항으로 넘어가겠습니다.');
+  setupKeypad(5,3,'좋습니다. 두 사람이 같은 개수가 되도록 잘 생각했습니다. 다음 문항으로 넘어가겠습니다.');
+}
+
+function selectAnimal(animal){
+  if(animalOrder.includes(animal))return;
+  animalOrder.push(animal);
+  document.getElementById('selected-animals').innerText=animalOrder.join(' ➔ ');
+  if(animalOrder.length===3){
+    const ok=animalOrder[0]===correctAnimalOrder[0]&&animalOrder[1]===correctAnimalOrder[1]&&animalOrder[2]===correctAnimalOrder[2];
+    if(ok){
+      setTimeout(()=>nextSlide(6,'좋습니다. 시소의 기울기를 보고 무게 순서를 잘 비교했습니다. 마지막 문항으로 넘어가겠습니다.'),500);
+    }else{
+      errorCounts[6]=(errorCounts[6]||0)+1;
+      const r="앗, 순서가 조금 다른 것 같아요. 가장 가벼운 동물부터 다시 골라볼까요?";
+      document.getElementById('ai-speech').innerText=r;
+      speak(r);
+      setTimeout(()=>{animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"},1500);
+    }
+  }
+}
+
+function checkAnswer7(answerIdx,btn){
+  if(answerIdx===3){
+    nextSlide(7,'정말 잘했어요! 선생님은 지필드에서 기다리고 있을게요.');
+  }else{
+    errorCounts[7]=(errorCounts[7]||0)+1;
+    const r="숫자들의 규칙을 다시 한번 천천히 살펴볼까요? 거의 다 왔어요!";
+    document.getElementById('ai-speech').innerText=r;
+    speak(r);
+    btn.style.transform="translateX(5px)";
+    setTimeout(()=>btn.style.transform="translateX(-5px)",100);
+    setTimeout(()=>btn.style.transform="translateX(0)",200);
+    btn.style.backgroundColor="#ffebee";
+    setTimeout(()=>btn.style.backgroundColor="#fff",500);
+  }
+}
+
+function generateReportAndCapture(){
+  let html=`<table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;text-align:center">
+    <thead><tr style="background:var(--primary-navy);color:var(--accent-gold)">
+      <th style="padding:10px 5px;border:1px solid #ddd">문항</th>
+      <th style="padding:10px 5px;border:1px solid #ddd">문제 유형</th>
+      <th style="padding:10px 5px;border:1px solid #ddd">정답 기록</th>
+    </tr></thead><tbody>`;
+  for(let i=1;i<=7;i++){
+    const a=(errorCounts[i]||0)+1;
+    const t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`;
+    html+=`<tr><td style="padding:8px 5px;border:1px solid #ddd;font-weight:700">${i}번</td><td style="padding:8px 5px;border:1px solid #ddd;text-align:left">${problemTypes[i]}</td><td style="padding:8px 5px;border:1px solid #ddd">${t}</td></tr>`;
+  }
+  html+=`</tbody></table>`;
+  document.getElementById('report-table-container').innerHTML=html;
+  submitAndCapture();
+}
+
+function submitAndCapture(){
+  document.getElementById('ai-wrapper').style.display='none';
+  document.getElementById('quiz-container').style.display='none';
+  document.getElementById('header-area').style.display='none';
+  const cap=document.getElementById('capture-area');
+  cap.style.display='block';
+  setTimeout(()=>{
+    html2canvas(cap,{scale:2,backgroundColor:'#ffffff'}).then(canvas=>{
+      cap.style.display='none';
+      const data=canvas.toDataURL('image/png');
+      const p=document.getElementById('img-preview');
+      p.innerHTML="";
+      const img=document.createElement('img');
+      img.src=data;
+      p.appendChild(img);
+      const link=document.createElement('a');
+      link.download='지필드_사고력진단_결과.png';
+      link.href=data;
+      link.click();
+      document.getElementById('post-capture-guide').style.display='block';
+      speak("진단 결과가 저장되었습니다. 네이버 설문 마지막 문항에 결과 이미지를 첨부해 주세요.");
+    });
+  },500);
+}
+
+window.onload=function(){
+  document.getElementById('progress-bar').style.width='0%';
+  setupAllKeypads();
+};
+</script>
+</body>
+</html>
