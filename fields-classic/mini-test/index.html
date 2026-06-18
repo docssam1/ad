@@ -21,7 +21,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .header p{margin:8px 0 0;font-size:13px;color:#c8d0dd}
 .progress-container{width:100%;background:rgba(255,255,255,.15);height:6px;border-radius:999px;margin-top:15px;overflow:hidden}
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--gold-light));width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
-/* 음성 설정 바 */
 .voice-bar{background:rgba(13,27,42,.95);border-bottom:1px solid rgba(212,175,55,.15);padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .voice-bar label{font-size:11px;color:#c8d0dd;white-space:nowrap}
 .voice-bar select{flex:1;min-width:120px;background:#1a2d44;color:#f0ece2;border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:5px 8px;font-size:11px;font-family:inherit;cursor:pointer}
@@ -77,8 +76,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <p>연산 3문항 + 사고력 4문항</p>
     <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
   </div>
-
-  <!-- 음성 설정 바 -->
   <div class="voice-bar" id="voice-bar">
     <label>🔊 목소리</label>
     <select id="voice-select"><option value="">로딩 중...</option></select>
@@ -87,12 +84,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
            oninput="document.getElementById('rate-val').innerText=this.value;currentRate=+this.value">
     <span class="rate-val" id="rate-val">0.75</span>
   </div>
-
   <div class="ai-doc-wrapper" id="ai-wrapper">
     <div class="speech-bubble" id="ai-speech">준비됐으면 시작해 주세요.</div>
     <img src="../ai-doc.png" alt="AI-DOC" class="ai-character">
   </div>
-
   <div class="slide-container" id="quiz-container">
     <div class="slide active" id="slide-0" style="justify-content:center;align-items:center;text-align:center">
       <h2 style="color:var(--primary-navy);margin-bottom:15px;line-height:1.35;font-weight:900">AI-DOC과 함께하는<br>사고력 진단 챌린지</h2>
@@ -205,7 +200,6 @@ const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산
 let animalOrder=[];
 const correctAnimalOrder=['다람쥐','거북이','토끼'];
 
-/* ── 음성 설정 ── */
 let voicesReady=false;
 let currentRate=0.75;
 let selectedVoice=null;
@@ -221,12 +215,8 @@ function getVoices(){
 
 function populateVoiceSelect(voices){
   const sel=document.getElementById('voice-select');
-  /* 한국어 목소리 필터 */
   allKoVoices=voices.filter(v=>v.lang.startsWith('ko')||v.lang.includes('KR'));
-  if(allKoVoices.length===0){
-    /* 한국어 없으면 전체 목록 */
-    allKoVoices=voices;
-  }
+  if(allKoVoices.length===0)allKoVoices=voices;
   sel.innerHTML='';
   allKoVoices.forEach((v,i)=>{
     const opt=document.createElement('option');
@@ -241,9 +231,7 @@ function populateVoiceSelect(voices){
 window.addEventListener('load',()=>{
   document.getElementById('progress-bar').style.width='0%';
   setupAllKeypads();
-  getVoices().then(voices=>{
-    populateVoiceSelect(voices);
-  });
+  getVoices().then(voices=>populateVoiceSelect(voices));
 });
 
 function speak(text){
@@ -251,9 +239,7 @@ function speak(text){
   window.speechSynthesis.cancel();
   const say=()=>{
     const u=new SpeechSynthesisUtterance(text);
-    u.lang='ko-KR';
-    u.rate=currentRate;
-    u.pitch=1;
+    u.lang='ko-KR';u.rate=currentRate;u.pitch=1;
     if(selectedVoice)u.voice=selectedVoice;
     window.speechSynthesis.speak(u);
   };
@@ -284,8 +270,7 @@ function nextSlide(currentIndex,aiMessage){
 function skipQuestion(slideIndex){
   skipped[slideIndex]=true;
   const msg="괜찮아요! 다음 문제로 넘어갈게요.";
-  document.getElementById('ai-speech').innerText=msg;
-  speak(msg);
+  document.getElementById('ai-speech').innerText=msg;speak(msg);
   const cur=document.getElementById('slide-'+slideIndex);
   if(cur){cur.classList.remove('active');cur.classList.add('prev')}
   const nextIdx=slideIndex+1;
@@ -328,7 +313,7 @@ function setupAllKeypads(){
   setupKeypad(2,4,'좋습니다. 다음 문항으로 넘어가겠습니다.');
   setupKeypad(3,5,'연산 문항을 마쳤습니다. 이제 사고력 문항으로 넘어갑니다.');
   setupKeypad(4,8,'좋습니다. 문장 속 비교 관계를 잘 확인했습니다. 다음 문항으로 넘어가겠습니다.');
-  setupKeypad(5,3,'좋습니다. 두 사람이 같은 개수가 되도록 잘 생각했습니다. 다음 문항으로 넘어가겠습니다.');
+  setupKeypad(5,2,'좋습니다. 두 사람이 같은 개수가 되도록 잘 생각했습니다. 다음 문항으로 넘어가겠습니다.');
 }
 
 function selectAnimal(animal){
