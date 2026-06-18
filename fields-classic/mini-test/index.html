@@ -22,7 +22,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .progress-container{width:100%;background:rgba(255,255,255,.15);height:6px;border-radius:999px;margin-top:15px;overflow:hidden}
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--gold-light));width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
 .slide-container{position:relative;height:calc(100vh - 170px);overflow:hidden;background:var(--paper)}
-.slide{position:absolute;top:0;left:100%;width:100%;height:100%;padding:30px 20px 140px;transition:left .4s cubic-bezier(.4,0,.2,1);background:var(--paper);display:flex;flex-direction:column;overflow-y:auto}
+.slide{position:absolute;top:0;left:100%;width:100%;height:100%;padding:30px 20px 160px;transition:left .4s cubic-bezier(.4,0,.2,1);background:var(--paper);display:flex;flex-direction:column;overflow-y:auto}
 .slide.active{left:0}.slide.prev{left:-100%}
 .q-badge{display:inline-block;align-self:flex-start;background:var(--primary-navy);color:var(--accent-gold);padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:12px;letter-spacing:.05em}
 .q-title{font-size:18px;font-weight:700;line-height:1.45;margin-bottom:20px;color:var(--primary-navy)}
@@ -40,6 +40,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .selected-display{text-align:center;font-size:18px;font-weight:700;color:var(--primary-navy);margin-bottom:20px;min-height:28px}
 .action-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent-gold),#c5982e);color:var(--primary-navy);border:none;border-radius:12px;font-size:18px;font-weight:800;margin-top:auto;cursor:pointer;font-family:inherit;letter-spacing:-.02em;box-shadow:0 8px 24px rgba(212,175,55,.3)}
 .action-btn:active{transform:scale(.97)}
+/* 다음으로 넘어가기 버튼 */
+.skip-q-btn{display:block;width:100%;padding:12px;margin-top:12px;background:transparent;border:1px solid #ccc;border-radius:10px;font-size:14px;font-weight:600;color:#888;cursor:pointer;font-family:inherit;text-align:center;letter-spacing:-.01em;transition:all .2s}
+.skip-q-btn:active{background:#f0f0f0;color:#555;border-color:#aaa}
 .ai-doc-wrapper{position:fixed;bottom:20px;right:calc(50% - 280px);z-index:100;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none}
 @media(max-width:600px){.ai-doc-wrapper{right:20px}}
 .speech-bubble{background:#fff;border:2px solid var(--accent-gold);padding:10px 15px;border-radius:15px 15px 0 15px;font-size:14px;font-weight:700;color:var(--primary-navy);margin-bottom:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);animation:float 3s ease-in-out infinite;max-width:220px;word-break:keep-all;line-height:1.45}
@@ -74,32 +77,40 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <img src="../ai-doc.png" alt="AI-DOC" class="ai-character">
   </div>
   <div class="slide-container" id="quiz-container">
+
     <div class="slide active" id="slide-0" style="justify-content:center;align-items:center;text-align:center">
       <h2 style="color:var(--primary-navy);margin-bottom:15px;line-height:1.35;font-weight:900">AI-DOC과 함께하는<br>사고력 진단 챌린지</h2>
       <p style="color:#666;margin-bottom:30px;line-height:1.6">준비가 되었다면<br>아래 시작 버튼을 눌러 주세요.</p>
       <button class="action-btn" onclick="startTest()">시작하기</button>
     </div>
+
     <div class="slide" id="slide-1">
       <div class="q-badge">연산 1/3</div>
       <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
       <div class="math-formula">13 − 9 = ?</div>
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-1"></div>
+      <button class="skip-q-btn" onclick="skipQuestion(1)">잘 모르겠어요 → 다음 문제로</button>
     </div>
+
     <div class="slide" id="slide-2">
       <div class="q-badge">연산 2/3</div>
       <div class="q-title">다음 수식의 정확한 값을 구하시오.</div>
       <div class="math-formula">21 − 17 = ?</div>
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-2"></div>
+      <button class="skip-q-btn" onclick="skipQuestion(2)">잘 모르겠어요 → 다음 문제로</button>
     </div>
+
     <div class="slide" id="slide-3">
       <div class="q-badge">연산 3/3</div>
       <div class="q-title">빈칸에 들어갈 수를 구하시오.</div>
       <div class="math-formula">8 + ( ? ) = 13</div>
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-3"></div>
+      <button class="skip-q-btn" onclick="skipQuestion(3)">잘 모르겠어요 → 다음 문제로</button>
     </div>
+
     <div class="slide" id="slide-4">
       <div class="q-badge">사고력 1/4</div>
       <div class="problem-box">
@@ -109,14 +120,18 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       </div>
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-4"></div>
+      <button class="skip-q-btn" onclick="skipQuestion(4)">잘 모르겠어요 → 다음 문제로</button>
     </div>
+
     <div class="slide" id="slide-5">
       <div class="q-badge">사고력 2/4</div>
       <div class="problem-box">유빈이와 유준이가 사탕을 똑같이 나누어 먹으려고 합니다. 유빈이가 유준이에게 사탕을 몇 개 주어야 하는지 구하세요.</div>
       <img src="../q5_image.png" class="q-image" alt="유빈이와 유준이 사탕 문제">
       <p class="math-guide">알맞은 답을 아래 숫자판에서 선택해 주세요.</p>
       <div class="keypad-grid" id="keypad-5"></div>
+      <button class="skip-q-btn" onclick="skipQuestion(5)">잘 모르겠어요 → 다음 문제로</button>
     </div>
+
     <div class="slide" id="slide-6">
       <div class="q-badge">사고력 3/4</div>
       <div class="problem-box" style="text-align:center">
@@ -129,7 +144,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
         <button class="key-btn" onclick="selectAnimal('토끼')">토끼</button>
         <button class="key-btn" onclick="selectAnimal('다람쥐')">다람쥐</button>
       </div>
+      <button class="skip-q-btn" onclick="skipQuestion(6)" style="margin-top:16px">잘 모르겠어요 → 다음 문제로</button>
     </div>
+
     <div class="slide" id="slide-7">
       <div class="q-badge">사고력 4/4</div>
       <div class="problem-box" style="text-align:center">
@@ -141,7 +158,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <button class="option-btn" onclick="checkAnswer7(2,this)">② 3, 13</button>
       <button class="option-btn" onclick="checkAnswer7(3,this)">③ 4, 13</button>
       <button class="option-btn" onclick="checkAnswer7(4,this)">④ 1, 15</button>
+      <button class="skip-q-btn" onclick="skipQuestion(7)">잘 모르겠어요 → 다음 문제로</button>
     </div>
+
     <div class="slide" id="slide-final">
       <div class="q-title" style="text-align:center;margin-top:40px;font-size:22px;color:var(--primary-navy)">🎉 모든 문항을 완료했어요!</div>
       <div style="text-align:center;margin:24px 0">
@@ -151,14 +170,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <button class="action-btn" onclick="generateReportAndCapture()">진단 결과 보기 및 화면 캡처</button>
     </div>
   </div>
+
   <div id="capture-area">
     <div class="cap-brand">G · FIELD</div>
     <h2 style="color:var(--primary-navy);margin:0 0 5px;font-weight:900;letter-spacing:-.02em">사고력 진단 결과 리포트</h2>
     <p style="color:#666;margin:0 0 22px;font-size:13px">필즈 더 클래식 입학 대비 과정</p>
     <div id="report-table-container"></div>
-    <p style="font-size:14px;font-weight:700;color:var(--primary-navy);margin-top:18px;line-height:1.6">학생의 끈기와 사고력이 돋보입니다.<br>자세한 로드맵은 원장님과 상담해 보세요.</p>
+    <p style="font-size:14px;font-weight:700;color:var(--primary-navy);margin-top:18px;line-height:1.6">학생의 끈기와 사고력이 돋보입니다.<br>자세한 로드맵은 원장님과 상담해 주세요.</p>
     <p style="font-size:11px;color:#aaa;margin-top:14px;letter-spacing:2px">G-FIELD GIFTED EDUCATION</p>
   </div>
+
   <div id="post-capture-guide">
     <h3>🎉 진단 결과가 저장되었습니다</h3>
     <div class="guide-box">아래 <strong>[신청서 작성하기]</strong> 버튼을 눌러<br>네이버 설문을 작성하실 때,<br>방금 저장된 <strong>진단 결과 이미지</strong>를<br>마지막 문항에 첨부해 주세요.</div>
@@ -168,18 +189,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <br><a href="../" class="back-link">← 메인으로 돌아가기</a>
   </div>
 </div>
+
 <script>
 const totalQuestions=7;
 let errorCounts={1:0,2:0,3:0,4:0,5:0,6:0,7:0};
+let skipped={1:false,2:false,3:false,4:false,5:false,6:false,7:false};
 const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산 (덧셈 빈칸)",4:"사고력 (문장제 이해)",5:"사고력 (상황에 맞게 나누기)",6:"사고력 (무게 비교 추론)",7:"사고력 (수 패턴 규칙)"};
 let animalOrder=[];
 const correctAnimalOrder=['다람쥐','거북이','토끼'];
 
-/* ── 음성: voices 비동기 로드 대기 ── */
+/* ── 음성 ── */
 let voicesReady=false;
 function getVoices(){return new Promise(resolve=>{const v=speechSynthesis.getVoices();if(v.length){voicesReady=true;resolve(v);return}speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}})}
 window.addEventListener('load',()=>getVoices());
-
 function speak(text){
   if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
@@ -187,8 +209,8 @@ function speak(text){
     const u=new SpeechSynthesisUtterance(text);
     u.lang='ko-KR';u.rate=.95;u.pitch=1;
     const voices=speechSynthesis.getVoices();
-    const koVoice=voices.find(v=>v.lang.startsWith('ko'))||voices.find(v=>v.lang.includes('KR'))||null;
-    if(koVoice)u.voice=koVoice;
+    const ko=voices.find(v=>v.lang.startsWith('ko'))||voices.find(v=>v.lang.includes('KR'))||null;
+    if(ko)u.voice=ko;
     window.speechSynthesis.speak(u);
   };
   if(voicesReady){say()}else{getVoices().then(say)}
@@ -213,6 +235,22 @@ function nextSlide(currentIndex,aiMessage){
   const nextEl=document.getElementById(nextId);
   if(nextEl)nextEl.classList.add('active');
   updateProgress(Math.min(nextIdx,totalQuestions));
+}
+
+function skipQuestion(slideIndex){
+  skipped[slideIndex]=true;
+  const msg="괜찮아요! 다음 문제로 넘어갈게요.";
+  document.getElementById('ai-speech').innerText=msg;
+  speak(msg);
+  const cur=document.getElementById('slide-'+slideIndex);
+  if(cur){cur.classList.remove('active');cur.classList.add('prev')}
+  const nextIdx=slideIndex+1;
+  const nextId=nextIdx<=totalQuestions?'slide-'+nextIdx:'slide-final';
+  const nextEl=document.getElementById(nextId);
+  if(nextEl)nextEl.classList.add('active');
+  updateProgress(Math.min(nextIdx,totalQuestions));
+  /* 동물 선택 초기화 (6번 스킵 시) */
+  if(slideIndex===6){animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"}
 }
 
 function updateProgress(n){document.getElementById('progress-bar').style.width=(n/totalQuestions)*100+'%'}
@@ -285,8 +323,13 @@ function checkAnswer7(answerIdx,btn){
 function generateReportAndCapture(){
   let html=`<table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;text-align:center"><thead><tr style="background:var(--primary-navy);color:var(--accent-gold)"><th style="padding:10px 5px;border:1px solid #ddd">문항</th><th style="padding:10px 5px;border:1px solid #ddd">문제 유형</th><th style="padding:10px 5px;border:1px solid #ddd">정답 기록</th></tr></thead><tbody>`;
   for(let i=1;i<=7;i++){
-    const a=(errorCounts[i]||0)+1;
-    const t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`;
+    let t;
+    if(skipped[i]){
+      t=`<span style="color:#aaa;font-weight:700">미응답 (건너뜀)</span>`;
+    }else{
+      const a=(errorCounts[i]||0)+1;
+      t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`;
+    }
     html+=`<tr><td style="padding:8px 5px;border:1px solid #ddd;font-weight:700">${i}번</td><td style="padding:8px 5px;border:1px solid #ddd;text-align:left">${problemTypes[i]}</td><td style="padding:8px 5px;border:1px solid #ddd">${t}</td></tr>`;
   }
   html+=`</tbody></table>`;
