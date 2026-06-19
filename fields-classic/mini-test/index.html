@@ -47,12 +47,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .action-btn:active{transform:scale(.97)}
 .skip-q-btn{display:block;width:100%;padding:12px;margin-top:12px;background:transparent;border:1px solid #ccc;border-radius:10px;font-size:14px;font-weight:600;color:#888;cursor:pointer;font-family:inherit;text-align:center;letter-spacing:-.01em;transition:all .2s}
 .skip-q-btn:active{background:#f0f0f0;color:#555;border-color:#aaa}
-.ai-doc-wrapper{position:fixed;bottom:20px;right:calc(50% - 280px);z-index:100;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none}
-@media(max-width:600px){.ai-doc-wrapper{right:20px}}
-/* 말풍선: 배경 없이 텍스트만 */
-.speech-bubble{background:transparent;border:none;padding:4px 8px;font-size:13px;font-weight:900;color:#fff;margin-bottom:6px;box-shadow:none;animation:float 3s ease-in-out infinite;max-width:200px;word-break:keep-all;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,.8),0 0 10px rgba(0,0,0,.6)}
-.ai-character{width:80px;height:auto;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))}
+
+/* AI-DOC: 드래그 가능 */
+.ai-doc-wrapper{position:fixed;z-index:100;display:flex;flex-direction:column;align-items:flex-end;pointer-events:auto;cursor:grab;touch-action:none;user-select:none}
+.ai-doc-wrapper.dragging{cursor:grabbing;animation:none}
+.ai-doc-wrapper.dragging .speech-bubble,
+.ai-doc-wrapper.dragging .ai-character{animation:none}
+.speech-bubble{background:transparent;border:none;padding:4px 8px;font-size:13px;font-weight:900;color:#fff;margin-bottom:6px;box-shadow:none;animation:float 3s ease-in-out infinite;max-width:200px;word-break:keep-all;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,.8),0 0 10px rgba(0,0,0,.6);pointer-events:none}
+.ai-character{width:80px;height:auto;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3));pointer-events:none}
 @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+
 #capture-area{display:none;padding:30px 24px;background:#fff;color:var(--text-main);text-align:center;border-radius:14px;margin:20px;border:2px solid var(--primary-navy);box-shadow:0 8px 32px rgba(0,0,0,.1)}
 #capture-area .cap-brand{font-family:'DM Serif Display',serif;color:var(--accent-gold);font-size:13px;letter-spacing:3px;margin-bottom:8px}
 #post-capture-guide{display:none;padding:24px 20px 50px;text-align:center;background:var(--paper)}
@@ -198,10 +202,40 @@ let skipped={1:false,2:false,3:false,4:false,5:false,6:false,7:false};
 const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산 (덧셈 빈칸)",4:"사고력 (문장제 이해)",5:"사고력 (상황에 맞게 나누기)",6:"사고력 (무게 비교 추론)",7:"사고력 (수 패턴 규칙)"};
 let animalOrder=[];
 const correctAnimalOrder=['다람쥐','거북이','토끼'];
-let voicesReady=false;
-let currentRate=0.75;
-let selectedVoice=null;
-let allKoVoices=[];
+let voicesReady=false,currentRate=0.75,selectedVoice=null,allKoVoices=[];
+
+/* ── AI-DOC 드래그 ── */
+(function(){
+  const el=document.getElementById('ai-wrapper');
+  let dragging=false,startX=0,startY=0,posX=0,posY=0;
+
+  function initPos(){
+    const saved=localStorage.getItem('aidoc_pos');
+    if(saved){const p=JSON.parse(saved);posX=p.x;posY=p.y}
+    else{posX=window.innerWidth-110;posY=window.innerHeight-140}
+    applyPos();
+  }
+  function applyPos(){
+    const w=el.offsetWidth||100,h=el.offsetHeight||130;
+    posX=Math.max(0,Math.min(posX,window.innerWidth-w));
+    posY=Math.max(0,Math.min(posY,window.innerHeight-h));
+    el.style.left=posX+'px';el.style.top=posY+'px';
+    el.style.right='auto';el.style.bottom='auto';
+  }
+  function onStart(cx,cy){dragging=true;startX=cx-posX;startY=cy-posY;el.classList.add('dragging')}
+  function onMove(cx,cy){if(!dragging)return;posX=cx-startX;posY=cy-startY;applyPos()}
+  function onEnd(){if(!dragging)return;dragging=false;el.classList.remove('dragging');localStorage.setItem('aidoc_pos',JSON.stringify({x:posX,y:posY}))}
+
+  el.addEventListener('touchstart',e=>{const t=e.touches[0];onStart(t.clientX,t.clientY)},{passive:true});
+  el.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];onMove(t.clientX,t.clientY)},{passive:false});
+  el.addEventListener('touchend',onEnd);
+  el.addEventListener('mousedown',e=>{onStart(e.clientX,e.clientY)});
+  document.addEventListener('mousemove',e=>{if(dragging)onMove(e.clientX,e.clientY)});
+  document.addEventListener('mouseup',onEnd);
+  window.addEventListener('resize',()=>{applyPos()});
+  window.addEventListener('load',initPos);
+})();
+
 function getVoices(){return new Promise(resolve=>{const v=speechSynthesis.getVoices();if(v.length){voicesReady=true;resolve(v);return}speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}})}
 function populateVoiceSelect(voices){const sel=document.getElementById('voice-select');allKoVoices=voices.filter(v=>v.lang.startsWith('ko')||v.lang.includes('KR'));if(allKoVoices.length===0)allKoVoices=voices;sel.innerHTML='';allKoVoices.forEach((v,i)=>{const opt=document.createElement('option');opt.value=i;opt.textContent=v.name.replace('Microsoft ','').replace(' Online (Natural)','').replace('(ko-KR)','').trim();sel.appendChild(opt)});selectedVoice=allKoVoices[0]||null;sel.onchange=()=>{selectedVoice=allKoVoices[+sel.value]||null}}
 window.addEventListener('load',()=>{document.getElementById('progress-bar').style.width='0%';setupAllKeypads();getVoices().then(voices=>populateVoiceSelect(voices))});
