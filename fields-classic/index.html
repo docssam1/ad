@@ -77,8 +77,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 #offlineIntro{position:absolute;inset:0;z-index:10;background:#000}
 #offlineIntro video{width:100%;height:100%;object-fit:cover;display:block}
 #offlineIntro .skip-btn{position:absolute;bottom:32px;right:20px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:600;padding:8px 18px;border-radius:20px;cursor:pointer;z-index:20}
-#unmuteBtn{position:absolute;top:16px;left:20px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:13px;font-weight:700;padding:8px 16px;border-radius:20px;cursor:pointer;z-index:20;display:none;align-items:center;gap:6px}
-#unmuteBtn.show{display:flex}
 #offlineIntro .fade-out{animation:fadeBlack .8s ease forwards}
 @keyframes fadeBlack{from{opacity:1}to{opacity:0;pointer-events:none}}
 #offlineBody{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;pointer-events:none;transition:opacity .8s ease}
@@ -179,10 +177,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 <div id="offlineLanding">
   <button class="of-back" onclick="hideOffline()">← 돌아가기</button>
   <div id="offlineIntro">
-    <video id="introVideo" autoplay playsinline webkit-playsinline x5-playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:block">
+    <!-- muted 제거 — 버튼 클릭(유저 제스처)으로 소리 재생 허용 -->
+    <video id="introVideo" playsinline webkit-playsinline x5-playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:block">
       <source src="KakaoTalk_20260619_023621724.mp4" type="video/mp4">
     </video>
-    <button id="unmuteBtn" onclick="unmuteVideo()">🔇 소리 켜기</button>
     <button class="skip-btn" onclick="skipOfflineIntro()">건너뛰기 →</button>
   </div>
   <div id="offlineBody">
@@ -274,7 +272,6 @@ function go(i){
   }
 }
 
-/* 타이밍 — 총 ~14초: s0(1.8) s1(1.8) s2(3.5) s3(3.0) s4(1.5) s5(2.5) */
 const timing=[1800,1800,3500,3000,1500,2500,0];
 function autoPlay(){let delay=0;for(let i=0;i<scenes.length;i++){((idx,d)=>{autoplayTimers.push(setTimeout(()=>go(idx),d))})(i,delay);delay+=timing[i]}const s4start=1800+1800+3500+3000;autoplayTimers.push(setTimeout(()=>document.getElementById('s4').classList.add('burst'),s4start+1200))}
 function skipIntro(){if(skipped)return;skipped=true;autoplayTimers.forEach(t=>clearTimeout(t));autoplayTimers=[];document.getElementById('introSkip').classList.add('hidden');document.getElementById('s4').classList.remove('burst');go(6)}
@@ -285,24 +282,43 @@ let recordsStarted=false;function runRecords(){if(recordsStarted)return;recordsS
 function startCountdown(){const el=document.getElementById('cdNum');let n=3;el.textContent=n;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');const iv=setInterval(()=>{if(skipped){clearInterval(iv);return}n--;if(n<=0){clearInterval(iv);el.textContent='';const flash=document.createElement('div');flash.style.cssText='position:fixed;inset:0;background:var(--gold);z-index:999;opacity:0;animation:burstFlash .8s ease forwards';document.body.appendChild(flash);setTimeout(()=>{flash.remove();go(6)},800);return}el.classList.remove('pop');void el.offsetWidth;el.textContent=n;el.classList.add('pop')},800)}
 window.addEventListener('load',()=>setTimeout(autoPlay,300));
 
+/* ✅ showOffline: muted 속성 없는 비디오를 유저 제스처로 직접 play() → 소리 허용 */
 function showOffline(){
-  stopYoutube();
   const landing=document.getElementById('offlineLanding');
   landing.classList.add('show');
   document.getElementById('particles').style.display='none';
   landing.scrollTop=0;
   const v=document.getElementById('introVideo');
-  const btn=document.getElementById('unmuteBtn');
-  v.currentTime=0;v.muted=false;v.volume=1;
-  const p=v.play();
-  if(p){p.then(()=>{btn.classList.remove('show')}).catch(()=>{v.muted=true;v.play().catch(()=>{});btn.classList.add('show')})}
+  v.currentTime=0;
+  v.play().catch(()=>{
+    /* 소리 재생 차단 시 음소거로 폴백 */
+    v.muted=true;
+    v.play().catch(()=>{});
+  });
   v.onended=()=>revealBody();
 }
-function unmuteVideo(){const v=document.getElementById('introVideo');v.muted=false;v.volume=1;document.getElementById('unmuteBtn').classList.remove('show')}
+
 function skipOfflineIntro(){revealBody()}
-function revealBody(){document.getElementById('introVideo').pause();document.getElementById('offlineIntro').classList.add('fade-out');setTimeout(()=>{document.getElementById('offlineIntro').style.display='none';document.getElementById('offlineBody').classList.add('show')},800)}
-function hideOffline(){document.getElementById('offlineLanding').classList.remove('show');document.getElementById('particles').style.display='';const v=document.getElementById('introVideo');v.pause();v.currentTime=0;document.getElementById('offlineIntro').style.display='';document.getElementById('offlineIntro').classList.remove('fade-out');document.getElementById('offlineBody').classList.remove('show');document.getElementById('unmuteBtn').classList.remove('show')}
-function showOnline(){stopYoutube();document.getElementById('onlineLanding').classList.add('show');document.getElementById('particles').style.display='none';document.getElementById('onlineLanding').scrollTop=0}
+function revealBody(){
+  document.getElementById('introVideo').pause();
+  document.getElementById('offlineIntro').classList.add('fade-out');
+  setTimeout(()=>{document.getElementById('offlineIntro').style.display='none';document.getElementById('offlineBody').classList.add('show')},800);
+}
+function hideOffline(){
+  document.getElementById('offlineLanding').classList.remove('show');
+  document.getElementById('particles').style.display='';
+  const v=document.getElementById('introVideo');
+  v.pause();v.currentTime=0;v.muted=false;
+  document.getElementById('offlineIntro').style.display='';
+  document.getElementById('offlineIntro').classList.remove('fade-out');
+  document.getElementById('offlineBody').classList.remove('show');
+}
+function showOnline(){
+  stopYoutube();
+  document.getElementById('onlineLanding').classList.add('show');
+  document.getElementById('particles').style.display='none';
+  document.getElementById('onlineLanding').scrollTop=0;
+}
 function hideOnline(){document.getElementById('onlineLanding').classList.remove('show');document.getElementById('particles').style.display=''}
 function goFullscreen(){const w=document.getElementById('videoWrap');if(w.requestFullscreen)w.requestFullscreen();else if(w.webkitRequestFullscreen)w.webkitRequestFullscreen()}
 function openLB(src){document.getElementById("lbImg").src=src;document.getElementById("lightbox").classList.add("open")}function closeLB(){document.getElementById("lightbox").classList.remove("open")}document.querySelectorAll(".ol-img").forEach(img=>{img.style.cursor="pointer";img.addEventListener("click",()=>openLB(img.src))})
