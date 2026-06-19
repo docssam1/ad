@@ -1,0 +1,3 @@
+    <video id="introVideo" autoplay playsinline webkit-playsinline x5-playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:block">
+      <source src="KakaoTalk_20260619_023621724.mp4" type="video/mp4">
+    </video>
