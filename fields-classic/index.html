@@ -177,8 +177,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 <div id="offlineLanding">
   <button class="of-back" onclick="hideOffline()">← 돌아가기</button>
   <div id="offlineIntro">
-    <!-- muted 제거 — 버튼 클릭(유저 제스처)으로 소리 재생 허용 -->
-    <video id="introVideo" playsinline webkit-playsinline x5-playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:block">
+    <!-- autoplay 추가 — 페이지 로드 시 백그라운드 재생 시도 (원래 버그 복원) -->
+    <video id="introVideo" autoplay playsinline webkit-playsinline x5-playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:block">
       <source src="KakaoTalk_20260619_023621724.mp4" type="video/mp4">
     </video>
     <button class="skip-btn" onclick="skipOfflineIntro()">건너뛰기 →</button>
@@ -280,9 +280,14 @@ const blurNames=['████ 어머님','██ 학부모님','████ �
 function startKakao(){const box=document.getElementById('kakaoBox');box.innerHTML='';nameIdx=0;let i=0;const iv=setInterval(()=>{if(skipped){clearInterval(iv);return}if(i>=kakaoMsgs.length){clearInterval(iv);setTimeout(()=>document.getElementById('burst').classList.add('flash'),400);return}const m=kakaoMsgs[i];const row=document.createElement('div');row.className='k-row '+(m.type==='me'?'from-me':'from-parent');let html='';if(m.type==='parent'&&m.name){html+=`<div style="display:flex;flex-direction:column"><div class="k-name"><span class="blur">${blurNames[nameIdx%blurNames.length]}</span></div><div class="k-bubble">${m.text}</div></div>`;nameIdx++}else{html+=`<div class="k-bubble">${m.text}</div>`}row.innerHTML=html;const rows=box.querySelectorAll('.k-row');if(rows.length>13){rows[0].style.transition='opacity .2s';rows[0].style.opacity='0';setTimeout(()=>rows[0].remove(),200)}box.appendChild(row);requestAnimationFrame(()=>row.classList.add('visible'));i++},170)}
 let recordsStarted=false;function runRecords(){if(recordsStarted)return;recordsStarted=true;const grid=document.getElementById('recordGrid');const allCards=[...recordData.left,...recordData.right];grid.innerHTML=allCards.map(panel).join('');[...grid.querySelectorAll('.record')].forEach((card,i)=>{setTimeout(()=>{card.classList.add('on','pop');card.querySelectorAll('.year').forEach((row,j)=>{setTimeout(()=>{const c=+row.dataset.count,mx=+row.dataset.max;row.querySelector('.bar span').style.width=Math.max(18,Math.round(c/mx*100))+'%';countTo(row.querySelector('.ynum'),c,300)},j*100)});setTimeout(()=>countTo(card.querySelector('[data-total]'),+card.querySelector('[data-total]').dataset.total,500),280);setTimeout(()=>card.classList.remove('pop'),400)},i*260)});setTimeout(()=>countTo(document.getElementById('grandNum'),recordData.grand,1200),500);setTimeout(()=>document.getElementById('grandNum')?.classList.add('hit'),1800);setTimeout(()=>document.getElementById('grandNum')?.classList.remove('hit'),2400)}
 function startCountdown(){const el=document.getElementById('cdNum');let n=3;el.textContent=n;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');const iv=setInterval(()=>{if(skipped){clearInterval(iv);return}n--;if(n<=0){clearInterval(iv);el.textContent='';const flash=document.createElement('div');flash.style.cssText='position:fixed;inset:0;background:var(--gold);z-index:999;opacity:0;animation:burstFlash .8s ease forwards';document.body.appendChild(flash);setTimeout(()=>{flash.remove();go(6)},800);return}el.classList.remove('pop');void el.offsetWidth;el.textContent=n;el.classList.add('pop')},800)}
-window.addEventListener('load',()=>setTimeout(autoPlay,300));
 
-/* ✅ showOffline: muted 속성 없는 비디오를 유저 제스처로 직접 play() → 소리 허용 */
+window.addEventListener('load',()=>{
+  setTimeout(autoPlay,300);
+  /* 페이지 로드 시 MP4 백그라운드 재생 시도 (원래 버그 복원) */
+  const v=document.getElementById('introVideo');
+  v.play().catch(()=>{});
+});
+
 function showOffline(){
   const landing=document.getElementById('offlineLanding');
   landing.classList.add('show');
@@ -290,14 +295,9 @@ function showOffline(){
   landing.scrollTop=0;
   const v=document.getElementById('introVideo');
   v.currentTime=0;
-  v.play().catch(()=>{
-    /* 소리 재생 차단 시 음소거로 폴백 */
-    v.muted=true;
-    v.play().catch(()=>{});
-  });
+  v.play().catch(()=>{v.muted=true;v.play().catch(()=>{})});
   v.onended=()=>revealBody();
 }
-
 function skipOfflineIntro(){revealBody()}
 function revealBody(){
   document.getElementById('introVideo').pause();
@@ -313,12 +313,7 @@ function hideOffline(){
   document.getElementById('offlineIntro').classList.remove('fade-out');
   document.getElementById('offlineBody').classList.remove('show');
 }
-function showOnline(){
-  stopYoutube();
-  document.getElementById('onlineLanding').classList.add('show');
-  document.getElementById('particles').style.display='none';
-  document.getElementById('onlineLanding').scrollTop=0;
-}
+function showOnline(){stopYoutube();document.getElementById('onlineLanding').classList.add('show');document.getElementById('particles').style.display='none';document.getElementById('onlineLanding').scrollTop=0}
 function hideOnline(){document.getElementById('onlineLanding').classList.remove('show');document.getElementById('particles').style.display=''}
 function goFullscreen(){const w=document.getElementById('videoWrap');if(w.requestFullscreen)w.requestFullscreen();else if(w.webkitRequestFullscreen)w.webkitRequestFullscreen()}
 function openLB(src){document.getElementById("lbImg").src=src;document.getElementById("lightbox").classList.add("open")}function closeLB(){document.getElementById("lightbox").classList.remove("open")}document.querySelectorAll(".ol-img").forEach(img=>{img.style.cursor="pointer";img.addEventListener("click",()=>openLB(img.src))})
