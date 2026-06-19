@@ -49,8 +49,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .skip-q-btn:active{background:#f0f0f0;color:#555;border-color:#aaa}
 .ai-doc-wrapper{position:fixed;bottom:20px;right:calc(50% - 280px);z-index:100;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none}
 @media(max-width:600px){.ai-doc-wrapper{right:20px}}
-.speech-bubble{background:#fff;border:2px solid var(--accent-gold);padding:10px 15px;border-radius:15px 15px 0 15px;font-size:14px;font-weight:700;color:var(--primary-navy);margin-bottom:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);animation:float 3s ease-in-out infinite;max-width:220px;word-break:keep-all;line-height:1.45}
-.ai-character{width:100px;height:auto;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))}
+/* 말풍선: 배경 없이 텍스트만 */
+.speech-bubble{background:transparent;border:none;padding:4px 8px;font-size:13px;font-weight:900;color:#fff;margin-bottom:6px;box-shadow:none;animation:float 3s ease-in-out infinite;max-width:200px;word-break:keep-all;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,.8),0 0 10px rgba(0,0,0,.6)}
+.ai-character{width:80px;height:auto;animation:float 3s ease-in-out infinite reverse;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))}
 @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
 #capture-area{display:none;padding:30px 24px;background:#fff;color:var(--text-main);text-align:center;border-radius:14px;margin:20px;border:2px solid var(--primary-navy);box-shadow:0 8px 32px rgba(0,0,0,.1)}
 #capture-area .cap-brand{font-family:'DM Serif Display',serif;color:var(--accent-gold);font-size:13px;letter-spacing:3px;margin-bottom:8px}
@@ -173,7 +174,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
       <button class="action-btn" onclick="generateReportAndCapture()">진단 결과 보기 및 화면 캡처</button>
     </div>
   </div>
-
   <div id="capture-area">
     <div class="cap-brand">G · FIELD</div>
     <h2 style="color:var(--primary-navy);margin:0 0 5px;font-weight:900;letter-spacing:-.02em">사고력 진단 결과 리포트</h2>
@@ -191,7 +191,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
     <br><a href="../" class="back-link">← 메인으로 돌아가기</a>
   </div>
 </div>
-
 <script>
 const totalQuestions=7;
 let errorCounts={1:0,2:0,3:0,4:0,5:0,6:0,7:0};
@@ -199,189 +198,24 @@ let skipped={1:false,2:false,3:false,4:false,5:false,6:false,7:false};
 const problemTypes={1:"연산 (뺄셈)",2:"연산 (두 자리 뺄셈)",3:"연산 (덧셈 빈칸)",4:"사고력 (문장제 이해)",5:"사고력 (상황에 맞게 나누기)",6:"사고력 (무게 비교 추론)",7:"사고력 (수 패턴 규칙)"};
 let animalOrder=[];
 const correctAnimalOrder=['다람쥐','거북이','토끼'];
-
 let voicesReady=false;
 let currentRate=0.75;
 let selectedVoice=null;
 let allKoVoices=[];
-
-function getVoices(){
-  return new Promise(resolve=>{
-    const v=speechSynthesis.getVoices();
-    if(v.length){voicesReady=true;resolve(v);return}
-    speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}
-  });
-}
-
-function populateVoiceSelect(voices){
-  const sel=document.getElementById('voice-select');
-  allKoVoices=voices.filter(v=>v.lang.startsWith('ko')||v.lang.includes('KR'));
-  if(allKoVoices.length===0)allKoVoices=voices;
-  sel.innerHTML='';
-  allKoVoices.forEach((v,i)=>{
-    const opt=document.createElement('option');
-    opt.value=i;
-    opt.textContent=v.name.replace('Microsoft ','').replace(' Online (Natural)','').replace('(ko-KR)','').trim();
-    sel.appendChild(opt);
-  });
-  selectedVoice=allKoVoices[0]||null;
-  sel.onchange=()=>{selectedVoice=allKoVoices[+sel.value]||null};
-}
-
-window.addEventListener('load',()=>{
-  document.getElementById('progress-bar').style.width='0%';
-  setupAllKeypads();
-  getVoices().then(voices=>populateVoiceSelect(voices));
-});
-
-function speak(text){
-  if(!window.speechSynthesis)return;
-  window.speechSynthesis.cancel();
-  const say=()=>{
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='ko-KR';u.rate=currentRate;u.pitch=1;
-    if(selectedVoice)u.voice=selectedVoice;
-    window.speechSynthesis.speak(u);
-  };
-  if(voicesReady){say()}else{getVoices().then(say)}
-}
-
-function startTest(){
-  document.getElementById('ai-speech').innerText="AI-DOC 진단을 시작합니다.";
-  speak("안녕하세요. 저는 AI-DOC입니다. 지금부터 필즈 대비 사전 미니 테스트를 시작하겠습니다.");
-  document.getElementById('slide-0').classList.remove('active');
-  document.getElementById('slide-0').classList.add('prev');
-  document.getElementById('slide-1').classList.add('active');
-  updateProgress(1);
-}
-
-function nextSlide(currentIndex,aiMessage){
-  document.getElementById('ai-speech').innerText=aiMessage;
-  speak(aiMessage);
-  const cur=document.getElementById('slide-'+currentIndex);
-  if(cur){cur.classList.remove('active');cur.classList.add('prev')}
-  const nextIdx=currentIndex+1;
-  const nextId=nextIdx<=totalQuestions?'slide-'+nextIdx:'slide-final';
-  const nextEl=document.getElementById(nextId);
-  if(nextEl)nextEl.classList.add('active');
-  updateProgress(Math.min(nextIdx,totalQuestions));
-}
-
-function skipQuestion(slideIndex){
-  skipped[slideIndex]=true;
-  const msg="괜찮아요! 다음 문제로 넘어갈게요.";
-  document.getElementById('ai-speech').innerText=msg;speak(msg);
-  const cur=document.getElementById('slide-'+slideIndex);
-  if(cur){cur.classList.remove('active');cur.classList.add('prev')}
-  const nextIdx=slideIndex+1;
-  const nextId=nextIdx<=totalQuestions?'slide-'+nextIdx:'slide-final';
-  const nextEl=document.getElementById(nextId);
-  if(nextEl)nextEl.classList.add('active');
-  updateProgress(Math.min(nextIdx,totalQuestions));
-  if(slideIndex===6){animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"}
-}
-
+function getVoices(){return new Promise(resolve=>{const v=speechSynthesis.getVoices();if(v.length){voicesReady=true;resolve(v);return}speechSynthesis.onvoiceschanged=()=>{voicesReady=true;resolve(speechSynthesis.getVoices())}})}
+function populateVoiceSelect(voices){const sel=document.getElementById('voice-select');allKoVoices=voices.filter(v=>v.lang.startsWith('ko')||v.lang.includes('KR'));if(allKoVoices.length===0)allKoVoices=voices;sel.innerHTML='';allKoVoices.forEach((v,i)=>{const opt=document.createElement('option');opt.value=i;opt.textContent=v.name.replace('Microsoft ','').replace(' Online (Natural)','').replace('(ko-KR)','').trim();sel.appendChild(opt)});selectedVoice=allKoVoices[0]||null;sel.onchange=()=>{selectedVoice=allKoVoices[+sel.value]||null}}
+window.addEventListener('load',()=>{document.getElementById('progress-bar').style.width='0%';setupAllKeypads();getVoices().then(voices=>populateVoiceSelect(voices))});
+function speak(text){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const say=()=>{const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=currentRate;u.pitch=1;if(selectedVoice)u.voice=selectedVoice;window.speechSynthesis.speak(u)};if(voicesReady){say()}else{getVoices().then(say)}}
+function startTest(){document.getElementById('ai-speech').innerText="AI-DOC 진단을 시작합니다.";speak("안녕하세요. 저는 AI-DOC입니다. 지금부터 필즈 대비 사전 미니 테스트를 시작하겠습니다.");document.getElementById('slide-0').classList.remove('active');document.getElementById('slide-0').classList.add('prev');document.getElementById('slide-1').classList.add('active');updateProgress(1)}
+function nextSlide(currentIndex,aiMessage){document.getElementById('ai-speech').innerText=aiMessage;speak(aiMessage);const cur=document.getElementById('slide-'+currentIndex);if(cur){cur.classList.remove('active');cur.classList.add('prev')}const nextIdx=currentIndex+1;const nextId=nextIdx<=totalQuestions?'slide-'+nextIdx:'slide-final';const nextEl=document.getElementById(nextId);if(nextEl)nextEl.classList.add('active');updateProgress(Math.min(nextIdx,totalQuestions))}
+function skipQuestion(slideIndex){skipped[slideIndex]=true;const msg="괜찮아요! 다음 문제로 넘어갈게요.";document.getElementById('ai-speech').innerText=msg;speak(msg);const cur=document.getElementById('slide-'+slideIndex);if(cur){cur.classList.remove('active');cur.classList.add('prev')}const nextIdx=slideIndex+1;const nextId=nextIdx<=totalQuestions?'slide-'+nextIdx:'slide-final';const nextEl=document.getElementById(nextId);if(nextEl)nextEl.classList.add('active');updateProgress(Math.min(nextIdx,totalQuestions));if(slideIndex===6){animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"}}
 function updateProgress(n){document.getElementById('progress-bar').style.width=(n/totalQuestions)*100+'%'}
-
-function setupKeypad(slideIndex,correctAnswer,successMessage){
-  const c=document.getElementById('keypad-'+slideIndex);
-  if(!c)return;c.innerHTML="";
-  for(let i=0;i<=9;i++){
-    const btn=document.createElement('button');
-    btn.className='key-btn';btn.innerText=i;
-    btn.onclick=()=>{
-      if(i===correctAnswer){
-        if(navigator.vibrate)navigator.vibrate(30);
-        nextSlide(slideIndex,successMessage);
-      }else{
-        errorCounts[slideIndex]=(errorCounts[slideIndex]||0)+1;
-        const r="다시 한 번 천천히 생각해 보세요.";
-        document.getElementById('ai-speech').innerText=r;speak(r);
-        btn.style.transform="translateX(5px)";
-        setTimeout(()=>btn.style.transform="translateX(-5px)",100);
-        setTimeout(()=>btn.style.transform="translateX(0)",200);
-        btn.style.backgroundColor="#ffebee";
-        setTimeout(()=>btn.style.backgroundColor="var(--primary-navy)",500);
-      }
-    };
-    c.appendChild(btn);
-  }
-}
-
-function setupAllKeypads(){
-  setupKeypad(1,4,'좋습니다. 다음 문항으로 넘어가겠습니다.');
-  setupKeypad(2,4,'좋습니다. 다음 문항으로 넘어가겠습니다.');
-  setupKeypad(3,5,'연산 문항을 마쳤습니다. 이제 사고력 문항으로 넘어갑니다.');
-  setupKeypad(4,8,'좋습니다. 문장 속 비교 관계를 잘 확인했습니다. 다음 문항으로 넘어가겠습니다.');
-  setupKeypad(5,2,'좋습니다. 두 사람이 같은 개수가 되도록 잘 생각했습니다. 다음 문항으로 넘어가겠습니다.');
-}
-
-function selectAnimal(animal){
-  if(animalOrder.includes(animal))return;
-  animalOrder.push(animal);
-  document.getElementById('selected-animals').innerText=animalOrder.join(' ➔ ');
-  if(animalOrder.length===3){
-    const ok=animalOrder[0]===correctAnimalOrder[0]&&animalOrder[1]===correctAnimalOrder[1]&&animalOrder[2]===correctAnimalOrder[2];
-    if(ok){
-      setTimeout(()=>nextSlide(6,'좋습니다. 시소의 기울기를 보고 무게 순서를 잘 비교했습니다. 마지막 문항으로 넘어가겠습니다.'),500);
-    }else{
-      errorCounts[6]=(errorCounts[6]||0)+1;
-      const r="앗, 순서가 조금 다른 것 같아요. 가장 가벼운 동물부터 다시 골라볼까요?";
-      document.getElementById('ai-speech').innerText=r;speak(r);
-      setTimeout(()=>{animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"},1500);
-    }
-  }
-}
-
-function checkAnswer7(answerIdx,btn){
-  if(answerIdx===3){
-    nextSlide(7,'정말 잘했어요! 선생님은 지필드에서 기다리고 있을게요.');
-  }else{
-    errorCounts[7]=(errorCounts[7]||0)+1;
-    const r="숫자들의 규칙을 다시 한번 천천히 살펴볼까요? 거의 다 왔어요!";
-    document.getElementById('ai-speech').innerText=r;speak(r);
-    btn.style.transform="translateX(5px)";
-    setTimeout(()=>btn.style.transform="translateX(-5px)",100);
-    setTimeout(()=>btn.style.transform="translateX(0)",200);
-    btn.style.backgroundColor="#ffebee";
-    setTimeout(()=>btn.style.backgroundColor="#fff",500);
-  }
-}
-
-function generateReportAndCapture(){
-  let html=`<table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;text-align:center"><thead><tr style="background:var(--primary-navy);color:var(--accent-gold)"><th style="padding:10px 5px;border:1px solid #ddd">문항</th><th style="padding:10px 5px;border:1px solid #ddd">문제 유형</th><th style="padding:10px 5px;border:1px solid #ddd">정답 기록</th></tr></thead><tbody>`;
-  for(let i=1;i<=7;i++){
-    let t;
-    if(skipped[i]){t=`<span style="color:#aaa;font-weight:700">미응답 (건너뜀)</span>`}
-    else{const a=(errorCounts[i]||0)+1;t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`}
-    html+=`<tr><td style="padding:8px 5px;border:1px solid #ddd;font-weight:700">${i}번</td><td style="padding:8px 5px;border:1px solid #ddd;text-align:left">${problemTypes[i]}</td><td style="padding:8px 5px;border:1px solid #ddd">${t}</td></tr>`;
-  }
-  html+=`</tbody></table>`;
-  document.getElementById('report-table-container').innerHTML=html;
-  submitAndCapture();
-}
-
-function submitAndCapture(){
-  document.getElementById('ai-wrapper').style.display='none';
-  document.getElementById('quiz-container').style.display='none';
-  document.getElementById('header-area').style.display='none';
-  document.getElementById('voice-bar').style.display='none';
-  const cap=document.getElementById('capture-area');
-  cap.style.display='block';
-  setTimeout(()=>{
-    html2canvas(cap,{scale:2,backgroundColor:'#ffffff'}).then(canvas=>{
-      cap.style.display='none';
-      const data=canvas.toDataURL('image/png');
-      const p=document.getElementById('img-preview');
-      p.innerHTML="";
-      const img=document.createElement('img');img.src=data;p.appendChild(img);
-      const link=document.createElement('a');
-      link.download='지필드_사고력진단_결과.png';link.href=data;link.click();
-      document.getElementById('post-capture-guide').style.display='block';
-      speak("진단 결과가 저장되었습니다. 네이버 설문 마지막 문항에 결과 이미지를 첨부해 주세요.");
-    });
-  },500);
-}
+function setupKeypad(slideIndex,correctAnswer,successMessage){const c=document.getElementById('keypad-'+slideIndex);if(!c)return;c.innerHTML="";for(let i=0;i<=9;i++){const btn=document.createElement('button');btn.className='key-btn';btn.innerText=i;btn.onclick=()=>{if(i===correctAnswer){if(navigator.vibrate)navigator.vibrate(30);nextSlide(slideIndex,successMessage)}else{errorCounts[slideIndex]=(errorCounts[slideIndex]||0)+1;const r="다시 한 번 천천히 생각해 보세요.";document.getElementById('ai-speech').innerText=r;speak(r);btn.style.transform="translateX(5px)";setTimeout(()=>btn.style.transform="translateX(-5px)",100);setTimeout(()=>btn.style.transform="translateX(0)",200);btn.style.backgroundColor="#ffebee";setTimeout(()=>btn.style.backgroundColor="var(--primary-navy)",500)}};c.appendChild(btn)}}
+function setupAllKeypads(){setupKeypad(1,4,'좋습니다. 다음 문항으로 넘어가겠습니다.');setupKeypad(2,4,'좋습니다. 다음 문항으로 넘어가겠습니다.');setupKeypad(3,5,'연산 문항을 마쳤습니다. 이제 사고력 문항으로 넘어갑니다.');setupKeypad(4,8,'좋습니다. 문장 속 비교 관계를 잘 확인했습니다. 다음 문항으로 넘어가겠습니다.');setupKeypad(5,2,'좋습니다. 두 사람이 같은 개수가 되도록 잘 생각했습니다. 다음 문항으로 넘어가겠습니다.')}
+function selectAnimal(animal){if(animalOrder.includes(animal))return;animalOrder.push(animal);document.getElementById('selected-animals').innerText=animalOrder.join(' ➔ ');if(animalOrder.length===3){const ok=animalOrder[0]===correctAnimalOrder[0]&&animalOrder[1]===correctAnimalOrder[1]&&animalOrder[2]===correctAnimalOrder[2];if(ok){setTimeout(()=>nextSlide(6,'좋습니다. 시소의 기울기를 보고 무게 순서를 잘 비교했습니다. 마지막 문항으로 넘어가겠습니다.'),500)}else{errorCounts[6]=(errorCounts[6]||0)+1;const r="앗, 순서가 조금 다른 것 같아요. 가장 가벼운 동물부터 다시 골라볼까요?";document.getElementById('ai-speech').innerText=r;speak(r);setTimeout(()=>{animalOrder=[];document.getElementById('selected-animals').innerText="여기에 순서가 표시돼요"},1500)}}}
+function checkAnswer7(answerIdx,btn){if(answerIdx===3){nextSlide(7,'정말 잘했어요! 선생님은 지필드에서 기다리고 있을게요.')}else{errorCounts[7]=(errorCounts[7]||0)+1;const r="숫자들의 규칙을 다시 한번 천천히 살펴볼까요? 거의 다 왔어요!";document.getElementById('ai-speech').innerText=r;speak(r);btn.style.transform="translateX(5px)";setTimeout(()=>btn.style.transform="translateX(-5px)",100);setTimeout(()=>btn.style.transform="translateX(0)",200);btn.style.backgroundColor="#ffebee";setTimeout(()=>btn.style.backgroundColor="#fff",500)}}
+function generateReportAndCapture(){let html=`<table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;text-align:center"><thead><tr style="background:var(--primary-navy);color:var(--accent-gold)"><th style="padding:10px 5px;border:1px solid #ddd">문항</th><th style="padding:10px 5px;border:1px solid #ddd">문제 유형</th><th style="padding:10px 5px;border:1px solid #ddd">정답 기록</th></tr></thead><tbody>`;for(let i=1;i<=7;i++){let t;if(skipped[i]){t=`<span style="color:#aaa;font-weight:700">미응답 (건너뜀)</span>`}else{const a=(errorCounts[i]||0)+1;t=a===1?`<span style="color:#03893f;font-weight:700">1번 만에 정답</span>`:`<span style="color:#c0392b;font-weight:700">${a}번째 정답</span>`}html+=`<tr><td style="padding:8px 5px;border:1px solid #ddd;font-weight:700">${i}번</td><td style="padding:8px 5px;border:1px solid #ddd;text-align:left">${problemTypes[i]}</td><td style="padding:8px 5px;border:1px solid #ddd">${t}</td></tr>`}html+=`</tbody></table>`;document.getElementById('report-table-container').innerHTML=html;submitAndCapture()}
+function submitAndCapture(){document.getElementById('ai-wrapper').style.display='none';document.getElementById('quiz-container').style.display='none';document.getElementById('header-area').style.display='none';document.getElementById('voice-bar').style.display='none';const cap=document.getElementById('capture-area');cap.style.display='block';setTimeout(()=>{html2canvas(cap,{scale:2,backgroundColor:'#ffffff'}).then(canvas=>{cap.style.display='none';const data=canvas.toDataURL('image/png');const p=document.getElementById('img-preview');p.innerHTML="";const img=document.createElement('img');img.src=data;p.appendChild(img);const link=document.createElement('a');link.download='지필드_사고력진단_결과.png';link.href=data;link.click();document.getElementById('post-capture-guide').style.display='block';speak("진단 결과가 저장되었습니다. 네이버 설문 마지막 문항에 결과 이미지를 첨부해 주세요.")})},500)}
 </script>
 </body>
 </html>
