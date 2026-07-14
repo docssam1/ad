@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>G Field 프로젝트 대시보드</title>
+<style>
+:root{
+  --bg:#f5f7f6; --surface:#ffffff; --ink:#1b2621; --muted:#5f6d67;
+  --line:#dfe6e2; --accent:#0b6e5d; --accent-soft:#e2f0ec;
+  --active:#1a7f37; --active-bg:#e5f3e8;
+  --recent:#8a6d1f; --recent-bg:#f6efd8;
+  --dormant:#6b7570; --dormant-bg:#eceeed;
+  --private-bg:#3d3a4d; --private-fg:#ffffff;
+  --shadow:0 1px 3px rgba(20,40,32,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#111716; --surface:#1a2220; --ink:#e6ece9; --muted:#93a29b;
+    --line:#2a3531; --accent:#4fb99f; --accent-soft:#1d3129;
+    --active:#5fc276; --active-bg:#1c2f22;
+    --recent:#d3b45e; --recent-bg:#302a17;
+    --dormant:#8b9691; --dormant-bg:#232b28;
+    --private-bg:#cfc9e6; --private-fg:#25222f;
+    --shadow:0 1px 3px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);
+  font-family:'Segoe UI','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  line-height:1.55;}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px;}
+header.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-bottom:8px;}
+header.top h1{font-size:26px;font-weight:700;letter-spacing:-.01em;}
+header.top .gh{font-size:13px;color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted);}
+header.top .gh:hover{color:var(--accent);}
+.updated{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:24px;}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px;box-shadow:var(--shadow);}
+.stat b{display:block;font-size:24px;font-variant-numeric:tabular-nums;}
+.stat span{font-size:12px;color:var(--muted);letter-spacing:.04em;}
+.toolbar{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;}
+.toolbar input{flex:1;min-width:220px;background:var(--surface);border:1px solid var(--line);
+  border-radius:8px;padding:9px 14px;font-size:14px;color:var(--ink);}
+.toolbar input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+h2.group{font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--muted);
+  text-transform:uppercase;margin:28px 0 12px;display:flex;align-items:center;gap:8px;}
+h2.group::after{content:"";flex:1;height:1px;background:var(--line);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;}
+.card .head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.card .name{font-size:16px;font-weight:700;color:var(--ink);text-decoration:none;word-break:break-all;}
+.card .name:hover{color:var(--accent);text-decoration:underline;}
+.pill{font-size:11px;font-weight:600;padding:2px 9px;border-radius:99px;white-space:nowrap;}
+.pill.active{color:var(--active);background:var(--active-bg);}
+.pill.recent{color:var(--recent);background:var(--recent-bg);}
+.pill.dormant{color:var(--dormant);background:var(--dormant-bg);}
+.pill.private{color:var(--private-fg);background:var(--private-bg);}
+.pill.lang{color:var(--accent);background:var(--accent-soft);}
+.desc{font-size:13px;color:var(--muted);}
+.commit{border-left:3px solid var(--accent);padding:6px 12px;background:var(--accent-soft);
+  border-radius:0 6px 6px 0;font-size:13px;}
+.commit .msg{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;}
+.commit .when{font-size:12px;color:var(--muted);margin-top:3px;font-variant-numeric:tabular-nums;}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;font-size:13px;align-items:center;}
+.links a{color:var(--accent);text-decoration:none;font-weight:600;}
+.links a:hover{text-decoration:underline;}
+.links a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
+.links a.site{background:var(--accent-soft);color:var(--accent);padding:4px 11px;border-radius:6px;text-decoration:none;}
+.links a.site:hover{text-decoration:none;filter:brightness(0.92);}
+.links .nosite{font-size:12px;color:var(--dormant);font-weight:500;}
+.sub{margin-left:14px;border-left:2px solid var(--line);padding-left:14px;}
+.subhead{font-size:11px;color:var(--muted);letter-spacing:.04em;margin:20px 0 10px;}
+.note{font-size:12px;color:var(--muted);margin-top:28px;border-top:1px solid var(--line);padding-top:14px;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="top">
+  <h1>G Field 프로젝트 대시보드</h1>
+  <a class="gh" href="https://github.com/docssam1?tab=repositories" target="_blank" rel="noopener">github.com/docssam1 ↗</a>
+</header>
+<p class="updated">기준 시각: 2026-07-14 · GitHub 저장소 21개 · 매일 자동 갱신</p>
+
+<div class="stats">
+  <div class="stat"><b>21</b><span>전체 프로젝트</span></div>
+  <div class="stat"><b>6</b><span>🟢 활발 (최근 1주)</span></div>
+  <div class="stat"><b>5</b><span>🟡 최근 (1개월 이내)</span></div>
+  <div class="stat"><b>10</b><span>⚪ 휴면 / 보관</span></div>
+</div>
+
+<div class="toolbar">
+  <input id="q" type="search" placeholder="프로젝트 이름·설명·커밋 내용 검색…" aria-label="프로젝트 검색">
+</div>
+
+<h2 class="group">🟢 활발 — 최근 1주 내 작업</h2>
+<div class="grid" id="g-active">
+
+<div class="card" data-text="hs-report html 리포트 admin console data.js">
+  <div class="head"><a class="name" href="https://github.com/docssam1/hs-report" target="_blank" rel="noopener">hs-report</a>
+    <span class="pill active">오늘</span><span class="pill lang">HTML</span></div>
+  <div class="desc">학생 리포트 페이지 (관리자 콘솔로 데이터 갱신)</div>
+  <div class="commit"><div class="msg">Update data.js via admin console</div>
+    <div class="when">2026-07-14 · docssam1</div></div>
+  <div class="links"><a class="site" href="https://hs.gfieldacademy.net/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/hs-report" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/hs-report/commit/0999172b4c7689fe7dddc87ffe13e3dd21a074c7" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="gfield-report 자동배포 수업 안내 리포트 html">
+  <div class="head"><a class="name" href="https://github.com/docssam1/gfield-report" target="_blank" rel="noopener">gfield-report</a>
+    <span class="pill active">오늘</span><span class="pill lang">HTML</span></div>
+  <div class="desc">수업 안내 리포트 자동배포 (학생별 리포트)</div>
+  <div class="commit"><div class="msg">[자동배포] 강서린 수업 안내 리포트</div>
+    <div class="when">2026-07-14 · docssam1</div></div>
+  <div class="links"><a class="site" href="https://docssam1.github.io/gfield-report/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/gfield-report" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/gfield-report/commit/d695286e1acab4c23854f28acda3529132005e7e" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="lete-on ebook pdf 뷰어 읽어주기 오버레이 하이라이트 html 메인">
+  <div class="head"><a class="name" href="https://github.com/docssam1/lete-on" target="_blank" rel="noopener">lete-on (메인 · eBook 뷰어)</a>
+    <span class="pill active">오늘</span><span class="pill lang">HTML</span></div>
+  <div class="desc">PDF 원본보기 + 읽어주기/하이라이트 — 하나의 저장소에 여러 하위 서비스가 폴더로 공존</div>
+  <div class="commit"><div class="msg">fix: 원본보기(PDF) 읽어주기 시 글자 겹침 — 오버레이 텍스트 항상 투명</div>
+    <div class="when">2026-07-14 · Claude</div></div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/lete-on" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/lete-on/commit/a015ebf8b9b46638aedf87aa6083f45344fa3279" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="algebra2 수학 대수 서브모듈 html">
+  <div class="head"><a class="name" href="https://github.com/docssam1/algebra2" target="_blank" rel="noopener">algebra2</a>
+    <span class="pill active">3일 전</span><span class="pill lang">HTML</span></div>
+  <div class="desc">대수2 수학 교육 콘텐츠</div>
+  <div class="commit"><div class="msg">fix: 잘못된 서브모듈 제거</div>
+    <div class="when">2026-07-11 · G Field</div></div>
+  <div class="links"><a class="site" href="https://docssam1.github.io/algebra2/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/algebra2" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/algebra2/commit/689799ffb591baec309f506a72807740b72191d2" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="LMS 학습관리 sd.json build_sd.py 배포 html private 비공개">
+  <div class="head"><a class="name" href="https://github.com/docssam1/LMS" target="_blank" rel="noopener">LMS</a>
+    <span class="pill active">7일 전</span><span class="pill private">비공개</span><span class="pill lang">HTML</span></div>
+  <div class="desc">학습 관리 시스템 (실데이터 주입 + 빌드 배포)</div>
+  <div class="commit"><div class="msg">Serve real data: inject sd.json into frontend; add build_sd.py; deploy build step</div>
+    <div class="when">2026-07-07 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/LMS" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/LMS/commit/0c49305035400dc8ba3c7b319b47786450ce9198" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="-hs_thinking_basic_library_viewer 사고력 기본 라이브러리 뷰어 승인 명단 html">
+  <div class="head"><a class="name" href="https://github.com/docssam1/-hs_thinking_basic_library_viewer" target="_blank" rel="noopener">hs_thinking_basic_library_viewer</a>
+    <span class="pill active">8일 전</span><span class="pill lang">HTML</span></div>
+  <div class="desc">사고력 기본 라이브러리 뷰어 (승인 명단 관리)</div>
+  <div class="commit"><div class="msg">관리자: 승인 명단 수정 (전체 교체 14명 입력)</div>
+    <div class="when">2026-07-06 · docssam1</div></div>
+  <div class="links"><a class="site" href="https://docssam1.github.io/-hs_thinking_basic_library_viewer/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/-hs_thinking_basic_library_viewer" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/-hs_thinking_basic_library_viewer/commit/c394a9d958ef980d343162db8c493eb94f6f9550" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+</div>
+
+<p class="subhead">↳ lete-on 저장소 하나에 폴더별로 공존하는 하위 서비스 — 커밋 이력은 저장소 전체 공유, 접속 주소만 다름</p>
+<div class="grid sub" id="g-lete-sub">
+
+<div class="card" data-text="lete-on hyper-focus 하이퍼포커스 손글씨 답안">
+  <div class="head"><span class="name" style="cursor:default">↳ Hyper Focus</span><span class="pill lang">폴더</span></div>
+  <div class="desc">손글씨 애니메이션 답안 뷰어 (lete-on/hyper-focus)</div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/hyper-focus/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/lete-on/tree/main/hyper-focus" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="lete-on reading-world 리딩월드 독서">
+  <div class="head"><span class="name" style="cursor:default">↳ Reading World</span><span class="pill lang">폴더</span></div>
+  <div class="desc">독서 프로그램 앱 (lete-on/reading-world)</div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/reading-world/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/lete-on/tree/main/reading-world" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="lete-on number_magic 넘버매직 수학">
+  <div class="head"><span class="name" style="cursor:default">↳ Number Magic</span><span class="pill lang">폴더</span></div>
+  <div class="desc">수 감각 커리큘럼 앱 (lete-on/number_magic)</div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/number_magic/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/lete-on/tree/main/number_magic" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="lete-on personality 성향검사">
+  <div class="head"><span class="name" style="cursor:default">↳ Personality</span><span class="pill lang">폴더</span></div>
+  <div class="desc">성향/성격 검사 페이지 (lete-on/personality)</div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/personality/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/lete-on/tree/main/personality" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="lete-on roadmap 로드맵 진단결과">
+  <div class="head"><span class="name" style="cursor:default">↳ Roadmap</span><span class="pill lang">폴더</span></div>
+  <div class="desc">진단결과/로드맵 리포트 화면 (lete-on/roadmap)</div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/roadmap/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/lete-on/tree/main/roadmap" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="lete-on fields-classic 필즈 클래식 문제은행">
+  <div class="head"><span class="name" style="cursor:default">↳ Fields Classic</span><span class="pill lang">폴더</span></div>
+  <div class="desc">구버전 필즈 문제은행/프로그램 관리자 (lete-on/fields-classic)</div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/fields-classic/admin.html" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/lete-on/tree/main/fields-classic" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="lete-on admin gfield-on-admin 관리자 콘솔">
+  <div class="head"><span class="name" style="cursor:default">↳ 관리자 콘솔</span><span class="pill lang">루트</span></div>
+  <div class="desc">전체 통합 관리자 화면 (admin.html / gfield-on-admin.html)</div>
+  <div class="links"><a class="site" href="https://lete-on.gfieldacademy.net/admin.html" target="_blank" rel="noopener">🔗 admin</a>
+    <a class="site" href="https://lete-on.gfieldacademy.net/gfield-on-admin.html" target="_blank" rel="noopener">🔗 gfield-on-admin</a></div>
+</div>
+
+</div>
+
+<h2 class="group">🟡 최근 — 1개월 이내 작업</h2>
+<div class="grid" id="g-recent">
+
+<div class="card" data-text="LMS-data 실데이터 저장소 비공개 private">
+  <div class="head"><a class="name" href="https://github.com/docssam1/LMS-data" target="_blank" rel="noopener">LMS-data</a>
+    <span class="pill recent">7/5</span><span class="pill private">비공개</span></div>
+  <div class="desc">LMS 실데이터 저장소 (LMS와 세트)</div>
+  <div class="commit"><div class="msg">init: 실데이터 저장소 (비공개)</div>
+    <div class="when">2026-07-05 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/LMS-data" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/LMS-data/commit/e48ebcfb6c06eaa5f57553a689ca25356fc2f44a" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="gfield-hq roadmap 진단결과 코멘트 인쇄버튼 지시서 html 본부">
+  <div class="head"><a class="name" href="https://github.com/docssam1/gfield-hq" target="_blank" rel="noopener">gfield-hq</a>
+    <span class="pill recent">7/1</span><span class="pill lang">HTML</span></div>
+  <div class="desc">G Field 본부 — 로드맵/진단결과 화면</div>
+  <div class="commit"><div class="msg">task: roadmap 진단결과 화면 코멘트+인쇄버튼 복구 지시서</div>
+    <div class="when">2026-07-01 · docssam1</div></div>
+  <div class="links"><span class="nosite">배포된 홈페이지 없음 (봇/백엔드 인프라)</span>
+    <a href="https://github.com/docssam1/gfield-hq" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/gfield-hq/commit/4479be0536fe92c4f5b5e9c4381e59ff7ef1c707" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="gfield-ai-secretary n8n telegram docker 자동화 비서 비공개 private">
+  <div class="head"><a class="name" href="https://github.com/docssam1/gfield-ai-secretary" target="_blank" rel="noopener">gfield-ai-secretary</a>
+    <span class="pill recent">6/29</span><span class="pill private">비공개</span></div>
+  <div class="desc">AI 비서 자동화 (n8n + Telegram + Docker, Phase 0 진행 중)</div>
+  <div class="commit"><div class="msg">Phase 0-B: 운영 기반 문서 + 배포 스캐폴드 확정</div>
+    <div class="when">2026-06-26 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/gfield-ai-secretary" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/gfield-ai-secretary/commit/5303449c6c2c3b6fca5d6247119d780c5c377b86" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="ad 광고 홍보 랜딩페이지 지필드 영재교육">
+  <div class="head"><a class="name" href="https://github.com/docssam1/ad" target="_blank" rel="noopener">ad (홍보 랜딩페이지 모음)</a>
+    <span class="pill recent">6/27</span><span class="pill lang">HTML</span></div>
+  <div class="desc">저장소 루트엔 홈이 없고, 폴더별로 독립된 광고 랜딩페이지 4개가 배포되어 있음</div>
+  <div class="commit"><div class="msg">Remove fullscreen intro video after countdown</div>
+    <div class="when">2026-06-27 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/ad" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/ad/commit/327e1df600149946add7323d0d2e319628ec6729" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="ad 5se-program 5세 관찰과정 6세 입시대비">
+  <div class="head"><span class="name" style="cursor:default">↳ 5세 관찰·6세 입시대비</span><span class="pill lang">폴더</span></div>
+  <div class="desc">5세 관찰과정 · 6세 입시대비 온라인 진단 프로그램 소개</div>
+  <div class="links"><a class="site" href="https://ad.gfieldacademy.net/5se-program/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/ad/tree/main/5se-program" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="ad fields-classic 필즈 더 클래식 입학시험">
+  <div class="head"><span class="name" style="cursor:default">↳ 필즈 더 클래식</span><span class="pill lang">폴더</span></div>
+  <div class="desc">입학시험 대비 프로그램 홍보, 온라인 진단 모의고사 신청 유도</div>
+  <div class="links"><a class="site" href="https://ad.gfieldacademy.net/fields-classic/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/ad/tree/main/fields-classic" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="ad kid 학습 콘텐츠 미리보기">
+  <div class="head"><span class="name" style="cursor:default">↳ 학습 콘텐츠 미리보기</span><span class="pill lang">폴더</span></div>
+  <div class="desc">교육 자료를 표지 넘기듯 살펴보는 유아 콘텐츠 프리뷰</div>
+  <div class="links"><a class="site" href="https://ad.gfieldacademy.net/kid/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/ad/tree/main/kid" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="ad observation 관찰평가 2주차 유아 영재교육">
+  <div class="head"><span class="name" style="cursor:default">↳ 관찰평가 2주차</span><span class="pill lang">폴더</span></div>
+  <div class="desc">영상 학습→가정 복습→과제 제출 3단계 유아 영재교육 프로그램 안내</div>
+  <div class="links"><a class="site" href="https://ad.gfieldacademy.net/observation/" target="_blank" rel="noopener">🔗 바로가기</a>
+    <a href="https://github.com/docssam1/ad/tree/main/observation" target="_blank" rel="noopener">폴더 보기</a></div>
+</div>
+
+<div class="card" data-text="pdf-eraser python pdf 지우개 복원 restoration">
+  <div class="head"><a class="name" href="https://github.com/docssam1/pdf-eraser" target="_blank" rel="noopener">pdf-eraser</a>
+    <span class="pill recent">6/22</span><span class="pill lang">Python</span></div>
+  <div class="desc">PDF 필기/답안 지우개 도구 (복원 모드 포함)</div>
+  <div class="commit"><div class="msg">add restoration mode controls</div>
+    <div class="when">2026-06-22 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/pdf-eraser" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/pdf-eraser/commit/dad79de9c61fe540f3eca1946e4a8dd40ece230b" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+</div>
+
+<h2 class="group">⚪ 휴면 / 보관 — 1개월 이상 미작업</h2>
+<div class="grid" id="g-dormant">
+
+<div class="card" data-text="GFIELD-EBOOK 이북 아카이브 홈페이지 html">
+  <div class="head"><a class="name" href="https://github.com/docssam1/GFIELD-EBOOK" target="_blank" rel="noopener">GFIELD-EBOOK</a>
+    <span class="pill dormant">6/9</span><span class="pill lang">HTML</span></div>
+  <div class="desc">GFIELD-ON Archiv 파일럿 홈페이지 (eBook)</div>
+  <div class="commit"><div class="msg">Rebuild GFIELD-ON Archiv pilot homepage</div>
+    <div class="when">2026-06-09 · docssam1</div></div>
+  <div class="links"><a class="site" href="https://docssam1.github.io/GFIELD-EBOOK/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/GFIELD-EBOOK" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/GFIELD-EBOOK/commit/33fabe24975ec745a01d1e831c9851a4995eb6f3" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="Hyper-Focus-answer-Key python 답안 키 손글씨 애니메이션 vivus khoshnus">
+  <div class="head"><a class="name" href="https://github.com/docssam1/Hyper-Focus-answer-Key" target="_blank" rel="noopener">Hyper-Focus-answer-Key</a>
+    <span class="pill dormant">6/15</span><span class="pill lang">Python</span></div>
+  <div class="desc">Hyper Focus 답안 키 뷰어 (손글씨 애니메이션)</div>
+  <div class="commit"><div class="msg">feat: Add viewer_handwriting.js — Vivus.js + Khoshnus.js 손글씨 애니메이션</div>
+    <div class="when">2026-06-15 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/Hyper-Focus-answer-Key" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/Hyper-Focus-answer-Key/commit/087f5ed90141427cd31e766aa638854b88582a53" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="gfield-archive telegram bot pc bridge 아카이브 html">
+  <div class="head"><a class="name" href="https://github.com/docssam1/gfield-archive" target="_blank" rel="noopener">gfield-archive</a>
+    <span class="pill dormant">6/4</span><span class="pill lang">HTML</span></div>
+  <div class="desc">아카이브 + Telegram 봇 PC 브리지</div>
+  <div class="commit"><div class="msg">fix: update Telegram bot PC bridge commands</div>
+    <div class="when">2026-06-04 · docssam1</div></div>
+  <div class="links"><span class="nosite">배포된 홈페이지 없음 (Pages 404)</span>
+    <a href="https://github.com/docssam1/gfield-archive" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/gfield-archive/commit/f84f3b0df3f5060f298d01695fac846964dd59c6" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="doossam-education-briefing 교육 브리핑 보드 구글 드라이브 html vps studio">
+  <div class="head"><a class="name" href="https://github.com/docssam1/doossam-education-briefing" target="_blank" rel="noopener">doossam-education-briefing</a>
+    <span class="pill dormant">5/24</span><span class="pill lang">HTML</span></div>
+  <div class="desc">교육 브리핑 보드 + Google Drive HTML 아카이브</div>
+  <div class="commit"><div class="msg">Replace VPS studio with stable clean version</div>
+    <div class="when">2026-05-24 · docssam1</div></div>
+  <div class="links"><a class="site" href="https://docssam1.github.io/doossam-education-briefing/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/doossam-education-briefing" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/doossam-education-briefing/commit/ef44c206dbbc2fa509f58fe51fcf9de9de30df42" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="gfield-smartcanvas 스마트캔버스 apps script api key html">
+  <div class="head"><a class="name" href="https://github.com/docssam1/gfield-smartcanvas" target="_blank" rel="noopener">gfield-smartcanvas</a>
+    <span class="pill dormant">5/12</span><span class="pill lang">HTML</span></div>
+  <div class="desc">스마트 캔버스 (Apps Script 서버측 API 키 저장)</div>
+  <div class="commit"><div class="msg">Add server-side API key storage via Apps Script</div>
+    <div class="when">2026-05-12 · docssam1</div></div>
+  <div class="links"><a class="site" href="https://docssam1.github.io/gfield-smartcanvas/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/gfield-smartcanvas" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/gfield-smartcanvas/commit/2c72766d773d3a794ffe5f1555ee357cd582c3ed" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="yubin-english 영어 html">
+  <div class="head"><a class="name" href="https://github.com/docssam1/yubin-english" target="_blank" rel="noopener">yubin-english</a>
+    <span class="pill dormant">5/3</span><span class="pill lang">HTML</span></div>
+  <div class="desc">유빈 영어 학습 페이지</div>
+  <div class="commit"><div class="msg">Add files via upload</div>
+    <div class="when">2026-05-03 · docssam1</div></div>
+  <div class="links"><a class="site" href="https://docssam1.github.io/yubin-english/" target="_blank" rel="noopener">🔗 홈페이지</a>
+    <a href="https://github.com/docssam1/yubin-english" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/yubin-english/commit/e7293df669a820654294ea7dff0a62002dbc9a84" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="gfieldreport readme 초기 리포트">
+  <div class="head"><a class="name" href="https://github.com/docssam1/gfieldreport" target="_blank" rel="noopener">gfieldreport</a>
+    <span class="pill dormant">4/21</span></div>
+  <div class="desc">리포트 초기 버전 (README만 존재 — gfield-report로 대체된 듯)</div>
+  <div class="commit"><div class="msg">Create README.md</div>
+    <div class="when">2026-04-21 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/gfieldreport" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/gfieldreport/commit/c7d22ac9add4858fd6c04947d048ec692fb704a3" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="gfield-smart-canva 빈 저장소 empty">
+  <div class="head"><a class="name" href="https://github.com/docssam1/gfield-smart-canva" target="_blank" rel="noopener">gfield-smart-canva</a>
+    <span class="pill dormant">빈 저장소</span></div>
+  <div class="desc">빈 저장소 — gfield-smartcanvas 생성 직전에 만든 것으로 보임 (삭제 후보)</div>
+  <div class="links"><a href="https://github.com/docssam1/gfield-smart-canva" target="_blank" rel="noopener">저장소</a></div>
+</div>
+
+<div class="card" data-text="math-tutor-v2 수학 튜터 python">
+  <div class="head"><a class="name" href="https://github.com/docssam1/math-tutor-v2" target="_blank" rel="noopener">math-tutor-v2</a>
+    <span class="pill dormant">1/28</span><span class="pill lang">Python</span></div>
+  <div class="desc">수학 튜터 v2</div>
+  <div class="commit"><div class="msg">Add files via upload</div>
+    <div class="when">2026-01-28 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/math-tutor-v2" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/math-tutor-v2/commit/c4732bfab3730db7d968c562965ea1a03257283a" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+<div class="card" data-text="math-tutor 수학 튜터 python">
+  <div class="head"><a class="name" href="https://github.com/docssam1/math-tutor" target="_blank" rel="noopener">math-tutor</a>
+    <span class="pill dormant">1/12</span><span class="pill lang">Python</span></div>
+  <div class="desc">수학 튜터 v1 (v2로 대체된 듯)</div>
+  <div class="commit"><div class="msg">Add files via upload</div>
+    <div class="when">2026-01-12 · docssam1</div></div>
+  <div class="links"><a href="https://github.com/docssam1/math-tutor" target="_blank" rel="noopener">저장소</a>
+    <a href="https://github.com/docssam1/math-tutor/commit/ce0dc11bed03f4be8d6294ba85850723cddc6714" target="_blank" rel="noopener">마지막 커밋</a></div>
+</div>
+
+</div>
+
+<p class="note">
+· "🔗 홈페이지" 링크는 실제로 접속해 정상 응답을 확인한 배포 주소입니다. 배포가 안 됐거나 확인이 안 되는 저장소는 "배포된 홈페이지 없음"으로 표시했습니다.<br>
+· lete-on, ad처럼 저장소 하나에 여러 하위 서비스(폴더)가 함께 배포된 경우는 폴더별로 별도 카드로 나눠 정리했습니다.<br>
+· 이 페이지는 ad 저장소의 dashboard 폴더에 올려 ad.gfieldacademy.net/dashboard/ 로 공개됩니다. 최신 커밋 반영은 Claude에게 "프로젝트 대시보드 업데이트해줘"라고 요청하세요.
+</p>
+</div>
+
+<script>
+const q = document.getElementById('q');
+q.addEventListener('input', () => {
+  const term = q.value.trim().toLowerCase();
+  document.querySelectorAll('.card').forEach(c => {
+    const hay = (c.getAttribute('data-text') + ' ' + c.textContent).toLowerCase();
+    c.classList.toggle('hidden', term !== '' && !hay.includes(term));
+  });
+  document.querySelectorAll('h2.group').forEach(h => {
+    const grid = h.nextElementSibling;
+    const visible = grid.querySelectorAll('.card:not(.hidden)').length;
+    h.classList.toggle('hidden', visible === 0);
+    grid.classList.toggle('hidden', visible === 0);
+  });
+});
+</script>
+</body>
+</html>
