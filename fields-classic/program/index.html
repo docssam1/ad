@@ -1,141 +1,597 @@
 <!DOCTYPE html>
-<html lang="ko"><head>
+<html lang="ko" class="dark">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>필즈 더 클래식 대비 | 지필드 영재교육</title>
+<title>필즈 더 클래식 대비 과정 | 지필드 영재교육</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
-@page{size:A4;margin:0}
-body{margin:0;padding:0;font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;background:#525659;display:flex;flex-direction:column;align-items:center;gap:20px;padding:20px 0}
-.page{width:210mm;height:297mm;background:white;position:relative;box-sizing:border-box;box-shadow:0 5px 15px rgba(0,0,0,.3);page-break-after:always;overflow:hidden}
-@media print{body{background:white;padding:0;gap:0;display:block}.page{box-shadow:none;margin:0;page-break-after:always}}
+:root{--bg:#02050b;--surface:#080d14;--gold:#d4af37;--gold2:#f8dd83;--gold-glow:rgba(212,175,55,.2);--white:#f0ece2;--muted:#7a8a9a;--border:rgba(212,175,55,.15);--border2:rgba(255,255,255,.07);--navy:#0d1b2a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%;background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--white);overflow-x:hidden}
+body.in-viewer{overflow:hidden}
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 20% 20%,rgba(212,175,55,.1),transparent 40%),var(--bg)}
+#gate.hidden{display:none}
+.gate-card{width:min(420px,95vw);background:rgba(8,13,20,.97);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.7)}
+.gate-bar{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold))}
+.gate-body{padding:32px 28px 24px;text-align:center}
+.gate-logo{width:56px;border-radius:10px;margin:0 auto 14px;display:block;filter:drop-shadow(0 0 12px var(--gold-glow))}
+.gate-tag{font-size:10px;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:6px}
+.gate-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--white);margin-bottom:6px}
+.gate-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.gate-input{width:100%;height:46px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;color:var(--white);font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;padding:0 14px;text-align:center;outline:none;margin-bottom:8px;transition:border-color .2s}
+.gate-input:focus{border-color:var(--gold)}
+.gate-input::placeholder{color:rgba(255,255,255,.2);font-weight:400;font-size:12px}
+.gate-btn{width:100%;height:46px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;border:none;border-radius:11px;cursor:pointer;margin-top:4px}
+.gate-btn:active{transform:scale(.97)}
+.gate-error{min-height:18px;color:#e74c3c;font-size:12px;font-weight:700;margin-top:6px}
+.gate-note{font-size:10px;color:rgba(255,255,255,.25);margin-top:12px;line-height:1.6}
+#app{display:none;min-height:100vh;flex-direction:column}
+#app.show{display:flex}
+.app-header{position:sticky;top:0;z-index:100;padding:10px 20px;background:rgba(2,5,11,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-logo{width:90px;filter:brightness(0) invert(1);opacity:.9}
+.header-sep{width:1px;height:22px;background:var(--border)}
+.header-badge{font-size:10px;font-weight:900;color:var(--gold);background:rgba(212,175,55,.08);border:1px solid var(--border);padding:3px 10px;border-radius:20px;letter-spacing:.05em}
+.header-right{display:flex;align-items:center;gap:8px}
+.header-student{font-size:12px;color:var(--muted)}
+.header-student b{color:var(--gold)}
+.header-logout{background:none;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.header-logout:hover{border-color:var(--gold);color:var(--gold)}
+#dashboard{flex:1;overflow-y:auto;padding:0 20px 60px}
+.dash-hero{padding:36px 0 28px;text-align:center;position:relative}
+.dash-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(212,175,55,.05),transparent 70%);pointer-events:none}
+.dash-eyebrow{font-size:10px;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:10px}
+.dash-title{font-family:'DM Serif Display',serif;font-size:clamp(22px,4vw,38px);color:var(--white);line-height:1.25;margin-bottom:6px}
+.dash-title em{font-style:italic;color:var(--gold)}
+.dash-sub{font-size:13px;color:var(--muted)}
+.products-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.product-card{position:relative;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:20px 16px 16px;display:flex;flex-direction:column;gap:14px;transition:all .3s cubic-bezier(.22,1,.36,1);overflow:hidden;cursor:pointer}
+.product-card.unlocked{border-color:rgba(212,175,55,.2)}
+.product-card.unlocked:hover{transform:translateY(-5px);box-shadow:0 24px 48px rgba(0,0,0,.5),0 0 0 1px rgba(212,175,55,.25);border-color:rgba(212,175,55,.35)}
+.product-card.locked{opacity:.45;cursor:not-allowed}
+.lock-icon{position:absolute;top:12px;right:12px;font-size:14px;opacity:.6}
+.book-wrap{perspective:700px;height:150px;display:flex;align-items:center;justify-content:center}
+.book-3d{width:90px;height:128px;position:relative;transform-style:preserve-3d;transform:rotateY(-16deg) rotateX(3deg);transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.product-card.unlocked:hover .book-3d{transform:rotateY(-26deg) rotateX(7deg) translateY(-4px)}
+.book-front{position:absolute;inset:0;border-radius:2px 7px 7px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px;box-shadow:4px 8px 24px rgba(0,0,0,.6)}
+.book-spine{position:absolute;top:0;left:0;width:10px;height:100%;border-radius:2px 0 0 2px;transform:rotateY(-90deg) translateX(-5px);transform-origin:left center}
+.book-shadow{position:absolute;bottom:-10px;left:5%;right:5%;height:10px;background:radial-gradient(ellipse,rgba(0,0,0,.5),transparent 70%);filter:blur(3px)}
+.book-icon{font-size:26px}
+.book-label{font-size:8px;font-weight:900;text-align:center;line-height:1.3;letter-spacing:.05em}
+.theme-concept .book-front{background:linear-gradient(160deg,#1a3a5c,#0d2040)}.theme-concept .book-spine{background:#0f2535}.theme-concept .book-label{color:#93c5fd}
+.theme-killer .book-front{background:linear-gradient(160deg,#4a1a1a,#2d0a0a)}.theme-killer .book-spine{background:#380f0f}.theme-killer .book-label{color:#fca5a5}
+.theme-final .book-front{background:linear-gradient(160deg,#1a3a1a,#0a2010)}.theme-final .book-spine{background:#102510}.theme-final .book-label{color:#86efac}
+.theme-mock .book-front{background:linear-gradient(160deg,#2a1a4a,#170a30)}.theme-mock .book-spine{background:#1a1030}.theme-mock .book-label{color:#d8b4fe}
+.theme-archive .book-front{background:linear-gradient(160deg,#1a1a0a,#0f0f05)}.theme-archive .book-spine{background:#111108}.theme-archive .book-label{color:var(--gold)}
+.product-badge{font-size:9px;font-weight:900;letter-spacing:.1em;color:var(--gold);background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.18);padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:6px}
+.product-name{font-size:13px;font-weight:900;color:var(--white);line-height:1.35;margin-bottom:4px}
+.product-desc{font-size:11px;color:var(--muted);line-height:1.55}
+.product-action{margin-top:auto;padding-top:10px;border-top:1px solid var(--border2)}
+.product-btn{width:100%;padding:9px;border-radius:9px;font-size:11px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:opacity .15s}
+.product-btn.open{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy)}
+.product-btn.locked{background:rgba(255,255,255,.04);color:rgba(255,255,255,.25);cursor:not-allowed;border:1px solid rgba(255,255,255,.06)}
+/* ── 3D 책장 챕터 뷰 ── */
+.bookshelf-scene{padding:20px 0 40px;width:100%}
+.bookshelf-row{display:flex;gap:clamp(12px,3vw,28px);justify-content:center;flex-wrap:wrap;align-items:flex-end;padding:0 10px}
+.shelf-slot{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;flex:0 0 auto}
+.shelf-book-wrap{perspective:800px}
+.shelf-book-3d{width:clamp(82px,13vw,118px);height:clamp(116px,18vw,166px);position:relative;transform-style:preserve-3d;transform:rotateY(-22deg) rotateX(4deg);transition:transform .45s cubic-bezier(.22,1,.36,1),filter .45s ease;filter:drop-shadow(0 16px 28px rgba(0,0,0,.7))}
+.shelf-slot:hover .shelf-book-3d{transform:rotateY(-6deg) rotateX(1deg) translateY(-14px) scale(1.06);filter:drop-shadow(0 28px 40px rgba(212,175,55,.35)) drop-shadow(0 0 20px rgba(212,175,55,.15))}
+.shelf-slot.is-final:hover .shelf-book-3d{filter:drop-shadow(0 28px 40px rgba(212,175,55,.55)) drop-shadow(0 0 32px rgba(212,175,55,.35))}
+.shelf-book-front{position:absolute;inset:0;border-radius:2px 7px 7px 2px;overflow:hidden;box-shadow:inset -3px 0 8px rgba(0,0,0,.4)}
+.shelf-book-front img{width:100%;height:100%;object-fit:cover;display:block}
+.shelf-book-spine{position:absolute;top:0;left:0;width:12px;height:100%;background:linear-gradient(to right,#020408,#0a1628);border-radius:2px 0 0 2px;transform:rotateY(-90deg) translateX(-6px);transform-origin:left center}
+.shelf-book-shadow{position:absolute;bottom:-14px;left:8%;right:8%;height:14px;background:radial-gradient(ellipse,rgba(0,0,0,.7),transparent 70%);filter:blur(6px)}
+.shelf-label{text-align:center;max-width:clamp(82px,13vw,118px)}
+.shelf-vol-text{font-size:9px;font-weight:900;color:var(--gold);letter-spacing:.12em;margin-bottom:3px}
+.shelf-title-text{font-size:clamp(11px,2vw,13px);font-weight:900;color:var(--white);line-height:1.3}
+.shelf-videos{font-size:10px;color:var(--muted);margin-top:3px}
+.shelf-rail{width:100%;height:10px;background:linear-gradient(to bottom,#1a2d44,#080f1a);border-radius:5px;margin-top:20px;box-shadow:0 10px 30px rgba(0,0,0,.6),0 -1px 0 rgba(212,175,55,.1)}
+.chapter-back-fancy{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:rgba(255,255,255,.6);font-size:12px;font-weight:700;padding:8px 16px;border-radius:10px;cursor:pointer;margin-bottom:28px;font-family:'Noto Sans KR',sans-serif;transition:all .2s}
+.chapter-back-fancy:hover{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.06)}
+.shelf-section-title{font-family:'DM Serif Display',serif;font-size:clamp(18px,3vw,24px);color:var(--white);text-align:center;margin-bottom:6px}
+.shelf-section-title em{color:var(--gold);font-style:italic}
+.shelf-section-sub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:32px}
+@media(max-width:500px){.bookshelf-row{gap:8px}.shelf-label{max-width:72px}}
+#commentModal{display:none;position:fixed;inset:0;z-index:500;padding:20px;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);align-items:center;justify-content:center}
+#commentModal.show{display:flex}
+.modal-card{width:min(480px,95vw);background:rgba(8,13,20,.98);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.8);animation:modalIn .25s cubic-bezier(.22,1,.36,1)}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(16px)}to{opacity:1;transform:none}}
+.modal-bar{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold))}
+.modal-body{padding:24px 22px 20px}
+.modal-vol{font-size:10px;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:6px}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);margin-bottom:14px}
+.modal-topics{background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.modal-topics-head{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:.08em;margin-bottom:8px}
+.modal-topics ul{list-style:none}
+.modal-topics li{font-size:12px;color:var(--white);line-height:1.8;padding-left:14px;position:relative}
+.modal-topics li::before{content:'▸';position:absolute;left:0;color:var(--gold);font-size:10px}
+.modal-comment{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:12px 14px;margin-bottom:18px}
+.modal-comment-head{font-size:10px;font-weight:900;color:var(--gold);margin-bottom:6px}
+.modal-comment p{font-size:12px;color:rgba(255,255,255,.75);line-height:1.75}
+.modal-actions{display:flex;gap:10px}
+.modal-close{flex:1;padding:12px;border-radius:10px;border:1px solid var(--border2);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);font-size:13px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer}
+.modal-go{flex:2;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;cursor:pointer}
+.modal-go:active{transform:scale(.97)}
+#rotateHint{display:none;position:fixed;inset:0;z-index:9998;background:linear-gradient(135deg,#02050b,#0d1b2a);flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px}
+#rotateHint.show{display:flex}
+.rotate-icon{font-size:64px;animation:rotateAnim 1.5s ease-in-out infinite}
+@keyframes rotateAnim{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
+.rotate-title{font-size:18px;font-weight:900;color:var(--gold2)}
+.rotate-desc{font-size:13px;color:var(--muted);line-height:1.7}
+#viewer{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);flex-direction:column}
+#viewer.show{display:flex}
+.viewer-header{padding:8px 12px;background:rgba(2,5,11,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
+.viewer-back{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.05);border:1px solid var(--border2);color:rgba(255,255,255,.65);font-size:11px;font-weight:700;font-family:'Noto Sans KR',sans-serif;padding:5px 10px;border-radius:7px;cursor:pointer}
+.viewer-back:hover{border-color:var(--gold);color:var(--gold)}
+.viewer-title{font-size:12px;font-weight:900;color:var(--gold2);flex:1;text-align:center}
+.viewer-acts{display:flex;gap:6px}
+.v-btn{background:rgba(255,255,255,.05);border:1px solid var(--border2);color:rgba(255,255,255,.65);font-size:11px;font-weight:700;font-family:'Noto Sans KR',sans-serif;padding:5px 10px;border-radius:7px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center}
+.v-btn:hover{border-color:var(--gold);color:var(--gold)}
+.v-btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none}
+.viewer-tabs{padding:5px 8px;background:rgba(8,13,20,.92);border-bottom:1px solid var(--border);display:flex;gap:4px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.viewer-tabs::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:5px 13px;border-radius:8px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:rgba(255,255,255,.55);font-size:11px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;white-space:nowrap;transition:all .14s}
+.tab-btn:hover{border-color:rgba(212,175,55,.3);color:var(--gold2)}
+.tab-btn.active{color:var(--navy);border-color:transparent;font-weight:900}
+.tab-btn[data-type="check"].active{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.tab-btn[data-type="concept"].active{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.tab-btn[data-type="practice"].active{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.tab-btn[data-type="final"].active{background:linear-gradient(135deg,var(--gold),var(--gold2))}
+.tab-btn:not(.active)[data-type="check"]{color:rgba(245,87,108,.7)}
+.tab-btn:not(.active)[data-type="concept"]{color:rgba(79,172,254,.7)}
+.tab-btn:not(.active)[data-type="practice"]{color:rgba(67,233,123,.7)}
+.tab-btn:not(.active)[data-type="final"]{color:var(--gold)}
+.viewer-body{flex:1;display:grid;overflow:hidden;min-height:0}
+.viewer-body.has-video{grid-template-columns:42% 58%}
+.viewer-body.no-video{grid-template-columns:1fr}
+.vpanel{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;min-height:0}
+.vpanel-head{padding:7px 11px;background:linear-gradient(135deg,var(--navy),#132030);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.vpanel-title{font-size:12px;font-weight:900;color:var(--gold2)}
+.vpanel-meta{font-size:10px;color:var(--muted)}
+.vframe-box{position:relative;width:100%;aspect-ratio:16/9;background:#000;flex-shrink:0}
+#videoIframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.bpanel{overflow:hidden;min-height:0;display:flex;flex-direction:column;background:#525659}
+#pdfIframe{flex:1;width:100%;border:none;min-height:0}
+@media print{
+  #gate,#app,#rotateHint,#commentModal,#viewer .viewer-header,#viewer .viewer-tabs,#viewer .vpanel,.sec-toast{display:none!important}
+  #viewer{position:relative!important;display:block!important}.viewer-body{display:block!important}
+  .bpanel{overflow:visible!important;background:white!important;display:block!important}
+  #pdfIframe{width:100%;height:297mm;display:block}
+  @page{margin:0}
+}
+@media(max-height:500px) and (orientation:landscape){.viewer-header{padding:5px 10px}.viewer-tabs{padding:3px 8px}.tab-btn{padding:4px 10px;font-size:10px}}
+@media(max-width:600px){.products-grid{grid-template-columns:1fr 1fr}#dashboard{padding:0 12px 40px}}
+@media(max-width:380px){.products-grid{grid-template-columns:1fr}}
+.sec-toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:99999;display:none;padding:9px 16px;border-radius:999px;background:rgba(2,5,11,.96);color:var(--gold2);font-size:11px;font-weight:800;border:1px solid var(--border)}
+.sec-toast.show{display:block}
+/* ── 재원생 타임라인 뷰 ── */
+.timeline-wrap{max-width:620px;margin:0 auto;padding:10px 0 40px;position:relative}
+.tl-item{position:relative;padding-left:64px;padding-bottom:26px}
+.tl-item:last-child{padding-bottom:0}
+.tl-line{position:absolute;left:26px;top:6px;bottom:-6px;width:2px;background:linear-gradient(to bottom,var(--gold),rgba(212,175,55,.15))}
+.tl-item:last-child .tl-line{display:none}
+.tl-item.locked .tl-line{background:rgba(255,255,255,.08)}
+.tl-node{position:absolute;left:10px;top:2px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;z-index:2;border:2px solid;transition:all .3s}
+.tl-item.done .tl-node{background:var(--grad-gold);border-color:var(--gold);color:var(--navy)}
+.tl-item.current .tl-node{background:var(--grad-brand);border-color:var(--gold2);color:#fff;box-shadow:0 0 0 5px rgba(212,175,55,.18);animation:pulseNode 2s ease-in-out infinite}
+.tl-item.locked .tl-node{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.25)}
+@keyframes pulseNode{0%,100%{box-shadow:0 0 0 5px rgba(212,175,55,.18)}50%{box-shadow:0 0 0 9px rgba(212,175,55,.06)}}
+.tl-card{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:15px 17px;transition:all .25s;cursor:pointer}
+.tl-item.done .tl-card{border-color:rgba(212,175,55,.22)}
+.tl-item.current .tl-card{border-color:rgba(212,175,55,.4);box-shadow:0 12px 32px rgba(0,0,0,.4),0 0 0 1px rgba(212,175,55,.2);background:linear-gradient(160deg,rgba(212,175,55,.06),var(--surface))}
+.tl-item.locked .tl-card{opacity:.5;cursor:not-allowed}
+.tl-item.done .tl-card:hover,.tl-item.current .tl-card:hover{transform:translateX(4px)}
+.tl-step{font-size:9px;font-weight:900;letter-spacing:.14em;color:var(--gold);margin-bottom:4px}
+.tl-name{font-size:15px;font-weight:900;color:var(--white);margin-bottom:3px}
+.tl-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.tl-status{display:inline-block;margin-top:8px;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px}
+.tl-status.done{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid rgba(212,175,55,.25)}
+.tl-status.current{background:var(--grad-brand);color:#fff}
+.tl-status.locked{background:rgba(255,255,255,.04);color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.08)}
+.view-toggle{display:flex;justify-content:center;margin-bottom:20px}
+.view-toggle button{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;padding:7px 16px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.view-toggle button:first-child{border-radius:8px 0 0 8px}
+.view-toggle button:last-child{border-radius:0 8px 8px 0}
+.view-toggle button.active{background:var(--grad-gold);color:var(--navy);border-color:var(--gold)}
 </style>
-<style id="viewerStyle">
-:root{--g-navy:#0d1b2a;--g-navy2:#061220;--g-gold:#d4af37;--g-gold2:#f8dd83;--g-ink:#0f172a;--g-muted:#64748b;--g-bg:#eef3f8}
-*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-html{scroll-behavior:smooth}
-body{user-select:none;-webkit-user-select:none;overscroll-behavior:none}
-body:not(.authorized) .page{display:none!important}
-body.authorized{display:block;min-height:100vh;background:radial-gradient(circle at top left,rgba(212,175,55,.2),transparent 32vw),radial-gradient(circle at top right,rgba(13,27,42,.4),transparent 30vw),linear-gradient(135deg,#0d1b2a 0%,#1a2e44 45%,#0a1520 100%);padding:0}
-#accessGate{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;padding:26px;box-sizing:border-box;color:#fff;background:radial-gradient(circle at 15% 18%,rgba(212,175,55,.25),transparent 21rem),radial-gradient(circle at 82% 10%,rgba(13,27,42,.8),transparent 24rem),linear-gradient(145deg,#02050b 0%,#0d1b2a 52%,#020408 100%)}
-body.authorized #accessGate{display:none!important}
-.gate-card{position:relative;width:min(480px,94vw);border-radius:24px;overflow:hidden;background:rgba(255,255,255,.97);color:var(--g-ink);box-shadow:0 28px 90px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.72)}
-.gate-card::before{content:"";position:absolute;inset:0 0 auto;height:6px;background:linear-gradient(90deg,var(--g-gold),var(--g-gold2),var(--g-gold))}
-.gate-inner{padding:36px 30px 28px;text-align:center}
-.gate-logo{width:72px;height:auto;border-radius:12px;margin:0 auto 14px;display:block;filter:drop-shadow(0 4px 12px rgba(212,175,55,.3))}
-.gate-kicker{font-size:11px;font-weight:900;letter-spacing:3px;color:var(--g-gold);margin-bottom:6px}
-.gate-title{margin:0 0 6px;font-size:22px;font-weight:950;letter-spacing:-1px;color:#111}
-.gate-desc{margin:0 auto 22px;color:#526071;font-size:13.5px;line-height:1.65;word-break:keep-all}
-.gate-form{display:grid;gap:10px}
-.gate-form input{width:100%;height:50px;box-sizing:border-box;border:2px solid #d7dee9;border-radius:14px;padding:0 16px;text-align:center;outline:none;font-size:17px;font-weight:800;letter-spacing:-.3px;background:#fff;font-family:'Pretendard',sans-serif}
-.gate-form input:focus{border-color:var(--g-gold);box-shadow:0 0 0 4px rgba(212,175,55,.15)}
-.gate-form input::placeholder{color:#bbb;font-weight:500;font-size:14px}
-.gate-button{height:50px;border:0;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,var(--g-navy),#1a2e44);color:var(--g-gold2);font-size:16px;font-weight:950;font-family:'Pretendard',sans-serif;letter-spacing:-.3px;box-shadow:0 8px 24px rgba(13,27,42,.3);border:1px solid rgba(212,175,55,.3)}
-.gate-button:active{transform:scale(.97)}
-.gate-error{min-height:22px;color:#dc2626;font-size:13px;font-weight:700;margin-top:2px}
-.gate-products{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 20px;text-align:left}
-.gate-product{background:#f8f9fc;border:1px solid #e5e9f0;border-radius:10px;padding:10px 12px}
-.gate-product .p-icon{font-size:18px;margin-bottom:4px}
-.gate-product .p-name{font-size:11px;font-weight:800;color:var(--g-navy);line-height:1.3}
-.gate-product .p-tag{font-size:10px;color:var(--g-gold);font-weight:700;margin-top:2px}
-.security-note{margin-top:10px;color:#9ca3b0;font-size:11px;font-weight:600;line-height:1.5}
-#studentApp{display:none}
-body.authorized #studentApp{display:flex;flex-direction:column;min-height:100vh}
-.premium-header{position:sticky;top:0;z-index:9000;padding:10px 16px;background:rgba(13,27,42,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,.2);box-shadow:0 4px 20px rgba(0,0,0,.3)}
-.header-grid{max-width:1480px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
-.brand-cluster{display:flex;align-items:center;gap:10px}
-.brand-logo{width:120px;height:auto;display:block;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,.3))}
-.brand-divider{width:1px;height:28px;background:rgba(212,175,55,.3)}
-.product-badge{background:linear-gradient(135deg,var(--g-gold),var(--g-gold2));color:var(--g-navy);font-size:11px;font-weight:900;padding:4px 12px;border-radius:20px;white-space:nowrap;letter-spacing:.02em}
-.hero-copy{text-align:right}
-.slogan{font-size:clamp(13px,1.4vw,18px);font-weight:900;color:var(--g-gold2);letter-spacing:-.5px}
-.subline{margin-top:2px;font-size:clamp(11px,.9vw,14px);color:rgba(255,255,255,.6);font-weight:700}
-.subline .student-name{color:var(--g-gold);background:rgba(212,175,55,.1);padding:1px 8px;border-radius:999px;border:1px solid rgba(212,175,55,.3)}
-.header-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end}
-.top-button{border:1px solid rgba(212,175,55,.3);border-radius:10px;cursor:pointer;padding:8px 12px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.8);font-size:12px;font-weight:800;white-space:nowrap;font-family:'Pretendard',sans-serif}
-.top-button:hover{background:rgba(212,175,55,.1);color:var(--g-gold2)}
-.top-button.primary{color:var(--g-navy);border:0;background:linear-gradient(135deg,var(--g-gold),var(--g-gold2))}
-.viewer-main{width:min(1480px,calc(100vw - 28px));margin:14px auto 24px;display:flex;flex-direction:column;gap:12px}
-.viewer-menu{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding:10px;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.15);border-radius:18px;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-.lesson-button{min-height:48px;border:1px solid rgba(212,175,55,.2);border-radius:12px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);cursor:pointer;font-weight:800;font-size:12.5px;line-height:1.25;padding:9px 8px;font-family:'Pretendard',sans-serif;transition:all .15s}
-.lesson-button:hover{transform:translateY(-1px);background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.4);color:var(--g-gold2)}
-.lesson-button.active{color:var(--g-navy);border-color:transparent;background:linear-gradient(135deg,var(--g-gold),var(--g-gold2));font-weight:900}
-.lesson-button.utility:not(.active){background:rgba(255,255,255,.03);color:rgba(255,255,255,.5)}
-.study-shell{display:grid;grid-template-columns:minmax(400px,.9fr) minmax(500px,1.1fr);gap:14px;min-height:calc(100vh - 200px)}
-.video-pane,.book-pane{border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.15);box-shadow:0 8px 30px rgba(0,0,0,.3);overflow:hidden}
-.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px;background:linear-gradient(135deg,var(--g-navy),#1a2e44);border-bottom:1px solid rgba(212,175,55,.2)}
-.panel-title{font-size:14px;font-weight:900;letter-spacing:-.3px;color:var(--g-gold2);word-break:keep-all}
-.panel-meta{font-size:11px;font-weight:700;color:rgba(255,255,255,.5)}
-.video-frame-box{position:relative;width:100%;aspect-ratio:16/9;background:#02050b}
-#lessonVideoFrame{position:absolute;inset:0;width:100%;height:100%;border:0}
-.video-caption{padding:14px 16px;color:rgba(255,255,255,.7);font-size:12.5px;line-height:1.65;font-weight:600;word-break:keep-all;background:rgba(0,0,0,.2)}
-.video-caption b{color:var(--g-gold)}
-.book-pane{height:calc(100vh - 200px);overflow:auto;padding:16px 0 30px;box-sizing:border-box}
-.book-pane .page{display:block!important;margin:0 auto 22px!important;box-shadow:0 8px 30px rgba(0,0,0,.4);zoom:.56}
-.student-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-34deg);font-size:46pt;font-weight:950;color:rgba(13,27,42,.12);white-space:nowrap;letter-spacing:1px;z-index:2;pointer-events:none;user-select:none;mix-blend-mode:multiply}
-.security-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:1000000;display:none;padding:11px 18px;border-radius:999px;background:rgba(13,27,42,.95);color:var(--g-gold2);font-size:12px;font-weight:800;box-shadow:0 6px 20px rgba(0,0,0,.3);border:1px solid rgba(212,175,55,.3)}
-.security-toast.show{display:block}
-.rotate-hint{display:none;position:fixed;inset:0;z-index:1000001;background:linear-gradient(135deg,#02050b,#0d1b2a);color:#fff;align-items:center;justify-content:center;text-align:center;padding:30px;box-sizing:border-box}
-.rotate-hint .box{max-width:300px;line-height:1.65;font-weight:800}
-.rotate-hint strong{display:block;font-size:20px;margin-bottom:8px;color:var(--g-gold)}
-#studentApp.cinema-mode .viewer-main{display:grid;grid-template-columns:160px minmax(0,1fr);gap:14px;align-items:start}
-#studentApp.cinema-mode .viewer-menu{position:sticky;top:72px;grid-template-columns:1fr;align-self:start;max-height:calc(100vh - 90px);overflow:auto}
-#studentApp.cinema-mode .study-shell{grid-template-columns:1fr;min-height:calc(100vh - 90px)}
-#studentApp.cinema-mode .book-pane{display:none!important}
-#studentApp.cinema-mode .video-frame-box{aspect-ratio:16/9;max-height:calc(100vh - 200px)}
-.book-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:400px;color:rgba(255,255,255,.4);text-align:center;gap:12px}
-.book-placeholder .ph-icon{font-size:48px;opacity:.5}
-.book-placeholder .ph-text{font-size:14px;font-weight:700;line-height:1.6}
-@media(min-width:1450px){.book-pane .page{zoom:.62}}
-@media(max-width:1100px){.header-grid{grid-template-columns:1fr;gap:6px;text-align:center}.brand-cluster,.header-actions{justify-content:center}.hero-copy{text-align:center}.viewer-menu{grid-template-columns:repeat(4,minmax(0,1fr))}.study-shell{grid-template-columns:1fr 1fr}.book-pane .page{zoom:.46}}
-@media(max-width:860px) and (orientation:portrait){body.authorized .rotate-hint{display:flex}}
-@media print{body{background:#fff!important;padding:0!important;display:block!important}#accessGate,.premium-header,.viewer-menu,.video-pane,.rotate-hint,.security-toast,.no-print{display:none!important}#studentApp,.viewer-main,.study-shell,.book-pane{display:block!important;width:auto!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;overflow:visible!important;background:#fff!important;border:0!important;box-shadow:none!important}.book-pane .page,.page{zoom:1!important;width:210mm!important;height:297mm!important;margin:0!important;box-shadow:none!important;page-break-after:always!important;overflow:hidden!important}.student-watermark{color:rgba(13,27,42,.14)!important;font-size:48pt!important;z-index:2!important}}
-</style>
-</head><body>
-<div id="accessGate" class="no-print">
+<script src="../data.js"></script>
+</head>
+<body>
+<div id="gate">
   <div class="gate-card">
-    <div class="gate-inner">
+    <div class="gate-bar"></div>
+    <div class="gate-body">
       <img class="gate-logo" src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="G-FIELD">
-      <div class="gate-kicker">FIELDS THE CLASSIC · ONLINE PROGRAM</div>
+      <div class="gate-tag">FIELDS THE CLASSIC · ONLINE PROGRAM</div>
       <div class="gate-title">필즈 더 클래식 대비 과정</div>
-      <p class="gate-desc">구매하신 프로그램의 승인번호와 학생 이름을 입력하면<br>전용 강의와 교재가 열립니다.</p>
-      <div class="gate-products">
-        <div class="gate-product"><div class="p-icon">📘</div><div class="p-name">TOP SECRET 개념 완성</div><div class="p-tag">FC-CONCEPT</div></div>
-        <div class="gate-product"><div class="p-icon">🎯</div><div class="p-name">킬러문항 완전 해제</div><div class="p-tag">FC-KILLER</div></div>
-        <div class="gate-product"><div class="p-icon">📝</div><div class="p-name">파이널 모의고사 6회</div><div class="p-tag">FC-FINAL</div></div>
-        <div class="gate-product"><div class="p-icon">🔍</div><div class="p-name">온라인 진단 모의고사</div><div class="p-tag">FC-MOCK</div></div>
-      </div>
-      <div class="gate-form">
-        <input id="authCodeInput" type="text" autocomplete="off" placeholder="승인번호 (예: FC-CONCEPT-001)" style="letter-spacing:1px;font-size:15px">
-        <input id="studentNameInput" type="text" autocomplete="off" inputmode="text" placeholder="학생 이름">
-        <button class="gate-button" type="button" onclick="GFieldAccess.login()">프로그램 입장하기 →</button>
-      </div>
-      <div id="gateError" class="gate-error"></div>
-      <div class="security-note">승인번호는 구매 후 원장님께 카카오톡으로 전달됩니다.<br>이름은 인쇄 워터마크에만 사용됩니다.</div>
+      <p class="gate-desc">승인번호와 학생 이름을 입력하면<br>구매하신 프로그램이 열립니다.</p>
+      <input class="gate-input" id="gCode" type="text" autocomplete="off" placeholder="승인번호">
+      <input class="gate-input" id="gName" type="text" autocomplete="off" placeholder="학생 이름">
+      <button class="gate-btn" onclick="GF.login()">입장하기 →</button>
+      <div class="gate-error" id="gErr"></div>
+      <p class="gate-note">승인번호는 구매 후 카카오톡으로 전달됩니다.<br>이름은 교재 워터마크에만 사용됩니다.</p>
     </div>
   </div>
 </div>
-<div class="rotate-hint no-print"><div class="box"><strong>📱 가로 보기 권장</strong>영상과 교재를 동시에 보기 위해<br>휴대폰을 가로로 돌려 주세요.</div></div>
-<div id="securityToast" class="security-toast no-print">🔒 보안이 적용된 학생 전용 자료입니다.</div>
+<div id="commentModal">
+  <div class="modal-card">
+    <div class="modal-bar"></div>
+    <div class="modal-body">
+      <div class="modal-vol" id="modalVol"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-topics">
+        <div class="modal-topics-head">이번 회차 학습 내용</div>
+        <ul id="modalTopics"></ul>
+      </div>
+      <div class="modal-comment" id="modalCommentBox" style="display:none">
+        <div class="modal-comment-head">💬 원장님 코멘트</div>
+        <p id="modalComment"></p>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-close" onclick="GF.closeModal()">닫기</button>
+        <button class="modal-go" onclick="GF.startFromModal()">학습 시작 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="rotateHint">
+  <div class="rotate-icon">📱</div>
+  <div class="rotate-title">가로로 돌려주세요</div>
+  <div class="rotate-desc">뷰어는 가로 화면에서만 이용할 수 있습니다.</div>
+</div>
+<div id="app">
+  <header class="app-header">
+    <div class="header-left">
+      <img class="header-logo" src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="G-FIELD">
+      <div class="header-sep"></div>
+      <span class="header-badge" id="headerBadge">필즈 대비 과정</span>
+    </div>
+    <div class="header-right">
+      <span class="header-student"><b id="hName"></b> 학생</span>
+      <button class="header-logout" onclick="GF.logout()">로그아웃</button>
+    </div>
+  </header>
+  <div id="dashboard">
+    <div class="dash-hero">
+      <div class="dash-eyebrow">GFIELD GIFTED EDUCATION</div>
+      <h1 class="dash-title" id="dashTitle">필즈 더 클래식<br><em>대비 과정 서재</em></h1>
+      <p class="dash-sub" id="dashSub">구매하신 프로그램을 선택해 학습을 시작하세요</p>
+    </div>
+    <div id="mainGrid" class="products-grid"></div>
+    <div id="timelineView" style="display:none"></div>
+    <div id="chapterView" style="display:none;padding:20px 0"></div>
+  </div>
+</div>
+<div id="viewer">
+  <div class="viewer-header">
+    <button class="viewer-back" onclick="GF.closeViewer()">← 목록으로</button>
+    <span class="viewer-title" id="vTitle"></span>
+    <div class="viewer-acts">
+      <button class="v-btn" onclick="window.print()">🖨 인쇄</button>
+      <a class="v-btn" id="pdfOpenBtn" target="_blank" rel="noopener" style="display:none">📄 교재</a>
+      <button class="v-btn gold" id="vYtBtn" onclick="GF.openYt()" style="display:none">▶ 새 창</button>
+    </div>
+  </div>
+  <div class="viewer-tabs" id="vTabs"></div>
+  <div class="viewer-body has-video" id="vBody">
+    <div class="vpanel" id="vPanel">
+      <div class="vpanel-head">
+        <span class="vpanel-title" id="vPanelTitle">강의</span>
+        <span class="vpanel-meta" id="vPanelMeta"></span>
+      </div>
+      <div class="vframe-box">
+        <iframe id="videoIframe" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="bpanel" id="bPanel">
+      <iframe id="pdfIframe" title="교재"></iframe>
+    </div>
+  </div>
+</div>
+<div class="sec-toast" id="secToast">🔒 학생 전용 보안 자료입니다.</div>
 <script>
 (function(){"use strict";
-const PRODUCTS={"FC-CONCEPT":{name:"TOP SECRET 개념 완성",icon:"📘",lessons:[{key:"c1",label:"1강 · 공간지각",title:"공간지각력 완성",page:1,videoUrl:""},{key:"c2",label:"2강 · 평면도형",title:"평면도형 완성",page:10,videoUrl:""},{key:"c3",label:"3강 · 수와연산",title:"수와 연산 완성",page:20,videoUrl:""},{key:"c4",label:"4강 · 논리추리",title:"논리추리 완성",page:30,videoUrl:""},{key:"c5",label:"5강 · 경우의수",title:"경우의 수 완성",page:40,videoUrl:""},{key:"c6",label:"6강 · 문제해결",title:"문제해결력 완성",page:50,videoUrl:""}]},"FC-KILLER":{name:"킬러문항 완전 해제",icon:"🎯",lessons:[{key:"k1",label:"킬러 유형 1",title:"킬러 유형 완전 해제 1",page:1,videoUrl:""},{key:"k2",label:"킬러 유형 2",title:"킬러 유형 완전 해제 2",page:10,videoUrl:""},{key:"k3",label:"킬러 유형 3",title:"킬러 유형 완전 해제 3",page:20,videoUrl:""},{key:"k4",label:"킬러 유형 4",title:"킬러 유형 완전 해제 4",page:30,videoUrl:""},{key:"k5",label:"킬러 유형 5",title:"킬러 유형 완전 해제 5",page:40,videoUrl:""},{key:"k6",label:"킬러 유형 6",title:"킬러 유형 완전 해제 6",page:50,videoUrl:""}]},"FC-FINAL":{name:"파이널 모의고사 6회",icon:"📝",lessons:[{key:"f1",label:"1회 모의고사",title:"파이널 모의고사 1회",page:1,videoUrl:""},{key:"f2",label:"2회 모의고사",title:"파이널 모의고사 2회",page:10,videoUrl:""},{key:"f3",label:"3회 모의고사",title:"파이널 모의고사 3회",page:20,videoUrl:""},{key:"f4",label:"4회 모의고사",title:"파이널 모의고사 4회",page:30,videoUrl:""},{key:"f5",label:"5회 모의고사",title:"파이널 모의고사 5회",page:40,videoUrl:""},{key:"f6",label:"6회 모의고사",title:"파이널 모의고사 6회",page:50,videoUrl:""}]},"FC-MOCK":{name:"온라인 진단 모의고사",icon:"🔍",lessons:[{key:"m1",label:"진단 1회차",title:"온라인 진단 모의고사 1회",page:1,videoUrl:""},{key:"m2",label:"진단 2회차",title:"온라인 진단 모의고사 2회",page:10,videoUrl:""},{key:"m3",label:"풀이 영상",title:"진단 모의고사 풀이",page:1,videoUrl:""},{key:"m4",label:"분석 리포트",title:"진단 분석 리포트",page:20,videoUrl:""}]}};
+/* ── 이미지 경로 (concept/ 직접) ── */
+const COVER_BASE='https://docssam1.github.io/lete-on/fields-classic/assets/concept/';
+const COVER_MAP={vol1:'vol1.png',vol2:'vol2.png',vol3:'vol3.png',vol4:'vol4.png',final:'final.png'};
+const PDF_CONCEPT="https://docssam1.github.io/lete-on/fields-classic/assets/concept/%ED%83%84%ED%83%84%20%ED%95%84%EC%A6%88%EB%8C%80%EB%B9%84%20%EA%B0%9C%EB%85%90%20SET.pdf";
+const ALL=["개념완성","진단모의고사","킬러문항",
+  "실전모의고사1회","실전모의고사2회","실전모의고사3회","실전모의고사4회","실전모의고사5회","실전모의고사6회",
+  "파이널모의고사1회","파이널모의고사2회","파이널모의고사3회","파이널모의고사4회",
+  "최종모의고사","자료실"];
+const PRODUCTS=[
+  {key:"개념완성",name:"TOP SECRET 개념 완성",desc:"필즈 핵심 개념 커리큘럼",icon:"📘",theme:"theme-concept",type:"folder",pdf:PDF_CONCEPT,
+   chapters:[
+    {key:"vol1",vol:"Vol.1",title:"수와 규칙",subtitle:"1회차 · 필즈 대비 개념",topics:["수 피라미드","줄 세우기, 자리찾기","도형이 나타내는 수"],comment:"필즈 테스트 시 연산은 첫 페이지에 있는 연산을 틀리지 않으면 됩니다. 다만 도형이 나타내는 수와 같이 구구단 정도는 반드시 필요하니 받아내림, 받아올림, 구구단은 실수없이 할 수 있도록 해주세요.",videos:[{key:"concept",type:"concept",label:"📘 개념영상",url:"https://youtu.be/7aPj5IJUzQM",pdfPage:2},{key:"practice",type:"practice",label:"📝 유형반복",url:"https://youtu.be/itmV6EXWQA4",pdfPage:15}]},
+    {key:"vol2",vol:"Vol.2",title:"저울과 패턴",subtitle:"2회차 · 필즈 대비 개념",topics:["양팔저울","양팔저울의 활용","조건에 알맞은 수","패턴 도형 규칙"],comment:null,videos:[{key:"check",type:"check",label:"✅ 체크체크",url:"https://youtu.be/WoN9Ie8Fn8s",pdfPage:21},{key:"concept",type:"concept",label:"📘 개념영상",url:"https://youtu.be/WoN9Ie8Fn8s?t=318",pdfPage:24},{key:"practice",type:"practice",label:"📝 유형반복",url:"https://youtu.be/vBgZ_lZ_XiA",pdfPage:34}]},
+    {key:"vol3",vol:"Vol.3",title:"숨겨진 수",subtitle:"3회차 · 필즈 대비 개념",topics:["도형으로 수 나타내기","어떤 수 구하기"],comment:"체크체크에서는 지금까지 배운 유형을 계속 누적하여 확인하고 있습니다. 지금까지 배운 내용은 수피라미드, 양팔저울, 도형규칙, 도형이 나타내는 수, 줄세우기, 조건에 알맞은 수입니다. 부족한 유형은 반드시 복습해주세요. 줄세우기 문제 풀 때 동그라미 그리는 연습이 필요합니다.",videos:[{key:"check",type:"check",label:"✅ 체크체크",url:"https://youtu.be/TOHw8sCumHY",pdfPage:40},{key:"concept",type:"concept",label:"📘 개념영상",url:"https://youtu.be/mq-1VxjLzMk",pdfPage:45},{key:"practice",type:"practice",label:"📝 유형반복",url:"https://youtu.be/jhjqxBZ40UQ",pdfPage:50}]},
+    {key:"vol4",vol:"Vol.4",title:"바둑돌의 비밀",subtitle:"4회차 · 필즈 대비 개념",topics:["바둑돌 규칙","마디 끊기 연습"],comment:"시험에서 가장 어려워하는 바둑돌 규칙에 대한 개념입니다. 마디를 끊는 연습도 반드시 해주세요.",videos:[{key:"check",type:"check",label:"✅ 체크체크",url:"https://youtu.be/ESmcuckBYIw",pdfPage:55},{key:"concept",type:"concept",label:"📘 개념영상",url:"https://youtu.be/neRIODxo13I",pdfPage:57}]},
+    {key:"final",vol:"Final",title:"종합 체크",subtitle:"마무리 체크체크",topics:["지금까지 배운 전체 유형 종합 테스트"],comment:null,videos:[{key:"final",type:"final",label:"🏆 학습영상",url:"https://youtu.be/FC4W2bRJwKc",pdfPage:65}]}
+  ]},
+  {key:"진단모의고사",name:"진단 모의고사",desc:"현재 수준 정밀 진단 + 분석",icon:"🔍",theme:"theme-mock",type:"direct",lessons:[{key:"m1",label:"진단 1회차",title:"진단 모의고사",type:"concept",url:"",pdfPage:1}]},
+  {key:"킬러문항",name:"킬러문항 완전 해제",desc:"최상위 킬러 유형 집중 공략",icon:"🎯",theme:"theme-killer",type:"direct",lessons:[{key:"k1",label:"킬러 유형 1",title:"킬러 유형 해제 1",type:"concept",url:"",pdfPage:1}]},
+  {key:"실전모의고사1회",name:"실전 모의고사 1회",desc:"실전 감각 훈련 1회차",icon:"📝",theme:"theme-final",type:"direct",lessons:[{key:"p1",label:"1회",title:"실전 모의고사 1회",type:"concept",url:"",pdfPage:1}]},
+  {key:"실전모의고사2회",name:"실전 모의고사 2회",desc:"실전 감각 훈련 2회차",icon:"📝",theme:"theme-final",type:"direct",lessons:[{key:"p2",label:"2회",title:"실전 모의고사 2회",type:"concept",url:"",pdfPage:1}]},
+  {key:"실전모의고사3회",name:"실전 모의고사 3회",desc:"실전 감각 훈련 3회차",icon:"📝",theme:"theme-final",type:"direct",lessons:[{key:"p3",label:"3회",title:"실전 모의고사 3회",type:"concept",url:"",pdfPage:1}]},
+  {key:"실전모의고사4회",name:"실전 모의고사 4회",desc:"실전 감각 훈련 4회차",icon:"📝",theme:"theme-final",type:"direct",lessons:[{key:"p4",label:"4회",title:"실전 모의고사 4회",type:"concept",url:"",pdfPage:1}]},
+  {key:"실전모의고사5회",name:"실전 모의고사 5회",desc:"실전 감각 훈련 5회차",icon:"📝",theme:"theme-final",type:"direct",lessons:[{key:"p5",label:"5회",title:"실전 모의고사 5회",type:"concept",url:"",pdfPage:1}]},
+  {key:"실전모의고사6회",name:"실전 모의고사 6회",desc:"실전 감각 훈련 6회차",icon:"📝",theme:"theme-final",type:"direct",lessons:[{key:"p6",label:"6회",title:"실전 모의고사 6회",type:"concept",url:"",pdfPage:1}]},
+  {key:"파이널모의고사1회",name:"파이널 모의고사 1회",desc:"최종 점검 파이널 1회차",icon:"🏁",theme:"theme-final",type:"direct",lessons:[{key:"fi1",label:"1회",title:"파이널 모의고사 1회",type:"concept",url:"",pdfPage:1}]},
+  {key:"파이널모의고사2회",name:"파이널 모의고사 2회",desc:"최종 점검 파이널 2회차",icon:"🏁",theme:"theme-final",type:"direct",lessons:[{key:"fi2",label:"2회",title:"파이널 모의고사 2회",type:"concept",url:"",pdfPage:1}]},
+  {key:"파이널모의고사3회",name:"파이널 모의고사 3회",desc:"최종 점검 파이널 3회차",icon:"🏁",theme:"theme-final",type:"direct",lessons:[{key:"fi3",label:"3회",title:"파이널 모의고사 3회",type:"concept",url:"",pdfPage:1}]},
+  {key:"파이널모의고사4회",name:"파이널 모의고사 4회",desc:"최종 점검 파이널 4회차",icon:"🏁",theme:"theme-final",type:"direct",lessons:[{key:"fi4",label:"4회",title:"파이널 모의고사 4회",type:"concept",url:"",pdfPage:1}]},
+  {key:"최종모의고사",name:"최종 모의고사",desc:"실전 총정리 최종 리허설",icon:"🏆",theme:"theme-final",type:"direct",lessons:[{key:"u1",label:"최종",title:"최종 모의고사",type:"concept",url:"",pdfPage:1}]},
+  {key:"자료실",name:"자료실",desc:"지필드 전용 자료 · 인쇄 출력",icon:"📁",theme:"theme-archive",type:"direct",hasVideo:false,lessons:[{key:"a1",label:"핵심 자료",title:"필즈 핵심 자료",type:"concept",url:"",pdfPage:1}]}
+];
 const SALT="gfield-fields-classic-2026-v1";
-const APPROVED={"bbbdc79775916a1a6f7675f3db54cba1f33f26e1dffda97fcb685e1c993df7c7":"FC-CONCEPT","c5e2beda61041ffeeb6056cb9d2167786d179a219e79e864e6216ecedf620984":"FC-KILLER","d769a92ca39f255ea72854ca13e7c1d9309e811cd1c52f71567bfef4a63d9b9c":"FC-FINAL","fcee3d55de77d92a5e3014b3c4dc874ae825fbbf0e0970399766d0a16841d50b":"FC-MOCK"};
-async function sha256Hex(msg){const bytes=new TextEncoder().encode(msg);if(window.crypto&&window.crypto.subtle){const d=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(d)).map(b=>b.toString(16).padStart(2,"0")).join("")}return sha256Fallback(msg)}
-function sha256Fallback(ascii){function rr(v,a){return v>>>a|v<<32-a}const mp=Math.pow,mw=mp(2,32);let res="",words=[],abl=ascii.length*8;let hash=sha256Fallback.h=sha256Fallback.h||[],k=sha256Fallback.k=sha256Fallback.k||[],pc=k.length;const iC={};for(let c=2;pc<64;c++){if(!iC[c]){for(let i=0;i<313;i+=c)iC[i]=c;hash[pc]=mp(c,.5)*mw|0;k[pc++]=mp(c,1/3)*mw|0}}ascii+="\x80";while(ascii.length%64-56)ascii+="\x00";for(let i=0;i<ascii.length;i++){const j=ascii.charCodeAt(i);if(j>>8)return"";words[i>>2]|=j<<(3-i%4)*8}words[words.length]=abl/mw|0;words[words.length]=abl;for(let j=0;j<words.length;){const w=words.slice(j,j+=16),oh=hash.slice(0);for(let i=0;i<64;i++){const w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4];const t1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^(~e&hash[6]))+k[i]+(w[i]=i<16?w[i]:w[i-16]+(rr(w15,7)^rr(w15,18)^w15>>>3)+w[i-7]+(rr(w2,17)^rr(w2,19)^w2>>>10)|0);const t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[t1+t2|0].concat(hash);hash[4]=hash[4]+t1|0;hash.pop()}for(let i=0;i<8;i++)hash[i]=hash[i]+oh[i]|0}for(let i=0;i<8;i++)for(let j=3;j+1;j--){const b=hash[i]>>j*8&255;res+=(b<16?0:"")+b.toString(16)}return res}
-async function verifyCode(code){const n=code.trim().toUpperCase();const h=await sha256Hex(SALT+":"+n);return APPROVED[h]||null}
-function displayName(v){return String(v||"").normalize("NFC").replace(/\s+/g,"").trim()}
-function showToast(){const t=document.getElementById("securityToast");if(!t)return;t.classList.add("show");clearTimeout(showToast._t);showToast._t=setTimeout(()=>t.classList.remove("show"),1600)}
-function installSecurity(){document.addEventListener("contextmenu",e=>{e.preventDefault();showToast()});document.addEventListener("copy",e=>{e.preventDefault();showToast()});document.addEventListener("cut",e=>{e.preventDefault();showToast()});document.addEventListener("dragstart",e=>e.preventDefault());document.addEventListener("keydown",e=>{const k=String(e.key||"").toLowerCase();const bl=k==="f12"||e.ctrlKey&&k==="u"||e.ctrlKey&&k==="s"||e.ctrlKey&&e.shiftKey&&["i","j","c"].includes(k);if(bl){e.preventDefault();e.stopPropagation();showToast()}},true)}
-function toEmbed(url){if(!url)return"";try{const p=new URL(url);let id="",sec=0;if(p.hostname.includes("youtu.be"))id=p.pathname.replace(/^\//,"");else if(p.hostname.includes("youtube.com"))id=p.searchParams.get("v")||"";const t=p.searchParams.get("t")||"";if(/^\d+$/.test(t))sec=Number(t);return id?"https://www.youtube.com/embed/"+id+"?rel=0&modestbranding=1&playsinline=1"+(sec?"&start="+sec:""):url}catch(e){return url}}
-let activeLessonKey="",currentProduct=null;
-function buildApp(productKey,studentName){const product=PRODUCTS[productKey];if(!product)return;currentProduct=product;if(document.getElementById("studentApp"))document.getElementById("studentApp").remove();const app=document.createElement("div");app.id="studentApp";app.innerHTML=`<header class="premium-header no-print"><div class="header-grid"><div class="brand-cluster"><img class="brand-logo" src="https://lh3.googleusercontent.com/d/1c2yx_O6sKcTF9-YoTKxnQ2lWOqfWiUCL" alt="G-FIELD"><div class="brand-divider"></div><span class="product-badge">${product.icon} ${product.name}</span></div><div class="hero-copy"><div class="slogan">필즈 더 클래식 대비 | 지필드 영재교육</div><div class="subline"><span class="student-name">${studentName}</span> 학생 전용 프로그램</div></div><div class="header-actions"><button class="top-button" type="button" onclick="window.print()">🖨 인쇄</button><button id="cinemaToggleTop" class="top-button primary" type="button">📺 큰 화면</button></div></div></header><main class="viewer-main no-print"><nav class="viewer-menu" id="lessonMenu"></nav><section class="study-shell"><section class="video-pane"><div class="panel-head"><div><div class="panel-title" id="videoPanelTitle">강의를 선택해 주세요</div><div class="panel-meta" id="videoPanelMeta"></div></div><button id="openYouTube" class="top-button" type="button">새 창</button></div><div class="video-frame-box"><iframe id="lessonVideoFrame" title="G-FIELD 강의" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="video-caption"><b>학습 순서:</b> 먼저 영상을 시청한 후, 오른쪽 교재의 해당 쪽을 풀어보세요. 인쇄 시 워터마크가 삽입됩니다.</div></section><section id="bookPane" class="book-pane"><div class="book-placeholder"><div class="ph-icon">${product.icon}</div><div class="ph-text"><b>${product.name}</b><br>왼쪽에서 강의를 선택하면<br>교재가 표시됩니다.<br><br><small style="opacity:.6">교재 PDF는 준비 중입니다.</small></div></div></section></section></main>`;
-document.body.appendChild(app);const menu=app.querySelector("#lessonMenu");product.lessons.forEach(lesson=>{const btn=document.createElement("button");btn.className="lesson-button";btn.type="button";btn.dataset.lesson=lesson.key;btn.textContent=lesson.label;btn.addEventListener("click",()=>selectLesson(lesson.key,true));menu.appendChild(btn)});const cb=document.createElement("button");cb.className="lesson-button utility";cb.id="cinemaToggleMenu";cb.textContent="📺 큰 화면";cb.addEventListener("click",toggleCinema);menu.appendChild(cb);document.getElementById("cinemaToggleTop").addEventListener("click",toggleCinema);document.getElementById("openYouTube").addEventListener("click",()=>{const l=product.lessons.find(x=>x.key===activeLessonKey);if(l&&l.videoUrl)window.open(l.videoUrl,"_blank","noopener")});if(product.lessons.length>0)selectLesson(product.lessons[0].key,false)}
-function selectLesson(key){activeLessonKey=key;if(!currentProduct)return;const lesson=currentProduct.lessons.find(l=>l.key===key);if(!lesson)return;document.querySelectorAll(".lesson-button[data-lesson]").forEach(b=>b.classList.toggle("active",b.dataset.lesson===key));const title=document.getElementById("videoPanelTitle"),meta=document.getElementById("videoPanelMeta"),frame=document.getElementById("lessonVideoFrame");if(title)title.textContent=lesson.title;if(meta)meta.textContent=lesson.videoUrl?"영상 준비됨":"영상 준비 중";if(frame)frame.src=lesson.videoUrl?toEmbed(lesson.videoUrl):""}
-function toggleCinema(){const app=document.getElementById("studentApp");if(!app)return;app.classList.toggle("cinema-mode");const on=app.classList.contains("cinema-mode");["cinemaToggleTop","cinemaToggleMenu"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=on?"📖 교재 함께 보기":"📺 큰 화면"})}
-window.GFieldAccess={async login(){const codeEl=document.getElementById("authCodeInput"),nameEl=document.getElementById("studentNameInput"),errEl=document.getElementById("gateError"),code=codeEl.value.trim(),name=displayName(nameEl.value);if(!code){errEl.textContent="승인번호를 입력해 주세요.";codeEl.focus();return}if(!name){errEl.textContent="학생 이름을 입력해 주세요.";nameEl.focus();return}errEl.textContent="확인 중입니다...";try{const pk=await verifyCode(code);if(!pk){errEl.textContent="올바르지 않은 승인번호입니다.";codeEl.focus();codeEl.select();return}errEl.textContent="";document.body.classList.add("authorized");buildApp(pk,name);sessionStorage.setItem("gfield_fc_code",code);sessionStorage.setItem("gfield_fc_name",name)}catch(e){errEl.textContent="오류가 발생했습니다. 새로고침 후 다시 시도해 주세요."}}};
-document.addEventListener("DOMContentLoaded",()=>{installSecurity();const codeEl=document.getElementById("authCodeInput"),nameEl=document.getElementById("studentNameInput");if(codeEl)codeEl.addEventListener("keydown",e=>{if(e.key==="Enter")nameEl&&nameEl.focus()});if(nameEl)nameEl.addEventListener("keydown",e=>{if(e.key==="Enter")window.GFieldAccess.login()});setTimeout(()=>codeEl&&codeEl.focus(),60);const sc=sessionStorage.getItem("gfield_fc_code"),sn=sessionStorage.getItem("gfield_fc_name");if(sc&&sn)verifyCode(sc).then(pk=>{if(pk){document.body.classList.add("authorized");buildApp(pk,sn)}else{sessionStorage.removeItem("gfield_fc_code");sessionStorage.removeItem("gfield_fc_name")}})});
+// 레거시 승인번호(해시 방식) — 기존 판매분 호환용으로 유지
+const CODES={
+  "bbbdc79775916a1a6f7675f3db54cba1f33f26e1dffda97fcb685e1c993df7c7":["개념완성"],
+  "c5e2beda61041ffeeb6056cb9d2167786d179a219e79e864e6216ecedf620984":["킬러문항"],
+  "d769a92ca39f255ea72854ca13e7c1d9309e811cd1c52f71567bfef4a63d9b9c":["파이널모의고사1회","파이널모의고사2회","파이널모의고사3회","파이널모의고사4회"],
+  "fcee3d55de77d92a5e3014b3c4dc874ae825fbbf0e0970399766d0a16841d50b":["진단모의고사"],
+  "7952b6a2f87c81cf4049e69cf7ece810f2a281c4199483ab39829d9e16dead33":ALL
+};
+// 신규 승인번호(GF-XXXXXX) — admin에서 자동 발급, data.js에서 로드
+const FC = window.GFIELD_FC_DATA || { students:[], studentCode:{}, attendance:{}, studentType:{} };
+// 재원생 타임라인 학습 순서 (단계별 흐름)
+const TIMELINE_ORDER=[
+  {key:"개념완성",    step:"STEP 1", desc:"필즈 핵심 개념 커리큘럼 (Vol.1~4 + Final)"},
+  {key:"진단모의고사", step:"STEP 2", desc:"현재 수준 정밀 진단 + 분석"},
+  {key:"킬러문항",    step:"STEP 3", desc:"최상위 킬러 유형 집중 공략"},
+  {key:"실전모의고사1회", step:"STEP 4", desc:"실전 감각 훈련 1회차"},
+  {key:"실전모의고사2회", step:"STEP 5", desc:"실전 감각 훈련 2회차"},
+  {key:"실전모의고사3회", step:"STEP 6", desc:"실전 감각 훈련 3회차"},
+  {key:"실전모의고사4회", step:"STEP 7", desc:"실전 감각 훈련 4회차"},
+  {key:"실전모의고사5회", step:"STEP 8", desc:"실전 감각 훈련 5회차"},
+  {key:"실전모의고사6회", step:"STEP 9", desc:"실전 감각 훈련 6회차"},
+  {key:"파이널모의고사1회", step:"STEP 10", desc:"최종 점검 파이널 1회차"},
+  {key:"파이널모의고사2회", step:"STEP 11", desc:"최종 점검 파이널 2회차"},
+  {key:"파이널모의고사3회", step:"STEP 12", desc:"최종 점검 파이널 3회차"},
+  {key:"파이널모의고사4회", step:"STEP 13", desc:"최종 점검 파이널 4회차"},
+  {key:"최종모의고사",  step:"FINAL",  desc:"실전 총정리 최종 리허설"},
+];
+function findByCode(code){
+  const upper = code.trim().toUpperCase();
+  const name = Object.keys(FC.studentCode).find(n => FC.studentCode[n] === upper);
+  if(!name) return null;
+  return { name, perms: FC.attendance[name] || [], type: FC.studentType[name] || 'internal' };
+}
+async function sha256(m){const b=new TextEncoder().encode(m);if(window.crypto?.subtle){const d=await crypto.subtle.digest("SHA-256",b);return Array.from(new Uint8Array(d)).map(x=>x.toString(16).padStart(2,"0")).join("")}return fb(m)}
+function fb(s){function rr(v,a){return v>>>a|v<<32-a}const mp=Math.pow,mw=mp(2,32);let r="",w=[],al=s.length*8;let h=fb.h=fb.h||[],k=fb.k=fb.k||[],pc=k.length;const ic={};for(let c=2;pc<64;c++){if(!ic[c]){for(let i=0;i<313;i+=c)ic[i]=c;h[pc]=mp(c,.5)*mw|0;k[pc++]=mp(c,1/3)*mw|0}}s+="\x80";while(s.length%64-56)s+="\x00";for(let i=0;i<s.length;i++){const j=s.charCodeAt(i);if(j>>8)return"";w[i>>2]|=j<<(3-i%4)*8}w[w.length]=al/mw|0;w[w.length]=al;for(let j=0;j<w.length;){const wd=w.slice(j,j+=16),oh=h.slice(0);for(let i=0;i<64;i++){const w15=wd[i-15],w2=wd[i-2],a=h[0],e=h[4];const t1=h[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&h[5])^(~e&h[6]))+k[i]+(wd[i]=i<16?wd[i]:wd[i-16]+(rr(w15,7)^rr(w15,18)^w15>>>3)+wd[i-7]+(rr(w2,17)^rr(w2,19)^w2>>>10)|0);const t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&h[1])^(a&h[2])^(h[1]&h[2]));h=[t1+t2|0].concat(h);h[4]=h[4]+t1|0;h.pop()}for(let i=0;i<8;i++)h[i]=h[i]+oh[i]|0}for(let i=0;i<8;i++)for(let j=3;j+1;j--){const b=h[i]>>j*8&255;r+=(b<16?0:"")+b.toString(16)}return r}
+async function verify(code){
+  // 1순위: 신규 승인번호(GF-XXXXXX) 확인
+  const found = findByCode(code);
+  if(found) return { perms: found.perms, name: found.name, type: found.type };
+  // 2순위: 레거시 해시 승인번호 확인
+  const h=await sha256(SALT+":"+code.trim().toUpperCase());
+  const legacyPerms = CODES[h];
+  if(legacyPerms) return { perms: legacyPerms, name: null, type: 'legacy' };
+  return null;
+}
+function toast(){const t=document.getElementById("secToast");t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),1500)}
+function security(){document.addEventListener("contextmenu",e=>{e.preventDefault();toast()});document.addEventListener("copy",e=>{e.preventDefault();toast()});document.addEventListener("cut",e=>{e.preventDefault();toast()});document.addEventListener("dragstart",e=>e.preventDefault());document.addEventListener("keydown",e=>{const k=String(e.key||"").toLowerCase();if(k==="f12"||(e.ctrlKey&&["u","s"].includes(k))||(e.ctrlKey&&e.shiftKey&&["i","j","c"].includes(k))){e.preventDefault();e.stopPropagation();toast()}},true)}
+function embed(url){if(!url)return"";try{const p=new URL(url);let id="",s=0;if(p.hostname.includes("youtu.be"))id=p.pathname.replace(/^\//,"");else if(p.hostname.includes("youtube.com"))id=p.searchParams.get("v")||"";const t=p.searchParams.get("t")||"";if(/^\d+$/.test(t))s=Number(t);return id?"https://www.youtube.com/embed/"+id+"?rel=0&modestbranding=1&playsinline=1"+(s?"&start="+s:""):url}catch{return url}}
+let _pdfBase="";
+function setPdfPage(pdfUrl,page){
+  const fr=document.getElementById("pdfIframe"),ob=document.getElementById("pdfOpenBtn");if(!fr)return;
+  _pdfBase=pdfUrl;
+  const gdocs="https://docs.google.com/viewer?url="+encodeURIComponent(pdfUrl)+"&embedded=true";
+  if(fr.src!==gdocs)fr.src=gdocs;
+  if(ob){ob.href=pdfUrl+"#page="+page;ob.style.display="inline-flex"}
+}
+let S={name:"",perms:[],viewerOpen:false,currentChapter:null,currentVideo:null,currentProduct:null};
+function checkOrientation(){if(!S.viewerOpen)return;const p=window.innerHeight>window.innerWidth;document.getElementById("rotateHint").classList.toggle("show",p);document.getElementById("viewer").style.visibility=p?"hidden":"visible"}
+window.addEventListener("resize",checkOrientation);
+window.addEventListener("orientationchange",()=>setTimeout(checkOrientation,100));
+const GF={
+  async login(){
+    const c=document.getElementById("gCode").value.trim(),n=document.getElementById("gName").value.replace(/\s+/g,"").trim(),e=document.getElementById("gErr");
+    if(!c){e.textContent="승인번호를 입력해 주세요.";return}
+    if(!n){e.textContent="학생 이름을 입력해 주세요.";return}
+    // 관리자 전용 진입
+    if(c==="01020837265" && n.toLowerCase()==="docssam"){ location.href="../admin.html"; return; }
+    e.textContent="확인 중...";
+    const result=await verify(c);
+    if(!result){e.textContent="올바르지 않은 승인번호입니다.";return}
+    // 신규 승인번호는 admin에 등록된 이름을 우선 사용, 레거시는 입력한 이름 사용
+    S.name=result.name||n;
+    S.perms=result.perms;
+    S.studentType=result.type||'legacy';
+    sessionStorage.setItem("gf_c",c);sessionStorage.setItem("gf_n",S.name);this.showApp();
+  },
+  showApp(){document.getElementById("gate").classList.add("hidden");document.getElementById("app").classList.add("show");document.getElementById("hName").textContent=S.name;
+    // 재원생은 타임라인 뷰, 온라인/레거시는 서재 뷰
+    if(S.studentType==="internal") this.showTimeline(); else this.showMainGrid();
+  },
+  showTimeline(){
+    document.getElementById("mainGrid").style.display="none";
+    document.getElementById("chapterView").style.display="none";
+    document.getElementById("timelineView").style.display="";
+    document.getElementById("dashTitle").innerHTML='필즈 더 클래식<br><em>학습 로드맵</em>';
+    document.getElementById("dashSub").textContent="단계별로 학습을 진행하세요";
+    document.getElementById("headerBadge").textContent="재원생 과정";
+    const tv=document.getElementById("timelineView");
+    // 열린 상품 = 진행 중, 그 다음 = 잠김
+    let html='<div class="timeline-wrap">';
+    // 온라인 서재로 전환 토글 (재원생도 카드로 보고 싶을 때)
+    html+=`<div class="view-toggle"><button class="active">📍 로드맵</button><button onclick="GF.showMainGridFromTimeline()">📚 서재</button></div>`;
+    TIMELINE_ORDER.forEach((it,idx)=>{
+      const p=PRODUCTS.find(x=>x.key===it.key);
+      if(!p)return;
+      const open=S.perms.includes(it.key);
+      // 다음 열릴 단계 판단: 열려있으면 done/current, 아니면 locked
+      // current = 열린 것 중 마지막
+      let cls,statusTxt,statusCls,nodeIcon;
+      const openKeys=TIMELINE_ORDER.filter(t=>S.perms.includes(t.key)).map(t=>t.key);
+      const isLast=openKeys.length&&openKeys[openKeys.length-1]===it.key;
+      if(open){
+        if(isLast){cls="current";statusTxt="학습 중";statusCls="current";nodeIcon="▶";}
+        else{cls="done";statusTxt="학습 가능";statusCls="done";nodeIcon="✓";}
+      }else{
+        cls="locked";statusTxt="🔒 아직 열리지 않음";statusCls="locked";nodeIcon="🔒";
+      }
+      const clickable=open?`onclick="GF.openFromTimeline('${it.key}')"`:'';
+      html+=`<div class="tl-item ${cls}">
+        <div class="tl-line"></div>
+        <div class="tl-node">${nodeIcon}</div>
+        <div class="tl-card" ${clickable}>
+          <div class="tl-step">${it.step}</div>
+          <div class="tl-name">${p.name}</div>
+          <div class="tl-desc">${it.desc}</div>
+          <span class="tl-status ${statusCls}">${statusTxt}</span>
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+    tv.innerHTML=html;
+  },
+  showMainGridFromTimeline(){
+    document.getElementById("timelineView").style.display="none";
+    this.showMainGrid();
+    // 서재 상단에 로드맵 복귀 버튼
+    const g=document.getElementById("mainGrid");
+    const back=document.createElement("div");
+    back.style.cssText="grid-column:1/-1;text-align:center;margin-bottom:4px";
+    back.innerHTML=`<button class="chapter-back-fancy" onclick="GF.showTimeline()" style="margin-bottom:0">← 로드맵으로</button>`;
+    g.insertBefore(back,g.firstChild);
+  },
+  openFromTimeline(key){
+    const p=PRODUCTS.find(x=>x.key===key);if(!p)return;
+    if(p.type==="folder")this.showChapters(key);else this.openDirectViewer(key);
+  },
+  showMainGrid(){
+    document.getElementById("mainGrid").style.display="";document.getElementById("chapterView").style.display="none";
+    document.getElementById("timelineView").style.display="none";
+    document.getElementById("dashTitle").innerHTML='필즈 더 클래식<br><em>대비 과정 서재</em>';
+    document.getElementById("dashSub").textContent="구매하신 프로그램을 선택해 학습을 시작하세요";
+    document.getElementById("headerBadge").textContent="필즈 대비 과정";
+    const g=document.getElementById("mainGrid");g.innerHTML="";
+    PRODUCTS.forEach(p=>{
+      const ok=S.perms.includes(p.key);
+      const el=document.createElement("div");
+      el.className="product-card "+p.theme+(ok?" unlocked":" locked");
+      el.innerHTML=`${!ok?'<span class="lock-icon">🔒</span>':""}<div class="book-wrap"><div class="book-3d"><div class="book-front"><div class="book-icon">${p.icon}</div><div class="book-label">${p.name}</div></div><div class="book-spine"></div><div class="book-shadow"></div></div></div><div><div class="product-badge">${p.key}</div><div class="product-name">${p.name}</div><div class="product-desc">${p.desc}</div></div><div class="product-action"><button class="product-btn ${ok?"open":"locked"}" ${ok?"":"disabled"}>${ok?(p.type==="folder"?"📂 목록 보기":"📖 학습 시작"):"🔒 구매 후 이용 가능"}</button></div>`;
+      if(ok){if(p.type==="folder")el.addEventListener("click",()=>GF.showChapters(p.key));else el.addEventListener("click",()=>GF.openDirectViewer(p.key))}
+      g.appendChild(el);
+    });
+  },
+  showChapters(productKey){
+    const p=PRODUCTS.find(x=>x.key===productKey);if(!p||!p.chapters)return;
+    S.currentProduct=p;
+    document.getElementById("mainGrid").style.display="none";
+    document.getElementById("timelineView").style.display="none";
+    document.getElementById("dashTitle").innerHTML=`${p.icon} <em>${p.name}</em>`;
+    document.getElementById("dashSub").textContent="";
+    document.getElementById("headerBadge").textContent=p.name;
+    const backAction=S.studentType==="internal"?"GF.showTimeline()":"GF.showMainGrid()";
+    const backLabel=S.studentType==="internal"?"← 로드맵으로":"← 서재로";
+    const cv=document.getElementById("chapterView");cv.style.display="";
+    cv.innerHTML=`
+      <button class="chapter-back-fancy" onclick="${backAction}">${backLabel}</button>
+      <div class="bookshelf-scene">
+        <div class="shelf-section-title">📘 <em>개념 완성</em> 커리큘럼</div>
+        <div class="shelf-section-sub">회차를 선택해 학습을 시작하세요</div>
+        <div class="bookshelf-row">
+          ${p.chapters.map(ch=>{
+            const imgFile=COVER_MAP[ch.key]||'vol1.png';
+            return `<div class="shelf-slot${ch.key==='final'?' is-final':''}" onclick="GF.showChapterModal('${productKey}','${ch.key}')">
+              <div class="shelf-book-wrap">
+                <div class="shelf-book-3d">
+                  <div class="shelf-book-front"><img src="${COVER_BASE}${imgFile}" alt="${ch.title}" loading="lazy"></div>
+                  <div class="shelf-book-spine"></div>
+                  <div class="shelf-book-shadow"></div>
+                </div>
+              </div>
+              <div class="shelf-label">
+                <div class="shelf-vol-text">${ch.vol}</div>
+                <div class="shelf-title-text">${ch.title}</div>
+                <div class="shelf-videos">영상 ${ch.videos.length}개</div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="shelf-rail"></div>
+      </div>`;
+  },
+  showChapterModal(productKey,chapterKey){
+    const p=PRODUCTS.find(x=>x.key===productKey);const ch=p?.chapters.find(c=>c.key===chapterKey);if(!ch)return;
+    S.currentChapter=ch;S.currentProduct=p;
+    document.getElementById("modalVol").textContent=ch.vol+" · "+ch.subtitle;
+    document.getElementById("modalTitle").textContent=ch.title;
+    document.getElementById("modalTopics").innerHTML=ch.topics.map(t=>`<li>${t}</li>`).join("");
+    const cb=document.getElementById("modalCommentBox");
+    if(ch.comment){cb.style.display="";document.getElementById("modalComment").textContent=ch.comment}else cb.style.display="none";
+    document.getElementById("commentModal").classList.add("show");
+  },
+  closeModal(){document.getElementById("commentModal").classList.remove("show")},
+  startFromModal(){this.closeModal();if(S.currentChapter)this.openChapterViewer(S.currentChapter)},
+  openChapterViewer(ch){
+    S.viewerOpen=true;
+    document.getElementById("vTitle").textContent=ch.vol+" · "+ch.title;
+    document.getElementById("vYtBtn").style.display="block";
+    document.getElementById("vBody").className="viewer-body has-video";
+    document.getElementById("vPanel").style.display="flex";
+    const tabs=document.getElementById("vTabs");tabs.innerHTML="";
+    ch.videos.forEach(v=>{const b=document.createElement("button");b.className="tab-btn";b.textContent=v.label;b.dataset.k=v.key;b.dataset.type=v.type;b.addEventListener("click",()=>GF.selectVideo(ch,v.key));tabs.appendChild(b)});
+    if(ch.videos.length)this.selectVideo(ch,ch.videos[0].key);
+    document.getElementById("viewer").classList.add("show");document.body.classList.add("in-viewer");checkOrientation();
+  },
+  selectVideo(ch,key){
+    const v=ch.videos.find(x=>x.key===key);S.currentVideo=v;
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.k===key));
+    if(!v)return;
+    document.getElementById("vPanelTitle").textContent=v.label.replace(/^[^\s]+\s/,"");
+    document.getElementById("vPanelMeta").textContent=v.url?"준비됨":"준비 중";
+    document.getElementById("videoIframe").src=v.url?embed(v.url):"";
+    const pdfUrl=S.currentProduct?.pdf||"";if(pdfUrl&&v.pdfPage)setPdfPage(pdfUrl,v.pdfPage);
+  },
+  openDirectViewer(productKey){
+    const p=PRODUCTS.find(x=>x.key===productKey);if(!p)return;
+    S.viewerOpen=true;S.currentProduct=p;
+    document.getElementById("vTitle").textContent=p.icon+" "+p.name;
+    const hasVid=p.hasVideo!==false;
+    document.getElementById("vYtBtn").style.display=hasVid?"block":"none";
+    document.getElementById("vBody").className="viewer-body "+(hasVid?"has-video":"no-video");
+    document.getElementById("vPanel").style.display=hasVid?"flex":"none";
+    const tabs=document.getElementById("vTabs");tabs.innerHTML="";
+    (p.lessons||[]).forEach(l=>{const b=document.createElement("button");b.className="tab-btn";b.textContent=l.label;b.dataset.k=l.key;b.dataset.type=l.type||"concept";b.addEventListener("click",()=>{document.querySelectorAll(".tab-btn").forEach(x=>x.classList.toggle("active",x.dataset.k===l.key));document.getElementById("videoIframe").src=l.url?embed(l.url):"";if(p.pdf&&l.pdfPage)setPdfPage(p.pdf,l.pdfPage);S.currentVideo={url:l.url}});tabs.appendChild(b)});
+    if(p.lessons?.length){const first=p.lessons[0];document.getElementById("videoIframe").src=first.url?embed(first.url):"";if(p.pdf&&first.pdfPage)setPdfPage(p.pdf,first.pdfPage);tabs.querySelector(".tab-btn")?.classList.add("active")}
+    document.getElementById("viewer").classList.add("show");document.body.classList.add("in-viewer");checkOrientation();
+  },
+  openYt(){if(S.currentVideo?.url)window.open(S.currentVideo.url,"_blank","noopener")},
+  closeViewer(){
+    S.viewerOpen=false;_pdfBase="";
+    document.getElementById("viewer").classList.remove("show");document.getElementById("viewer").style.visibility="";
+    document.getElementById("rotateHint").classList.remove("show");document.body.classList.remove("in-viewer");
+    document.getElementById("videoIframe").src="";document.getElementById("pdfIframe").src="";
+    const ob=document.getElementById("pdfOpenBtn");if(ob)ob.style.display="none";
+    S.currentChapter=null;S.currentVideo=null;
+  },
+  logout(){
+    S={name:"",perms:[],viewerOpen:false,currentChapter:null,currentVideo:null,currentProduct:null};_pdfBase="";
+    sessionStorage.clear();
+    document.getElementById("gate").classList.remove("hidden");document.getElementById("app").classList.remove("show");
+    document.getElementById("viewer").classList.remove("show");document.getElementById("viewer").style.visibility="";
+    document.getElementById("rotateHint").classList.remove("show");document.getElementById("commentModal").classList.remove("show");
+    document.body.classList.remove("in-viewer");
+    document.getElementById("videoIframe").src="";document.getElementById("pdfIframe").src="";
+    document.getElementById("gCode").value="";document.getElementById("gName").value="";document.getElementById("gErr").textContent="";
+  }
+};
+document.addEventListener("DOMContentLoaded",()=>{
+  security();
+  const ci=document.getElementById("gCode"),ni=document.getElementById("gName");
+  ci?.addEventListener("keydown",e=>{if(e.key==="Enter")ni?.focus()});
+  ni?.addEventListener("keydown",e=>{if(e.key==="Enter")GF.login()});
+  setTimeout(()=>ci?.focus(),60);
+  const sc=sessionStorage.getItem("gf_c"),sn=sessionStorage.getItem("gf_n");
+  if(sc&&sn)verify(sc).then(r=>{if(r){S.name=r.name||sn;S.perms=r.perms;S.studentType=r.type||"legacy";GF.showApp()}else sessionStorage.clear()});
+});
+window.GF=GF;
 })();
 </script>
-</body></html>
+</body>
+</html>
