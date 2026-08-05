@@ -103,7 +103,10 @@
     height:100%;
     object-fit:cover;
     display:block;
+    opacity:0;
+    transition:opacity .6s ease;
   }
+  .hero-video.is-playing{opacity:1;}
 
   .hero-scrim{
     position:absolute;
@@ -734,23 +737,33 @@
 (function(){
   var video = document.querySelector('.hero-video');
   if(!video) return;
-  var settled = false;
-  var timer = setTimeout(function(){
-    if(settled) return;
-    settled = true;
-    video.style.display = 'none';
-  }, 5000);
+
   video.addEventListener('playing', function(){
-    if(settled) return;
-    settled = true;
-    clearTimeout(timer);
+    video.classList.add('is-playing');
   });
+
   video.addEventListener('error', function(){
-    if(settled) return;
-    settled = true;
-    clearTimeout(timer);
     video.style.display = 'none';
   }, true);
+
+  function tryPlay(){
+    var p = video.play();
+    if(p && typeof p.catch === 'function'){
+      p.catch(function(){ /* autoplay blocked; will retry on user gesture */ });
+    }
+  }
+  tryPlay();
+
+  var retryEvents = ['touchstart', 'click', 'scroll'];
+  function retryOnGesture(){
+    tryPlay();
+    retryEvents.forEach(function(evt){
+      document.removeEventListener(evt, retryOnGesture);
+    });
+  }
+  retryEvents.forEach(function(evt){
+    document.addEventListener(evt, retryOnGesture, { once: true, passive: true });
+  });
 })();
 </script>
 </body>
