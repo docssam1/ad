@@ -103,35 +103,39 @@
 .period-label { opacity: 0.85; font-weight: 600; }
 .period-range { font-weight: 800; }
 
-/* 사은품 리스트 */
+/* 사은품 리스트 — gifts 0~5개. 폭이 넉넉하면 2열로 자동 접힘(auto-fit)해
+   개수가 늘어도 세로 높이가 과도하게 커지지 않게 함(실폰트 넘침 방지). */
 .gifts-block {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  column-gap: 16px;
+  row-gap: 6px;
+  align-content: start;
 }
 .gift-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 16px;
+  gap: 7px;
+  font-size: 14.5px;
+  line-height: 1.3;
   font-weight: 600;
 }
 .gift-dot {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 11px;
   flex: none;
 }
 
 /* 혜택 카드 그리드 */
 .benefits-block {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   grid-template-columns: repeat(var(--bn, 3), 1fr);
 }
 .benefits-block--n1 { --bn: 1; }
@@ -144,21 +148,21 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 4px;
-  padding: 14px 6px;
+  gap: 3px;
+  padding: 10px 6px;
   border-radius: 14px;
   min-width: 0;
 }
-.benefit-icon { font-size: 26px; line-height: 1; }
-.benefit-title { font-size: 14px; font-weight: 800; line-height: 1.25; }
-.benefit-sub { font-size: 12px; font-weight: 600; opacity: 0.75; }
+.benefit-icon { font-size: 24px; line-height: 1; }
+.benefit-title { font-size: 13.5px; font-weight: 800; line-height: 1.22; }
+.benefit-sub { font-size: 11.5px; font-weight: 600; opacity: 0.75; }
 
 /* 혜택 번호 리스트(black-glow) */
-.benefits-list { display: flex; flex-direction: column; gap: 16px; }
-.benefit-line-head { display: flex; align-items: baseline; gap: 8px; }
-.benefit-line-num { font-size: 18px; font-weight: 800; }
-.benefit-line-title { font-size: 18px; font-weight: 800; }
-.benefit-line-sub { font-size: 14px; font-weight: 500; opacity: 0.85; margin-top: 4px; padding-left: 2px; }
+.benefits-list { display: flex; flex-direction: column; gap: 9px; }
+.benefit-line-head { display: flex; align-items: baseline; gap: 7px; }
+.benefit-line-num { font-size: 16px; font-weight: 800; }
+.benefit-line-title { font-size: 16px; font-weight: 800; }
+.benefit-line-sub { font-size: 13px; font-weight: 500; opacity: 0.85; margin-top: 2px; padding-left: 2px; line-height: 1.3; }
 .benefit-line-star { margin-right: 4px; }
 
 /* 기기 이미지 / 장식 */
@@ -192,17 +196,17 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  padding: 12px 36px;
+  padding: 9px 36px;
 }
 .store-col { display: flex; flex-direction: column; border-radius: 10px; overflow: hidden; }
 .store-label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   text-align: center;
-  padding: 7px 0;
+  padding: 5px 0;
   color: #fff;
 }
-.store-img-wrap { height: 128px; flex: none; overflow: hidden; background: #ddd; }
+.store-img-wrap { height: 118px; flex: none; overflow: hidden; background: #ddd; }
 .store-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* 하단: 문의전화 + 방문프로모 + footerItems 4칸 */
@@ -211,34 +215,34 @@
   display: flex;
   align-items: stretch;
   gap: 10px;
-  padding: 10px 36px 0;
+  padding: 8px 36px 0;
 }
 .footer-call {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   flex: 1;
   border-radius: 12px;
-  padding: 12px 18px;
+  padding: 10px 17px;
 }
 .footer-call-icon {
-  width: 42px;
-  height: 42px;
+  width: 39px;
+  height: 39px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 19px;
   flex: none;
 }
-.footer-call-text { display: flex; flex-direction: column; gap: 2px; line-height: 1.15; }
-.footer-call-label { font-size: 11px; font-weight: 700; opacity: 0.75; }
-.footer-call-num { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+.footer-call-text { display: flex; flex-direction: column; gap: 1px; line-height: 1.14; }
+.footer-call-label { font-size: 10.5px; font-weight: 700; opacity: 0.75; }
+.footer-call-num { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
 .footer-promo {
   flex: 1.15;
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 9px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -246,37 +250,40 @@
   text-align: center;
   min-width: 0;
 }
-.footer-promo-main { font-size: 14.5px; font-weight: 800; }
-.footer-promo-sub { font-size: 11px; font-weight: 600; opacity: 0.8; margin-top: 2px; }
+.footer-promo-main { font-size: 14px; font-weight: 800; }
+.footer-promo-sub { font-size: 10.5px; font-weight: 600; opacity: 0.8; margin-top: 1px; }
 .footer-call { min-width: 0; }
 .footer-call-num { white-space: nowrap; }
 .footer-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-top: 10px;
+  margin-top: 8px;
 }
 .footer-strip-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 6px;
+  gap: 7px;
+  padding: 10px 6px;
   text-align: left;
 }
-.footer-strip-icon { font-size: 20px; flex: none; }
-.footer-strip-text { display: flex; flex-direction: column; line-height: 1.25; }
-.footer-strip-text b { font-size: 12.5px; font-weight: 800; }
+.footer-strip-icon { font-size: 19px; flex: none; }
+.footer-strip-text { display: flex; flex-direction: column; line-height: 1.2; }
+.footer-strip-text b { font-size: 12px; font-weight: 800; }
 .footer-strip-text span { font-size: 10.5px; opacity: 0.75; font-weight: 600; }
 
 /* ============================================================================
    템플릿 1 — mega-navy : 정보 가득한 행사 전단형 (15주년 스타일)
    ========================================================================== */
 .tpl-mega-navy { background: #0b1e52; color: #fff; font-family: "Pretendard Variable", sans-serif; }
+/* 실제 폰트(굵고 큰 임팩트 서체) 로딩 시에도 각 구역이 압축되어
+   기간 pill 등이 흰 패널에 가려지지 않도록 세로 방향 축소를 금지 */
+.tpl-mega-navy > * { flex-shrink: 0; }
 
 .mn-topband {
   background: linear-gradient(180deg, #ffffff, #f3f4f8);
   color: #0b1e52;
-  padding: 20px 30px 14px;
+  padding: 18px 30px 13px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -286,9 +293,9 @@
 .mn-ribbon {
   position: absolute;
   left: 26px;
-  top: 14px;
-  width: 118px;
-  height: 118px;
+  top: 12px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #ffe9a8, #f2b93b 55%, #b9812a 100%);
   border: 4px solid #fff6de;
@@ -299,48 +306,48 @@
   justify-content: center;
   color: #6b3f06;
 }
-.mn-ribbon-num { font-family: "Black Han Sans", sans-serif; font-size: 34px; line-height: 1; }
-.mn-ribbon-num sup { font-size: 15px; }
-.mn-ribbon-txt { font-size: 9px; font-weight: 800; letter-spacing: 0.06em; margin-top: 2px; }
+.mn-ribbon-num { font-family: "Black Han Sans", sans-serif; font-size: 29px; line-height: 1; }
+.mn-ribbon-num sup { font-size: 13px; }
+.mn-ribbon-txt { font-size: 8px; font-weight: 800; letter-spacing: 0.06em; margin-top: 2px; }
 .mn-topband-mid { display: flex; flex-direction: column; align-items: center; }
-.mn-storename { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+.mn-storename { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
 .mn-years {
   font-family: "Black Han Sans", sans-serif;
-  font-size: 78px;
-  line-height: 1.05;
+  font-size: 71px;
+  line-height: 1.08;
   background: linear-gradient(180deg, #274cd6, #0b1e52);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-.mn-topband-cap { font-size: 13.5px; font-weight: 600; color: #333; margin-top: 2px; }
+.mn-topband-cap { font-size: 12.5px; font-weight: 600; color: #333; margin-top: 1px; }
 .mn-topband-cap b { color: #ff1f5e; }
 
 .mn-main {
   position: relative;
   background: linear-gradient(160deg, #16307a 0%, #0b1e52 55%, #081436 100%);
-  padding: 26px 36px 20px;
+  padding: 24px 36px 19px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   overflow: hidden;
 }
-.mn-main .badge-ribbon { margin-bottom: -4px; }
-.mn-headzone { max-width: 66%; display: flex; flex-direction: column; gap: 6px; }
-.mn-brandline { font-size: 20px; font-weight: 700; color: #cdd8ff; }
+.mn-main .badge-ribbon { margin-bottom: -4px; flex-shrink: 0; }
+.mn-headzone { max-width: 66%; display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+.mn-brandline { font-size: 18px; font-weight: 700; color: #cdd8ff; }
 .mn-title {
   font-family: "Black Han Sans", sans-serif;
-  font-size: 56px;
-  line-height: 1.05;
+  font-size: 52px;
+  line-height: 1.08;
   background: linear-gradient(90deg, #38bdf8, #a78bfa 65%, #f472b6);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.25));
 }
-.mn-headline { font-family: "Black Han Sans", sans-serif; font-size: 34px; color: #ffe14d; text-shadow: 0 3px 0 rgba(0, 0, 0, 0.3); }
-.mn-subline { font-size: 15px; font-weight: 600; color: #dbe4ff; }
-.mn-main .period-pill { align-self: flex-start; margin-top: 4px; background: rgba(255, 255, 255, 0.1); border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; }
+.mn-headline { font-family: "Black Han Sans", sans-serif; font-size: 31px; color: #ffe14d; text-shadow: 0 3px 0 rgba(0, 0, 0, 0.3); }
+.mn-subline { font-size: 14px; font-weight: 600; color: #dbe4ff; }
+.mn-main .period-pill { align-self: flex-start; margin-top: 3px; background: rgba(255, 255, 255, 0.1); border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; flex-shrink: 0; }
 .mn-main .period-label { color: #cdd8ff; }
 .mn-main .period-range { color: #ffe14d; }
 
@@ -367,15 +374,15 @@
   color: #111;
   margin: 0 24px;
   border-radius: 18px;
-  padding: 20px 24px;
+  padding: 18px 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   transform: translateY(-14px);
 }
-.mn-panel .discount-block { background: linear-gradient(135deg, #0b1e52, #274cd6); color: #fff; border-radius: 12px; padding: 10px 12px; }
-.mn-panel .discount-amount { color: #ffe14d; }
+.mn-panel .discount-block { background: linear-gradient(135deg, #0b1e52, #274cd6); color: #fff; border-radius: 12px; padding: 9px 12px; }
+.mn-panel .discount-amount { color: #ffe14d; font-size: 58px; }
 .mn-panel .benefit-card { background: #f4f6fb; border: 1px solid #e3e8f5; color: #16307a; }
 .mn-panel .benefit-icon { color: #274cd6; }
 .mn-panel .gift-item { color: #16307a; }
@@ -527,25 +534,25 @@
 .bg-glow-3 { width: 500px; height: 300px; left: 140px; bottom: -80px; background: radial-gradient(ellipse at center, rgba(236, 72, 153, 0.25), transparent 70%); }
 .tpl-black-glow > * { position: relative; z-index: 1; }
 .bg-brandline { text-align: center; font-size: 15px; font-weight: 800; letter-spacing: 0.12em; color: #c9b8f5; text-transform: uppercase; }
-.bg-body { display: flex; flex: 1; padding: 8px 36px 0; gap: 20px; }
-.bg-left { flex: 0 0 300px; display: flex; align-items: center; justify-content: center; }
+.bg-body { display: flex; flex: 1; padding: 6px 36px 0; gap: 20px; }
+.bg-left { flex: 0 0 280px; display: flex; align-items: center; justify-content: center; }
 .bg-left .device-decor--black-glow {
-  width: 270px;
-  height: 270px;
+  width: 250px;
+  height: 250px;
   background: radial-gradient(circle at 35% 30%, #cbb6ff, #6d28d9 55%, #1a0b3d 100%);
   box-shadow: 0 0 90px 20px rgba(168, 85, 247, 0.4);
 }
-.bg-left .device-decor--black-glow span { font-size: 160px; color: #fff; opacity: 0.5; }
+.bg-left .device-decor--black-glow span { font-size: 150px; color: #fff; opacity: 0.5; }
 .bg-left .device-img { filter: drop-shadow(0 25px 45px rgba(168, 85, 247, 0.45)); }
-.bg-right { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 6px; min-width: 0; }
-.bg-subline { font-size: 15px; font-weight: 600; color: #cabdf5; }
-.bg-headline { font-family: "Do Hyeon", sans-serif; font-size: 30px; color: #fff; }
-.bg-title { font-family: "Black Han Sans", sans-serif; font-size: 44px; line-height: 1.1; background: linear-gradient(90deg, #c084fc, #f472b6); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 4px; }
+.bg-right { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-top: 4px; min-width: 0; }
+.bg-subline { font-size: 14px; font-weight: 600; color: #cabdf5; }
+.bg-headline { font-family: "Do Hyeon", sans-serif; font-size: 26px; color: #fff; }
+.bg-title { font-family: "Black Han Sans", sans-serif; font-size: 38px; line-height: 1.1; background: linear-gradient(90deg, #c084fc, #f472b6); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 2px; }
 .bg-body .period-pill { align-self: flex-start; background: rgba(168, 85, 247, 0.18); border: 1px solid rgba(168, 85, 247, 0.5); }
 .bg-body .discount-block { justify-content: flex-start; }
-.bg-body .discount-amount { color: #ffe14d; font-size: 50px; }
-.bg-divider { height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent); margin: 6px 0; }
-.bg-benefit-heading { font-size: 18px; font-weight: 800; color: #fff; }
+.bg-body .discount-amount { color: #ffe14d; font-size: 42px; }
+.bg-divider { height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent); margin: 4px 0; }
+.bg-benefit-heading { font-size: 16px; font-weight: 800; color: #fff; }
 .benefits-list--black-glow { color: #efeaff; }
 .benefits-list--black-glow .benefit-line-num { color: #c084fc; }
 .benefits-list--black-glow .benefit-line-star { color: #a855f7; }
