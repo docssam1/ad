@@ -1,7 +1,7 @@
 /* ============================================================================
    templates.js — 포스터 템플릿 엔진 (Agent T)
    7종 템플릿(window.PosterTemplates) + window.renderPoster 구현.
-   SPEC.md "templates.js 계약" 섬션 참고.
+   SPEC.md "templates.js 계약" 섹션 참고.
    ========================================================================== */
 (function () {
   "use strict";
