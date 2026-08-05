@@ -1,0 +1,762 @@
+/* ============================================================================
+   poster.css — 포스터 템플릿 스타일 전부 (Agent T)
+   포스터 루트(.poster-page)는 항상 정확히 794×1123px(A4 @96dpi).
+   배경은 전부 CSS 그라데이션/도형으로 구현(비트맵 배경 금지).
+   ========================================================================== */
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Gugi&display=swap");
+
+/* ---------------------------------------------------------------------
+   0. 기본 리셋 & 포스터 루트
+   ------------------------------------------------------------------- */
+.poster-page,
+.poster-page * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.poster-page {
+  width: 794px;
+  height: 1123px;
+  position: relative;
+  overflow: hidden;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  color: #111;
+  background: #fff;
+  isolation: isolate;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.tpl {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.tpl-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #300;
+  color: #fff;
+  font-size: 20px;
+  padding: 40px;
+  text-align: center;
+}
+
+/* 제목용 임팩트 폰트 클래스 */
+.f-impact { font-family: "Black Han Sans", "Pretendard Variable", sans-serif; }
+.f-soft   { font-family: "Do Hyeon", "Pretendard Variable", sans-serif; }
+.f-game   { font-family: "Gugi", "Pretendard Variable", sans-serif; }
+
+/* ---------------------------------------------------------------------
+   1. 공용 컴포넌트 — 7종 템플릿이 모두 재사용(색감은 --accent, variant 클래스로 변형)
+   ------------------------------------------------------------------- */
+
+/* 뱃지 리본 */
+.badge-ribbon {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 7px 18px;
+  border-radius: 6px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ff3d77, #ff1f5e);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+}
+
+/* 할인 블록 */
+.discount-block {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.discount-prefix { font-size: 22px; font-weight: 700; }
+.discount-amount { font-size: 64px; font-weight: 900; line-height: 1; }
+.discount-unit { font-size: 26px; font-weight: 800; }
+.discount-suffix { font-size: 24px; font-weight: 700; }
+
+/* 기간 pill */
+.period-pill {
+  display: inline-flex;
+  align-self: center;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 22px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.period-label { opacity: 0.85; font-weight: 600; }
+.period-range { font-weight: 800; }
+
+/* 사은품 리스트 */
+.gifts-block {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gift-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.gift-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  flex: none;
+}
+
+/* 혜택 카드 그리드 */
+.benefits-block {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(var(--bn, 3), 1fr);
+}
+.benefits-block--n1 { --bn: 1; }
+.benefits-block--n2 { --bn: 2; }
+.benefits-block--n3 { --bn: 3; }
+.benefits-block--n4 { --bn: 4; }
+.benefits-block--n5 { --bn: 5; }
+.benefit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 14px 6px;
+  border-radius: 14px;
+  min-width: 0;
+}
+.benefit-icon { font-size: 26px; line-height: 1; }
+.benefit-title { font-size: 14px; font-weight: 800; line-height: 1.25; }
+.benefit-sub { font-size: 12px; font-weight: 600; opacity: 0.75; }
+
+/* 혜택 번호 리스트(black-glow) */
+.benefits-list { display: flex; flex-direction: column; gap: 16px; }
+.benefit-line-head { display: flex; align-items: baseline; gap: 8px; }
+.benefit-line-num { font-size: 18px; font-weight: 800; }
+.benefit-line-title { font-size: 18px; font-weight: 800; }
+.benefit-line-sub { font-size: 14px; font-weight: 500; opacity: 0.85; margin-top: 4px; padding-left: 2px; }
+.benefit-line-star { margin-right: 4px; }
+
+/* 기기 이미지 / 장식 */
+.device-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.device-decor {
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.device-decor span {
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 400;
+  opacity: 0.35;
+  color: #fff;
+  line-height: 1;
+}
+
+/* 안내문구 */
+.notice-text {
+  font-size: 10.5px;
+  line-height: 1.5;
+  opacity: 0.65;
+  text-align: center;
+}
+
+/* 매장 사진/약도 2단 블록 */
+.store-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 36px;
+}
+.store-col { display: flex; flex-direction: column; border-radius: 10px; overflow: hidden; }
+.store-label {
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+  padding: 7px 0;
+  color: #fff;
+}
+.store-img-wrap { height: 128px; flex: none; overflow: hidden; background: #ddd; }
+.store-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* 하단: 문의전화 + 방문프로모 + footerItems 4칸 */
+.footer-block { margin-top: auto; }
+.footer-top {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px 36px 0;
+}
+.footer-call {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  border-radius: 12px;
+  padding: 12px 18px;
+}
+.footer-call-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex: none;
+}
+.footer-call-text { display: flex; flex-direction: column; gap: 2px; line-height: 1.15; }
+.footer-call-label { font-size: 11px; font-weight: 700; opacity: 0.75; }
+.footer-call-num { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+.footer-promo {
+  flex: 1.15;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 0;
+}
+.footer-promo-main { font-size: 14.5px; font-weight: 800; }
+.footer-promo-sub { font-size: 11px; font-weight: 600; opacity: 0.8; margin-top: 2px; }
+.footer-call { min-width: 0; }
+.footer-call-num { white-space: nowrap; }
+.footer-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 10px;
+}
+.footer-strip-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 6px;
+  text-align: left;
+}
+.footer-strip-icon { font-size: 20px; flex: none; }
+.footer-strip-text { display: flex; flex-direction: column; line-height: 1.25; }
+.footer-strip-text b { font-size: 12.5px; font-weight: 800; }
+.footer-strip-text span { font-size: 10.5px; opacity: 0.75; font-weight: 600; }
+
+/* ============================================================================
+   템플릿 1 — mega-navy : 정보 가득한 행사 전단형 (15주년 스타일)
+   ========================================================================== */
+.tpl-mega-navy { background: #0b1e52; color: #fff; font-family: "Pretendard Variable", sans-serif; }
+
+.mn-topband {
+  background: linear-gradient(180deg, #ffffff, #f3f4f8);
+  color: #0b1e52;
+  padding: 20px 30px 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 4px solid #0b1e52;
+}
+.mn-ribbon {
+  position: absolute;
+  left: 26px;
+  top: 14px;
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #f2b93b 55%, #b9812a 100%);
+  border: 4px solid #fff6de;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6b3f06;
+}
+.mn-ribbon-num { font-family: "Black Han Sans", sans-serif; font-size: 34px; line-height: 1; }
+.mn-ribbon-num sup { font-size: 15px; }
+.mn-ribbon-txt { font-size: 9px; font-weight: 800; letter-spacing: 0.06em; margin-top: 2px; }
+.mn-topband-mid { display: flex; flex-direction: column; align-items: center; }
+.mn-storename { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+.mn-years {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 78px;
+  line-height: 1.05;
+  background: linear-gradient(180deg, #274cd6, #0b1e52);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.mn-topband-cap { font-size: 13.5px; font-weight: 600; color: #333; margin-top: 2px; }
+.mn-topband-cap b { color: #ff1f5e; }
+
+.mn-main {
+  position: relative;
+  background: linear-gradient(160deg, #16307a 0%, #0b1e52 55%, #081436 100%);
+  padding: 26px 36px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+.mn-main .badge-ribbon { margin-bottom: -4px; }
+.mn-headzone { max-width: 66%; display: flex; flex-direction: column; gap: 6px; }
+.mn-brandline { font-size: 20px; font-weight: 700; color: #cdd8ff; }
+.mn-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 56px;
+  line-height: 1.05;
+  background: linear-gradient(90deg, #38bdf8, #a78bfa 65%, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.25));
+}
+.mn-headline { font-family: "Black Han Sans", sans-serif; font-size: 34px; color: #ffe14d; text-shadow: 0 3px 0 rgba(0, 0, 0, 0.3); }
+.mn-subline { font-size: 15px; font-weight: 600; color: #dbe4ff; }
+.mn-main .period-pill { align-self: flex-start; margin-top: 4px; background: rgba(255, 255, 255, 0.1); border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; }
+.mn-main .period-label { color: #cdd8ff; }
+.mn-main .period-range { color: #ffe14d; }
+
+.mn-devicezone {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 250px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mn-devicezone .device-decor--mega-navy {
+  width: 210px;
+  height: 210px;
+  background: radial-gradient(circle at 40% 35%, #4f7cff 0%, #2b3fa0 45%, #0b1e52 80%);
+  box-shadow: 0 0 60px 10px rgba(80, 130, 255, 0.45);
+}
+.mn-devicezone .device-decor--mega-navy span { font-size: 130px; }
+
+.mn-panel {
+  background: #fff;
+  color: #111;
+  margin: 0 24px;
+  border-radius: 18px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transform: translateY(-14px);
+}
+.mn-panel .discount-block { background: linear-gradient(135deg, #0b1e52, #274cd6); color: #fff; border-radius: 12px; padding: 10px 12px; }
+.mn-panel .discount-amount { color: #ffe14d; }
+.mn-panel .benefit-card { background: #f4f6fb; border: 1px solid #e3e8f5; color: #16307a; }
+.mn-panel .benefit-icon { color: #274cd6; }
+.mn-panel .gift-item { color: #16307a; }
+.mn-panel .gift-dot { background: #274cd6; color: #fff; }
+.mn-panel .notice-text { color: #667; margin-top: 2px; }
+
+.mn-main + .mn-panel { margin-top: 0; }
+.store-block--mega-navy { margin-top: 10px; }
+.store-block--mega-navy .store-label { background: #0b1e52; }
+.footer-block--mega-navy { padding-bottom: 14px; }
+.footer-block--mega-navy .footer-call { background: #0b1e52; color: #fff; }
+.footer-block--mega-navy .footer-promo { background: #fff2f6; border: 1.5px solid #ff1f5e33; color: #0b1e52; }
+.footer-block--mega-navy .footer-promo-main { color: #ff1f5e; }
+.footer-block--mega-navy .footer-strip { background: #0b1e52; color: #fff; }
+.footer-block--mega-navy .footer-strip-item:not(:last-child) { border-right: 1px solid rgba(255, 255, 255, 0.15); }
+
+/* ============================================================================
+   템플릿 2 — impact : 초임팩트형(라벤더+대형 워터마크+흰 박스 3단)
+   ========================================================================== */
+.tpl-impact {
+  background: linear-gradient(160deg, #cabdf5 0%, #ded6fb 45%, #f1ecfc 100%);
+  color: #241b4a;
+  padding: 16px 34px 0;
+  align-items: stretch;
+  gap: 7px;
+}
+.ip-watermark {
+  position: absolute !important;
+  right: -70px;
+  top: -70px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  border: 46px solid rgba(255, 255, 255, 0.45);
+  z-index: 0;
+  user-select: none;
+}
+.tpl-impact > * { position: relative; z-index: 1; }
+.tpl-impact .badge-ribbon { align-self: center; }
+.ip-devicezone { height: 128px; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+.ip-devicezone .device-decor--impact {
+  width: 118px;
+  height: 118px;
+  background: radial-gradient(circle at 38% 32%, #ffffff 0%, #b9a6f2 55%, #7c5fd6 100%);
+  box-shadow: 0 20px 40px -10px rgba(90, 60, 180, 0.4);
+}
+.ip-devicezone .device-decor--impact span { color: #5836b8; font-size: 70px; opacity: 0.5; }
+.ip-box {
+  background: #fff;
+  border: 3px solid #241b4a;
+  border-radius: 16px;
+  text-align: center;
+  padding: 12px 16px;
+  box-shadow: 0 6px 0 rgba(36, 27, 74, 0.15);
+}
+.ip-box-title { display: flex; flex-direction: column; gap: 2px; }
+.ip-brandline { font-size: 15px; font-weight: 800; color: #7c5fd6; letter-spacing: 0.02em; }
+.ip-title { font-family: "Black Han Sans", sans-serif; font-size: 52px; line-height: 1.05; color: #241b4a; }
+.ip-subline { font-size: 13px; font-weight: 600; color: #5b5280; }
+.tpl-impact .discount-block { background: #241b4a; border-radius: 16px; padding: 10px 10px; box-shadow: 0 6px 0 rgba(36, 27, 74, 0.15); }
+.tpl-impact .discount-prefix { color: #cabdf5; }
+.tpl-impact .discount-amount { color: #ffe14d; font-size: 62px; }
+.tpl-impact .discount-unit,
+.tpl-impact .discount-suffix { color: #fff; }
+.ip-box-cta { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ip-headline { font-family: "Black Han Sans", sans-serif; font-size: 26px; color: #241b4a; }
+.tpl-impact .period-pill { background: #f1ecfc; color: #241b4a; border: 1.5px solid #cabdf5; padding: 6px 18px; }
+.tpl-impact .benefits-block { padding: 0 4px; }
+.tpl-impact .benefit-card { background: #fff; border: 1.5px solid #d9cef7; padding: 10px 6px; }
+.tpl-impact .gifts-block { align-items: center; }
+.tpl-impact .gift-item { color: #241b4a; font-size: 14px; }
+.tpl-impact .gift-dot { background: #7c5fd6; color: #fff; }
+.tpl-impact .notice-text { color: #4c4470; }
+.store-block--impact { padding-top: 4px; padding-bottom: 4px; }
+.store-block--impact .store-img-wrap { height: 100px; }
+.store-block--impact .store-label { background: #241b4a; }
+.footer-block--impact { background: #241b4a; margin-left: -34px; margin-right: -34px; padding: 8px 34px 12px; margin-top: auto; }
+.footer-block--impact .footer-call { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.footer-block--impact .footer-promo { background: #ffe14d; color: #241b4a; }
+.footer-block--impact .footer-strip { color: #fff; }
+.footer-block--impact .footer-strip-item:not(:last-child) { border-right: 1px solid rgba(255, 255, 255, 0.18); }
+.footer-block--impact .store-block { padding: 0; }
+
+/* ============================================================================
+   템플릿 3 — soft-purple : 깔끔한 사전예약형(연보라, 중앙정렬)
+   ========================================================================== */
+.tpl-soft-purple {
+  background: linear-gradient(150deg, #efe9ff 0%, #f7f3ff 40%, #ffffff 100%);
+  color: #2c2350;
+  align-items: center;
+  padding: 22px 30px 0;
+  gap: 10px;
+  text-align: center;
+}
+.sp-wave {
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  bottom: 210px;
+  height: 260px;
+  background: repeating-linear-gradient(100deg, rgba(139, 92, 246, 0.12) 0 2px, transparent 2px 14px);
+  mask-image: linear-gradient(180deg, transparent, #000 40%, #000 60%, transparent);
+  z-index: 0;
+}
+.tpl-soft-purple > * { position: relative; z-index: 1; }
+.tpl-soft-purple .badge-ribbon { align-self: center; }
+.sp-head { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: 4px; }
+.sp-brandline { font-size: 18px; font-weight: 800; color: #8b5cf6; letter-spacing: 0.02em; }
+.sp-title { font-family: "Do Hyeon", sans-serif; font-size: 50px; line-height: 1.1; color: #2c2350; }
+.sp-headline { font-family: "Do Hyeon", sans-serif; font-size: 26px; color: #6d28d9; }
+.sp-subline { font-size: 14px; font-weight: 600; color: #5b5280; }
+.sp-pillrow { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; justify-content: center; }
+.sp-pillrow .period-pill { background: #efe9ff; color: #4c2fa0; border: 1.5px solid #d9cbfa; padding: 7px 18px; }
+.sp-pillrow .discount-block { flex-shrink: 0; background: #2c2350; color: #fff; border-radius: 999px; padding: 7px 20px; white-space: nowrap; }
+.sp-pillrow .discount-amount { font-size: 24px; color: #ffd23f; }
+.sp-pillrow .discount-prefix,
+.sp-pillrow .discount-unit,
+.sp-pillrow .discount-suffix { font-size: 14px; }
+.sp-devicezone { height: 190px; display: flex; align-items: center; justify-content: center; }
+.sp-devicezone .device-decor--soft-purple {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle at 40% 30%, #ffffff, #c9b6fb 50%, #8b5cf6 100%);
+  box-shadow: 0 25px 50px -15px rgba(139, 92, 246, 0.5);
+}
+.sp-devicezone .device-decor--soft-purple span { color: #fff; font-size: 110px; opacity: 0.6; }
+.tpl-soft-purple .benefits-block { padding: 0 20px; }
+.tpl-soft-purple .benefit-card { background: #fff; border: 1.5px solid #e7ddfb; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.1); }
+.tpl-soft-purple .gifts-block { align-items: center; }
+.tpl-soft-purple .gift-item { color: #2c2350; }
+.tpl-soft-purple .gift-dot { background: #8b5cf6; color: #fff; }
+.tpl-soft-purple .notice-text { color: #6a628c; }
+.store-block--soft-purple .store-label { background: #6d28d9; }
+.footer-block--soft-purple { background: #2c2350; padding: 16px 0 18px; margin-top: 12px; }
+.footer-block--soft-purple .footer-top,
+.footer-block--soft-purple .store-block { padding-left: 30px; padding-right: 30px; }
+.footer-block--soft-purple .footer-call { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.footer-block--soft-purple .footer-promo { background: #ffd23f; color: #2c2350; }
+.footer-block--soft-purple .footer-strip { color: #fff; }
+.footer-block--soft-purple .footer-strip-item:not(:last-child) { border-right: 1px solid rgba(255, 255, 255, 0.18); }
+
+/* ============================================================================
+   템플릿 4 — black-glow : 블랙 + 보라 글로우, 좌 제품 / 우 혜택 리스트
+   ========================================================================== */
+.tpl-black-glow { background: #060608; color: #f4f2fb; padding: 26px 0 0; gap: 10px; }
+.bg-glow { position: absolute !important; border-radius: 50%; filter: blur(50px); z-index: 0; }
+.bg-glow-1 { width: 420px; height: 780px; left: -140px; top: -80px; background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.55), transparent 70%); }
+.bg-glow-2 { width: 360px; height: 700px; right: -120px; top: 120px; background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.4), transparent 70%); }
+.bg-glow-3 { width: 500px; height: 300px; left: 140px; bottom: -80px; background: radial-gradient(ellipse at center, rgba(236, 72, 153, 0.25), transparent 70%); }
+.tpl-black-glow > * { position: relative; z-index: 1; }
+.bg-brandline { text-align: center; font-size: 15px; font-weight: 800; letter-spacing: 0.12em; color: #c9b8f5; text-transform: uppercase; }
+.bg-body { display: flex; flex: 1; padding: 8px 36px 0; gap: 20px; }
+.bg-left { flex: 0 0 300px; display: flex; align-items: center; justify-content: center; }
+.bg-left .device-decor--black-glow {
+  width: 270px;
+  height: 270px;
+  background: radial-gradient(circle at 35% 30%, #cbb6ff, #6d28d9 55%, #1a0b3d 100%);
+  box-shadow: 0 0 90px 20px rgba(168, 85, 247, 0.4);
+}
+.bg-left .device-decor--black-glow span { font-size: 160px; color: #fff; opacity: 0.5; }
+.bg-left .device-img { filter: drop-shadow(0 25px 45px rgba(168, 85, 247, 0.45)); }
+.bg-right { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 6px; min-width: 0; }
+.bg-subline { font-size: 15px; font-weight: 600; color: #cabdf5; }
+.bg-headline { font-family: "Do Hyeon", sans-serif; font-size: 30px; color: #fff; }
+.bg-title { font-family: "Black Han Sans", sans-serif; font-size: 44px; line-height: 1.1; background: linear-gradient(90deg, #c084fc, #f472b6); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 4px; }
+.bg-body .period-pill { align-self: flex-start; background: rgba(168, 85, 247, 0.18); border: 1px solid rgba(168, 85, 247, 0.5); }
+.bg-body .discount-block { justify-content: flex-start; }
+.bg-body .discount-amount { color: #ffe14d; font-size: 50px; }
+.bg-divider { height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent); margin: 6px 0; }
+.bg-benefit-heading { font-size: 18px; font-weight: 800; color: #fff; }
+.benefits-list--black-glow { color: #efeaff; }
+.benefits-list--black-glow .benefit-line-num { color: #c084fc; }
+.benefits-list--black-glow .benefit-line-star { color: #a855f7; }
+.tpl-black-glow .gifts-block { margin-top: 4px; }
+.tpl-black-glow .gift-item { color: #efeaff; }
+.tpl-black-glow .gift-dot { background: #a855f7; color: #fff; }
+.tpl-black-glow .notice-text { color: #a79ecb; text-align: left; padding: 0 36px; }
+.store-block--black-glow .store-label { background: #3b1a78; }
+.footer-block--black-glow { padding-top: 14px; }
+.footer-block--black-glow .footer-call { background: rgba(168, 85, 247, 0.14); border: 1px solid rgba(168, 85, 247, 0.35); }
+.footer-block--black-glow .footer-promo { background: linear-gradient(120deg, #a855f7, #6d28d9); }
+.footer-block--black-glow .footer-strip { background: #100a1e; margin: 10px 36px 0; border-radius: 12px; }
+.footer-block--black-glow .footer-strip-item:not(:last-child) { border-right: 1px solid rgba(255, 255, 255, 0.1); }
+.footer-block--black-glow .footer-top { padding-bottom: 4px; }
+
+/* ============================================================================
+   템플릿 5 — pop-purple : 비비드 퍼플 + 만화체 헤드라인 + 말풍선
+   ========================================================================== */
+.tpl-pop-purple {
+  background: linear-gradient(160deg, #7c3aed 0%, #9333ea 45%, #6d28d9 100%);
+  color: #fff;
+  align-items: center;
+  text-align: center;
+  padding: 22px 30px 0;
+  gap: 10px;
+}
+.pp-stars {
+  position: absolute !important;
+  inset: 0;
+  background-image: radial-gradient(2px 2px at 10% 12%, #fff, transparent 60%), radial-gradient(2px 2px at 85% 8%, #fff, transparent 60%), radial-gradient(3px 3px at 92% 30%, #fff, transparent 60%), radial-gradient(2px 2px at 6% 40%, #fff, transparent 60%), radial-gradient(2px 2px at 75% 55%, #fff, transparent 60%), radial-gradient(3px 3px at 15% 75%, #fff, transparent 60%), radial-gradient(2px 2px at 90% 80%, #fff, transparent 60%);
+  opacity: 0.7;
+  z-index: 0;
+}
+.tpl-pop-purple > * { position: relative; z-index: 1; }
+.tpl-pop-purple .period-pill { align-self: center; background: #fff; color: #6d28d9; margin-top: 2px; }
+.tpl-pop-purple .badge-ribbon { align-self: center; }
+.pp-brandline { font-size: 17px; font-weight: 800; color: #ffe14d; letter-spacing: 0.03em; margin-top: 4px; }
+.pp-headline {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 54px;
+  line-height: 1.12;
+  color: #ffe14d;
+  -webkit-text-stroke: 2px #4c1d95;
+  text-shadow: 4px 4px 0 #4c1d95;
+}
+.pp-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 42px;
+  line-height: 1.1;
+  color: #fff;
+  -webkit-text-stroke: 2px #4c1d95;
+  text-shadow: 4px 4px 0 #4c1d95;
+}
+.pp-subline { font-size: 15px; font-weight: 700; color: #f3e8ff; }
+.tpl-pop-purple .discount-block { background: rgba(0, 0, 0, 0.18); border-radius: 14px; padding: 10px 20px; margin-top: 2px; }
+.tpl-pop-purple .discount-amount { color: #ffe14d; }
+.pp-bubblezone { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 6px; }
+.pp-bubble {
+  background: #fff;
+  color: #6d28d9;
+  font-weight: 800;
+  font-size: 14.5px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 5px 0 rgba(76, 29, 149, 0.5);
+}
+.pp-devicezone { flex: 1; min-height: 200px; width: 100%; display: flex; align-items: center; justify-content: center; }
+.pp-devicezone .device-decor--pop-purple {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle at 38% 30%, #ffe14d, #fca5f1 45%, #ffffff00 75%);
+  opacity: 0.9;
+}
+.pp-devicezone .device-decor--pop-purple span { font-size: 170px; color: #fff; opacity: 0.5; }
+.pp-devicezone .device-img { filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.35)); max-height: 280px; }
+.tpl-pop-purple .notice-text { color: #e9d9ff; padding-bottom: 4px; }
+.store-block--pop-purple .store-label { background: #4c1d95; }
+.footer-block--pop-purple { background: #fff; color: #2c2350; padding: 16px 0 18px; margin-top: 6px; width: 100%; }
+.footer-block--pop-purple .footer-top,
+.footer-block--pop-purple .store-block { padding-left: 30px; padding-right: 30px; }
+.footer-block--pop-purple .footer-call { background: #f3ecff; }
+.footer-block--pop-purple .footer-promo { background: #6d28d9; color: #fff; }
+.footer-block--pop-purple .footer-strip-item:not(:last-child) { border-right: 1px solid #e7ddfb; }
+
+/* ============================================================================
+   템플릿 6 — exam-chrome : 다크네이비+크롬 도형, 티켓형 흰 패널(시즌 이벤트형)
+   ========================================================================== */
+.tpl-exam-chrome {
+  background: radial-gradient(circle at 50% 8%, #17224d 0%, #0a1130 55%, #05081c 100%);
+  color: #fff;
+  align-items: center;
+  padding: 20px 0 0;
+}
+.ec-shape { position: absolute; border-radius: 40%; filter: blur(0.5px); opacity: 0.9; }
+.ec-shape-1 { width: 180px; height: 90px; left: -50px; top: 40px; background: linear-gradient(135deg, #7dd3fc, #6d28d9 60%, #1a0b3d); transform: rotate(-18deg); border-radius: 50% 50% 40% 60%; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.ec-shape-2 { width: 190px; height: 190px; right: -60px; top: -30px; background: conic-gradient(from 90deg, #a78bfa, #38bdf8, #f472b6, #a78bfa); clip-path: polygon(50% 0%, 100% 60%, 60% 100%, 0% 70%); opacity: 0.85; }
+.ec-shape-3 { width: 220px; height: 220px; right: -70px; bottom: 60px; border-radius: 50%; border: 26px solid; border-image: conic-gradient(from 45deg, #38bdf8, #a78bfa, #f472b6, #38bdf8) 1; opacity: 0.8; }
+.ec-shape-4 { width: 200px; height: 200px; left: -60px; bottom: -30px; background: conic-gradient(from 200deg, #6d28d9, #38bdf8, #1a0b3d); border-radius: 30% 70% 60% 40%; opacity: 0.85; }
+.ec-gem {
+  width: 38px; height: 58px; margin-top: -4px; margin-bottom: 4px;
+  background: linear-gradient(160deg, #a78bfa, #38bdf8 60%, #4c1d95);
+  clip-path: polygon(50% 0%, 100% 35%, 50% 100%, 0% 35%);
+  filter: drop-shadow(0 0 18px rgba(124, 92, 246, 0.8));
+  position: relative; z-index: 1;
+}
+.ec-ticket {
+  position: relative;
+  z-index: 1;
+  width: 566px;
+  background: linear-gradient(180deg, #ffffff, #f3f0fb);
+  border-radius: 26px;
+  padding: 18px 36px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  color: #241b4a;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+.ec-ticket-notch { position: absolute; bottom: -22px; width: 44px; height: 44px; border-radius: 50%; background: #0a1130; }
+.ec-ticket-notch-l { left: -22px; }
+.ec-ticket-notch-r { right: -22px; }
+.ec-ticket .badge-ribbon,
+.ec-ticket .period-pill { background: #241b4a; color: #fff; padding: 6px 16px; }
+.ec-title { font-family: "Gugi", sans-serif; font-size: 40px; line-height: 1.25; color: #4c1d95; }
+.ec-headline { font-family: "Gugi", sans-serif; font-size: 19px; color: #241b4a; }
+.ec-subline { font-size: 13px; font-weight: 600; color: #5b5280; }
+.ec-ticket .discount-block { margin-top: -2px; }
+.ec-ticket .discount-amount { color: #7c3aed; font-size: 52px; }
+.ec-ticket .benefits-block,
+.ec-ticket .gifts-block { width: 100%; margin-top: 2px; }
+.ec-ticket .benefit-card { background: #f4f0fc; padding: 10px 4px; }
+.ec-ticket .gifts-block { align-items: center; gap: 5px; }
+.ec-ticket .gift-dot { background: #7c3aed; color: #fff; }
+.ec-devicezone { position: relative; z-index: 1; margin-top: 18px; height: 86px; display: flex; align-items: center; justify-content: center; }
+.ec-devicezone .device-decor--exam-chrome {
+  width: 80px; height: 80px;
+  background: radial-gradient(circle at 35% 30%, #cbd5ff, #38bdf8 55%, #1a0b3d 100%);
+  box-shadow: 0 0 40px 8px rgba(56, 189, 248, 0.4);
+}
+.ec-devicezone .device-img { max-height: 80px; }
+.ec-devicezone .device-decor--exam-chrome span { font-size: 46px; }
+.ec-storename { position: relative; z-index: 1; font-size: 14px; font-weight: 700; letter-spacing: 0.15em; color: #cdd8ff; margin-top: 2px; }
+.tpl-exam-chrome .notice-text { position: relative; z-index: 1; color: #9aa5d1; margin-top: 4px; padding: 0 60px; }
+.store-block--exam-chrome { position: relative; z-index: 1; padding-top: 8px; padding-bottom: 8px; }
+.store-block--exam-chrome .store-label { background: #4c1d95; }
+.footer-block--exam-chrome { position: relative; z-index: 1; padding-bottom: 14px; margin-top: auto; }
+.footer-block--exam-chrome .footer-call { background: rgba(124, 92, 246, 0.18); border: 1px solid rgba(124, 92, 246, 0.4); }
+.footer-block--exam-chrome .footer-promo { background: linear-gradient(120deg, #38bdf8, #7c3aed); }
+.footer-block--exam-chrome .footer-strip { background: rgba(255, 255, 255, 0.06); border-radius: 12px; margin: 10px 36px 0; }
+.footer-block--exam-chrome .footer-strip-item:not(:last-child) { border-right: 1px solid rgba(255, 255, 255, 0.12); }
+
+/* ============================================================================
+   템플릿 7 — premium-black : 블랙 + 메탈릭 대형 영문타이틀 + 링글로우
+   ========================================================================== */
+.tpl-premium-black {
+  background: radial-gradient(circle at 50% 30%, #1c1c1f 0%, #060607 65%);
+  color: #fff;
+  align-items: center;
+  text-align: center;
+  padding: 22px 30px 0;
+  gap: 6px;
+}
+.pb-brandline { font-size: 14px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #d9d9d9; }
+.pb-title {
+  font-size: 58px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 0%, #cfcfcf 35%, #8f8f8f 55%, #ffffff 75%, #9a9a9a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
+}
+.pb-sub { display: flex; flex-direction: column; gap: 2px; }
+.pb-headline { font-size: 18px; font-weight: 700; color: #f1f1f1; }
+.pb-subline { font-size: 13px; font-weight: 500; color: var(--accent, #c9a227); }
+.tpl-premium-black .badge-ribbon { align-self: center; }
+.tpl-premium-black .period-pill { align-self: center; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.25); padding: 7px 18px; }
+.pb-devicezone { position: relative; height: 150px; width: 100%; display: flex; align-items: center; justify-content: center; margin: 2px 0; }
+.pb-ring {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--accent, #c9a227), transparent 30%, transparent 70%, var(--accent, #c9a227));
+  filter: blur(10px);
+  opacity: 0.55;
+}
+.pb-devicezone .device-img { position: relative; max-height: 148px; filter: drop-shadow(0 25px 30px rgba(0, 0, 0, 0.6)); }
+.pb-devicezone .device-decor--premium-black {
+  position: relative;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle at 35% 30%, #e5e5e5, #4a4a4a 55%, #0a0a0a 100%);
+  box-shadow: 0 0 60px 10px rgba(255, 255, 255, 0.08);
+}
+.pb-devicezone .device-decor--premium-black span { font-size: 80px; color: #000; opacity: 0.35; }
+.tpl-premium-black .discount-block { margin-top: 0; }
+.tpl-premium-black .discount-amount { color: var(--accent, #c9a227); font-size: 54px; }
+.tpl-premium-black .benefits-block { width: 100%; padding: 0 6px; margin-top: 4px; }
+.tpl-premium-black .benefit-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 16px; }
+.tpl-premium-black .benefit-icon { color: var(--accent, #c9a227); }
+.tpl-premium-black .gifts-block { align-items: center; margin-top: 4px; }
+.tpl-premium-black .gift-dot { background: var(--accent, #c9a227); color: #000; }
+.tpl-premium-black .notice-text { color: #999; padding-bottom: 2px; }
+.store-block--premium-black .store-label { background: #1c1c1f; border: 1px solid rgba(255, 255, 255, 0.1); border-bottom: none; }
+.footer-block--premium-black { padding-bottom: 16px; margin-top: 10px; }
+.footer-block--premium-black .footer-call { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); }
+.footer-block--premium-black .footer-promo { background: linear-gradient(120deg, var(--accent, #c9a227), #7a641a); color: #1c1c1f; }
+.footer-block--premium-black .footer-strip { background: rgba(255, 255, 255, 0.04); border-radius: 12px; margin: 10px 30px 0; }
+.footer-block--premium-black .footer-strip-item:not(:last-child) { border-right: 1px solid rgba(255, 255, 255, 0.1); }
