@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>대치동 휴대폰 할인매장 | Galaxy Z Fold8 · Flip8 사전예약</title>
+<meta name="theme-color" content="#0a0e27">
+<meta name="description" content="대치동 휴대폰 할인매장 15주년 - Galaxy Z Fold8 | Flip8 사전예약 진행중! 최대 100만원 할인">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap">
+<style>
+  :root{
+    --navy-950:#05060f;
+    --navy-900:#0a0e27;
+    --navy-800:#131a3a;
+    --purple-900:#1e1240;
+    --purple-700:#3d1f7a;
+    --purple-500:#7c3aed;
+    --purple-400:#a855f7;
+    --pink-500:#ff2d78;
+    --pink-400:#ff5c9e;
+    --gold-300:#ffe9a8;
+    --gold-500:#f0c14b;
+    --gold-700:#b8860b;
+    --yellow:#ffe066;
+    --ink:#f4f2ff;
+    --sub:#c9c4e8;
+    --glass-bg:rgba(255,255,255,.06);
+    --glass-border:rgba(255,255,255,.16);
+    --phone-w:176px;
+    --phone-h:372px;
+    --phone-d:15px;
+    --action-h:78px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--navy-950);
+    color:var(--ink);
+    font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .page{
+    max-width:480px;
+    margin:0 auto;
+    position:relative;
+    min-height:100vh;
+    background:var(--navy-950);
+    box-shadow:0 0 60px rgba(0,0,0,.6);
+    overflow:hidden;
+    padding-bottom:calc(var(--action-h) + 18px);
+  }
+  h1,h2,h3,p,ul{margin:0;padding:0;}
+  ul{list-style:none;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  /* ===================== HERO ===================== */
+  .hero{
+    position:relative;
+    padding:26px 20px 34px;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(124,58,237,.35), transparent 60%),
+      radial-gradient(ellipse 90% 50% at 85% 15%, rgba(255,45,120,.18), transparent 55%),
+      linear-gradient(165deg, var(--navy-900) 0%, var(--purple-900) 55%, var(--navy-950) 100%);
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero::before,
+  .hero::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+  /* starfield: layered radial-gradient dot pattern */
+  .hero::before{
+    background-image:
+      radial-gradient(1.6px 1.6px at 15% 22%, rgba(255,255,255,.9), transparent 100%),
+      radial-gradient(1.2px 1.2px at 78% 12%, rgba(255,255,255,.75), transparent 100%),
+      radial-gradient(1.8px 1.8px at 42% 8%, rgba(255,255,255,.85), transparent 100%),
+      radial-gradient(1.3px 1.3px at 90% 30%, rgba(255,255,255,.7), transparent 100%),
+      radial-gradient(1.5px 1.5px at 8% 55%, rgba(255,255,255,.8), transparent 100%),
+      radial-gradient(1.1px 1.1px at 62% 45%, rgba(255,255,255,.65), transparent 100%),
+      radial-gradient(1.7px 1.7px at 30% 70%, rgba(255,255,255,.85), transparent 100%),
+      radial-gradient(1.2px 1.2px at 95% 65%, rgba(255,255,255,.7), transparent 100%),
+      radial-gradient(1.4px 1.4px at 70% 85%, rgba(255,255,255,.75), transparent 100%),
+      radial-gradient(1.1px 1.1px at 20% 92%, rgba(255,255,255,.6), transparent 100%),
+      radial-gradient(1.6px 1.6px at 52% 60%, rgba(255,255,255,.7), transparent 100%),
+      radial-gradient(1.3px 1.3px at 85% 92%, rgba(255,255,255,.65), transparent 100%);
+    animation:twinkle 4.5s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:.55;}
+    50%{opacity:1;}
+  }
+  .hero-inner{position:relative;z-index:2;}
+
+  .store-topline{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .store-name{
+    font-size:13px;
+    font-weight:600;
+    color:var(--sub);
+    letter-spacing:.02em;
+  }
+  .badge-gold{
+    display:inline-flex;
+    align-items:center;
+    gap:3px;
+    font-size:12px;
+    font-weight:900;
+    padding:4px 12px;
+    border-radius:999px;
+    color:#3a2a00;
+    background:linear-gradient(135deg,#fff8dd,var(--gold-500) 45%,var(--gold-700));
+    box-shadow:0 0 14px rgba(240,193,75,.55), inset 0 1px 0 rgba(255,255,255,.6);
+  }
+
+  .pill-new{
+    display:inline-block;
+    margin:0 auto 14px;
+    padding:6px 18px;
+    font-size:13px;
+    font-weight:800;
+    color:#fff;
+    border-radius:999px;
+    background:linear-gradient(120deg,var(--pink-400),var(--pink-500));
+    box-shadow:0 4px 20px rgba(255,45,120,.5);
+    text-align:center;
+  }
+  .pill-new-wrap{text-align:center;}
+
+  .hero-title{
+    text-align:center;
+    font-size:26px;
+    line-height:1.25;
+    font-weight:800;
+    color:#fff;
+    letter-spacing:-.01em;
+    margin-bottom:6px;
+  }
+  .hero-title .grad-text{
+    display:block;
+    font-family:'Black Han Sans','Pretendard Variable',sans-serif;
+    font-size:38px;
+    line-height:1.15;
+    letter-spacing:.01em;
+    background:linear-gradient(92deg,var(--gold-300) 0%, var(--pink-400) 45%, var(--purple-400) 90%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 2px 18px rgba(168,85,247,.45));
+    margin-top:4px;
+  }
+
+  .hero-highlight-wrap{text-align:center;margin-top:10px;margin-bottom:6px;}
+  .hero-highlight{
+    display:inline-block;
+    font-size:19px;
+    font-weight:800;
+    color:var(--yellow);
+    text-shadow:0 0 18px rgba(255,224,102,.65);
+    position:relative;
+    padding:2px 4px;
+  }
+  .hero-highlight::after{
+    content:'';
+    position:absolute;
+    left:-2px;right:-2px;bottom:2px;
+    height:8px;
+    background:rgba(255,224,102,.22);
+    border-radius:4px;
+    z-index:-1;
+  }
+
+  /* ===================== 3D PHONE ===================== */
+  .phone-stage{
+    position:relative;
+    height:440px;
+    margin:40px auto 4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    perspective:1100px;
+    perspective-origin:50% 45%;
+  }
+  .phone-glow{
+    position:absolute;
+    left:50%; top:50%;
+    width:320px; height:320px;
+    margin:-160px 0 0 -160px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(168,85,247,.55) 0%, rgba(124,58,237,.22) 45%, transparent 72%);
+    filter:blur(6px);
+    animation:glowPulse 3.6s ease-in-out infinite;
+    z-index:0;
+  }
+  .phone-glow::before{
+    content:'';
+    position:absolute;
+    inset:38px;
+    border-radius:50%;
+    border:1px solid rgba(216,180,254,.32);
+  }
+  .phone-glow::after{
+    content:'';
+    position:absolute;
+    inset:70px;
+    border-radius:50%;
+    border:1px solid rgba(255,224,102,.18);
+  }
+  @keyframes glowPulse{
+    0%,100%{opacity:.65; transform:scale(1);}
+    50%{opacity:1; transform:scale(1.08);}
+  }
+
+  .phone-shadow{
+    position:absolute;
+    left:50%; bottom:14px;
+    width:150px; height:28px;
+    margin-left:-75px;
+    border-radius:50%;
+    background:radial-gradient(ellipse, rgba(0,0,0,.6) 0%, rgba(0,0,0,.32) 55%, transparent 75%);
+    filter:blur(3px);
+    z-index:0;
+    animation:shadowPulse 3.6s ease-in-out infinite;
+  }
+  @keyframes shadowPulse{
+    0%,100%{transform:scaleX(1) scaleY(1); opacity:.85;}
+    50%{transform:scaleX(.72) scaleY(.8); opacity:.4;}
+  }
+
+  .phone-float{
+    position:relative;
+    z-index:1;
+    animation:phoneFloat 3.6s ease-in-out infinite;
+  }
+  @keyframes phoneFloat{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-16px);}
+  }
+
+  .phone-tilt{
+    transform:rotateX(9deg);
+    transform-style:preserve-3d;
+  }
+
+  .phone-3d{
+    position:relative;
+    width:var(--phone-w);
+    height:var(--phone-h);
+    transform-style:preserve-3d;
+    animation:phoneSpin 10s linear infinite;
+  }
+  @keyframes phoneSpin{
+    from{transform:rotateY(0deg);}
+    to{transform:rotateY(360deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .phone-3d{animation:none; transform:rotateY(-28deg);}
+    .phone-float{animation:none;}
+    .phone-shadow{animation:none;}
+    .phone-glow{animation:none;}
+  }
+
+  .face{position:absolute;}
+
+  .face-front,.face-back{
+    width:100%; height:100%;
+    border-radius:32px;
+    overflow:hidden;
+    border:2px solid rgba(255,255,255,.1);
+  }
+  .face-front{
+    transform:translateZ(calc(var(--phone-d) / 2));
+    background:linear-gradient(160deg,#15122b,#1c1836);
+  }
+  .face-back{
+    transform:translateZ(calc(var(--phone-d) / -2)) rotateY(180deg);
+    background:linear-gradient(150deg,#4b4f68 0%, #232538 45%, #6b5a9b 100%);
+  }
+
+  .face-left,.face-right{
+    width:var(--phone-d); height:100%;
+    left:calc((var(--phone-w) - var(--phone-d)) / 2);
+    top:0;
+    border-radius:9px;
+    background:linear-gradient(90deg,#2b2d3f 0%,#c9cce0 46%,#f4f0ff 50%,#8285a3 54%,#232433 100%);
+    background-size:220% 220%;
+    animation:edgeShine 4.2s ease-in-out infinite;
+  }
+  .face-left{transform:rotateY(-90deg) translateZ(calc(var(--phone-w) / 2));}
+  .face-right{transform:rotateY(90deg) translateZ(calc(var(--phone-w) / 2));}
+
+  .face-top,.face-bottom{
+    width:100%; height:var(--phone-d);
+    left:0;
+    top:calc((var(--phone-h) - var(--phone-d)) / 2);
+    border-radius:9px;
+    background:linear-gradient(180deg,#2b2d3f 0%,#c9cce0 46%,#f4f0ff 50%,#8285a3 54%,#232433 100%);
+    background-size:220% 220%;
+    animation:edgeShine 4.2s ease-in-out infinite;
+  }
+  .face-top{transform:rotateX(90deg) translateZ(calc(var(--phone-h) / 2));}
+  .face-bottom{transform:rotateX(-90deg) translateZ(calc(var(--phone-h) / 2));}
+
+  @keyframes edgeShine{
+    0%,100%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+  }
+
+  /* screen (front face content) */
+  .screen{
+    position:absolute; inset:5px;
+    border-radius:28px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 28% 18%, rgba(124,58,237,.9), transparent 55%),
+      radial-gradient(circle at 82% 78%, rgba(236,72,153,.85), transparent 55%),
+      linear-gradient(160deg,#0f0c29 0%, #302b63 55%, #1b1836 100%);
+  }
+  .screen .notch{
+    position:absolute; top:9px; left:50%;
+    width:34px; height:6px;
+    margin-left:-17px;
+    border-radius:6px;
+    background:rgba(0,0,0,.55);
+  }
+  .screen .logo-8{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Black Han Sans','Pretendard Variable',sans-serif;
+    font-size:92px;
+    color:#fff;
+    text-shadow:
+      0 0 12px rgba(255,255,255,.9),
+      0 0 34px rgba(196,141,255,.85),
+      0 0 62px rgba(236,72,153,.65);
+    animation:logoPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes logoPulse{
+    0%,100%{opacity:.82; transform:scale(1);}
+    50%{opacity:1; transform:scale(1.055);}
+  }
+  .screen .brandline{
+    position:absolute; left:0; right:0; bottom:14px;
+    text-align:center;
+    font-size:9px;
+    letter-spacing:.35em;
+    color:rgba(255,255,255,.55);
+    font-weight:700;
+  }
+  /* glossy sweep highlight across the screen */
+  .screen::after{
+    content:'';
+    position:absolute;
+    top:-60%; left:-70%;
+    width:38%; height:220%;
+    background:linear-gradient(78deg,
+      transparent 0%,
+      rgba(255,255,255,.05) 35%,
+      rgba(255,255,255,.55) 48%,
+      rgba(255,255,255,.9) 50%,
+      rgba(255,255,255,.55) 52%,
+      rgba(255,255,255,.05) 65%,
+      transparent 100%);
+    filter:blur(1.5px);
+    animation:glossSweep 3.4s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes glossSweep{
+    0%{left:-70%; opacity:0;}
+    8%{opacity:1;}
+    38%{left:130%; opacity:0;}
+    100%{left:130%; opacity:0;}
+  }
+
+  /* back face: camera module */
+  .cam-plate{
+    position:absolute; top:20px; left:16px;
+    width:66px; height:88px;
+    border-radius:20px;
+    background:linear-gradient(150deg, rgba(255,255,255,.14), rgba(0,0,0,.22));
+    border:1px solid rgba(255,255,255,.18);
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:space-evenly;
+    box-shadow:inset 0 1px 4px rgba(255,255,255,.25), 0 4px 10px rgba(0,0,0,.35);
+  }
+  .lens{
+    width:27px; height:27px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #dfe6f5 0%, #2a3142 45%, #05060a 100%);
+    box-shadow:0 0 0 3px rgba(255,255,255,.09), inset 0 0 6px rgba(255,255,255,.5);
+    position:relative;
+  }
+  .lens::after{
+    content:'';
+    position:absolute; top:16%; left:20%;
+    width:28%; height:28%;
+    border-radius:50%;
+    background:rgba(255,255,255,.75);
+    filter:blur(1px);
+  }
+  .flash{
+    width:11px; height:11px;
+    border-radius:50%;
+    background:radial-gradient(circle,#fff 0%, #ffe9a8 55%, #caa94d 100%);
+    box-shadow:0 0 6px rgba(255,233,168,.8);
+  }
+  .face-back .brandtext{
+    position:absolute; left:0; right:0; bottom:22px;
+    text-align:center;
+    font-size:11px;
+    letter-spacing:.3em;
+    color:rgba(255,255,255,.7);
+    font-weight:700;
+  }
+  .face-back .hinge-line{
+    position:absolute; left:0; right:0; top:50%;
+    height:2px;
+    margin-top:-1px;
+    background:linear-gradient(90deg, transparent, rgba(0,0,0,.35) 15%, rgba(0,0,0,.35) 85%, transparent);
+  }
+
+  /* ===================== MAIN CONTENT ===================== */
+  main{
+    position:relative;
+    padding:34px 18px 10px;
+    background:linear-gradient(180deg, var(--navy-950) 0%, #0c0f22 100%);
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .75s cubic-bezier(.16,.84,.44,1), transform .75s cubic-bezier(.16,.84,.44,1);
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+
+  .glass{
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    -webkit-backdrop-filter:blur(16px);
+    backdrop-filter:blur(16px);
+    border-radius:22px;
+    box-shadow:0 10px 34px rgba(0,0,0,.4);
+  }
+
+  .section-eyebrow{
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+    color:var(--purple-400);
+    letter-spacing:.16em;
+    margin-bottom:10px;
+  }
+
+  .discount-block{
+    padding:26px 20px 24px;
+    text-align:center;
+    margin-bottom:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .discount-block::before{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(240,193,75,.16), transparent 60%);
+    pointer-events:none;
+  }
+  .discount-label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:var(--sub);
+    margin-bottom:8px;
+  }
+  .discount-amount{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+    gap:6px;
+    font-family:'Black Han Sans','Pretendard Variable',sans-serif;
+  }
+  .discount-amount .prefix{font-size:20px; color:var(--gold-300); font-weight:400;}
+  .discount-amount .num{
+    font-size:64px;
+    line-height:1;
+    background:linear-gradient(180deg,#fff7de 0%, var(--gold-500) 55%, #d69a1f 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 20px rgba(240,193,75,.65)) drop-shadow(0 0 40px rgba(240,193,75,.35));
+  }
+  .discount-amount .unit{font-size:24px; color:var(--gold-300); font-weight:400;}
+  .discount-amount .suffix{font-size:24px; color:#fff; font-weight:800;}
+
+  .period-pill{
+    display:block;
+    text-align:center;
+    margin:0 auto 20px;
+    padding:11px 18px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    background:rgba(124,58,237,.16);
+    border:1px solid rgba(168,85,247,.4);
+    width:fit-content;
+  }
+  .period-pill strong{color:var(--gold-300); font-weight:800; margin-left:4px;}
+
+  .gift-card{
+    padding:20px 20px 18px;
+    margin-bottom:16px;
+  }
+  .gift-card h3{
+    font-size:15px;
+    font-weight:800;
+    color:#fff;
+    margin-bottom:12px;
+  }
+  .gift-card ul{display:flex; flex-direction:column; gap:9px;}
+  .gift-card li{
+    font-size:14px;
+    color:var(--sub);
+    padding-left:20px;
+    position:relative;
+    line-height:1.5;
+  }
+  .gift-card li::before{
+    content:'✓';
+    position:absolute; left:0; top:0;
+    color:var(--pink-400);
+    font-weight:900;
+  }
+
+  .benefit-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .benefit-card{
+    padding:16px 8px 14px;
+    text-align:center;
+  }
+  .benefit-card .b-icon{font-size:24px; display:block; margin-bottom:8px;}
+  .benefit-card .b-title{font-size:12.5px; font-weight:800; color:#fff; display:block; line-height:1.3;}
+  .benefit-card .b-sub{font-size:11px; font-weight:600; color:var(--gold-300); display:block; margin-top:3px;}
+
+  /* ===================== STORE INFO ===================== */
+  .store-section{padding:14px 18px 8px;}
+  .promo-banner{
+    text-align:center;
+    padding:20px 18px;
+    margin-bottom:18px;
+    border-radius:22px;
+    background:linear-gradient(135deg, rgba(255,45,120,.22), rgba(124,58,237,.16));
+    border:1px solid rgba(255,92,158,.4);
+    box-shadow:0 0 30px rgba(255,45,120,.28);
+  }
+  .promo-banner .promo-title{
+    display:block;
+    font-size:19px;
+    font-weight:900;
+    color:#fff;
+    text-shadow:0 0 16px rgba(255,92,158,.7);
+    margin-bottom:6px;
+  }
+  .promo-banner .promo-sub{
+    display:block;
+    font-size:13px;
+    color:var(--sub);
+    font-weight:500;
+  }
+
+  .address-block{
+    text-align:center;
+    padding:18px 16px 22px;
+  }
+  .address-block .address{
+    font-size:16px;
+    font-weight:800;
+    color:#fff;
+    margin-bottom:6px;
+  }
+  .address-block .directions{
+    font-size:13px;
+    color:var(--sub);
+    font-weight:500;
+  }
+
+  /* ===================== ACTION BAR ===================== */
+  .action-bar{
+    position:fixed;
+    left:50%;
+    bottom:0;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(10,14,39,.88);
+    -webkit-backdrop-filter:blur(18px);
+    backdrop-filter:blur(18px);
+    border-top:1px solid rgba(255,255,255,.1);
+    z-index:100;
+  }
+  .action-btn{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    padding:11px 4px;
+    border-radius:16px;
+    font-size:13px;
+    font-weight:800;
+    color:#fff;
+    text-align:center;
+    box-shadow:0 6px 18px rgba(0,0,0,.35);
+    transition:transform .15s ease;
+  }
+  .action-btn:active{transform:scale(.95);}
+  .action-btn .icon{font-size:18px;}
+  .action-call{background:linear-gradient(135deg,#7c3aed,#4c2a8a);}
+  .action-sms{background:linear-gradient(135deg,#ff5c9e,#ff2d78);}
+  .action-map{background:linear-gradient(135deg,#f0c14b,#b8860b); color:#2a1e00;}
+
+  /* ===================== FOOTER ===================== */
+  footer{
+    padding:20px 18px calc(var(--action-h) + 18px);
+    background:var(--navy-950);
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .footer-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 10px;
+    border-radius:14px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .footer-item .f-icon{font-size:18px;}
+  .footer-item .f-title{font-size:12px; font-weight:800; color:#fff; display:block;}
+  .footer-item .f-sub{font-size:11px; color:var(--sub); display:block; margin-top:1px;}
+  .footer-note{
+    text-align:center;
+    font-size:11px;
+    color:#5c5a7a;
+    line-height:1.6;
+  }
+
+  @media (min-width:600px){
+    .hero-title .grad-text{font-size:44px;}
+    .discount-amount .num{font-size:76px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="store-topline">
+        <span class="store-name">대치동 휴대폰 할인매장</span>
+        <span class="badge-gold">✦ 15주년</span>
+      </div>
+
+      <div class="pill-new-wrap"><span class="pill-new">신제품</span></div>
+
+      <h1 class="hero-title">Galaxy Z
+        <span class="grad-text">Fold8 | Flip8</span>
+      </h1>
+
+      <div class="hero-highlight-wrap">
+        <span class="hero-highlight">사전예약 진행중!</span>
+      </div>
+
+      <!-- 3D 폴더블 폰 -->
+      <div class="phone-stage">
+        <div class="phone-glow"></div>
+        <div class="phone-shadow"></div>
+        <div class="phone-float">
+          <div class="phone-tilt">
+            <div class="phone-3d">
+              <div class="face face-front">
+                <div class="screen">
+                  <div class="notch"></div>
+                  <div class="logo-8">8</div>
+                  <div class="brandline">GALAXY Z SERIES</div>
+                </div>
+              </div>
+              <div class="face face-back">
+                <div class="cam-plate">
+                  <div class="lens"></div>
+                  <div class="lens"></div>
+                  <div class="flash"></div>
+                </div>
+                <div class="hinge-line"></div>
+                <div class="brandtext">SAMSUNG</div>
+              </div>
+              <div class="face face-left"></div>
+              <div class="face face-right"></div>
+              <div class="face face-top"></div>
+              <div class="face face-bottom"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== 혜택 ===================== -->
+  <main>
+    <section>
+      <p class="section-eyebrow reveal">SPECIAL OFFER</p>
+
+      <div class="discount-block glass reveal">
+        <span class="discount-label">사전예약 특별 혜택</span>
+        <div class="discount-amount">
+          <span class="prefix">최대</span>
+          <span class="num">100</span>
+          <span class="unit">만원</span>
+          <span class="suffix">할인</span>
+        </div>
+      </div>
+
+      <div class="period-pill reveal">사전예약 기간 <strong>07.28(화) ~ 08.03(월)</strong></div>
+
+      <div class="gift-card glass reveal">
+        <h3>🎁 사은품</h3>
+        <ul>
+          <li>필름 + 케이스 + 고속충전기 증정</li>
+          <li>Galaxy Watch 할인 혜택</li>
+        </ul>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="benefit-card glass reveal">
+          <span class="b-icon">💾</span>
+          <span class="b-title">256GB → 512GB</span>
+          <span class="b-sub">업그레이드!</span>
+        </div>
+        <div class="benefit-card glass reveal">
+          <span class="b-icon">🚚</span>
+          <span class="b-title">기기</span>
+          <span class="b-sub">우선배정!</span>
+        </div>
+        <div class="benefit-card glass reveal">
+          <span class="b-icon">💙</span>
+          <span class="b-title">삼성케어+</span>
+          <span class="b-sub">서비스!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 매장 안내 ===================== -->
+    <section class="store-section">
+      <div class="promo-banner reveal">
+        <span class="promo-title">방문만 하셔도! 무료 필름 교체</span>
+        <span class="promo-sub">언제든 편하게 방문해주세요!</span>
+      </div>
+
+      <div class="address-block reveal">
+        <p class="address">강남구 역삼로 443, 1층</p>
+        <p class="directions">선릉역 2번 출구 도보 5분</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== 푸터 ===================== -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-item reveal">
+        <span class="f-icon">📱</span>
+        <span>
+          <span class="f-title">최신 스마트폰</span>
+          <span class="f-sub">최대 할인</span>
+        </span>
+      </div>
+      <div class="footer-item reveal">
+        <span class="f-icon">🎁</span>
+        <span>
+          <span class="f-title">사전예약 혜택</span>
+          <span class="f-sub">풍성하게!</span>
+        </span>
+      </div>
+      <div class="footer-item reveal">
+        <span class="f-icon">✅</span>
+        <span>
+          <span class="f-title">정품 · 안심 개통</span>
+          <span class="f-sub">믿을 수 있는 매장</span>
+        </span>
+      </div>
+      <div class="footer-item reveal">
+        <span class="f-icon">🤝</span>
+        <span>
+          <span class="f-title">친절한 상담</span>
+          <span class="f-sub">15년의 노하우</span>
+        </span>
+      </div>
+    </div>
+    <p class="footer-note">대치동 휴대폰 할인매장 · 강남구 역삼로 443, 1층<br>070.8883.9016 / 010.7563.0130</p>
+  </footer>
+
+  <!-- ===================== 고정 액션 바 ===================== -->
+  <nav class="action-bar">
+    <a class="action-btn action-call" href="tel:07088839016">
+      <span class="icon">📞</span><span>전화하기</span>
+    </a>
+    <a class="action-btn action-sms" href="sms:01075630130">
+      <span class="icon">💬</span><span>문자문의</span>
+    </a>
+    <a class="action-btn action-map" href="https://map.kakao.com/link/search/%EA%B0%95%EB%82%A8%EA%B5%AC%20%EC%97%AD%EC%82%BC%EB%A1%9C%20443" target="_blank" rel="noopener">
+      <span class="icon">🗺</span><span>길찾기</span>
+    </a>
+  </nav>
+
+</div>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('in-view'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry, i){
+      if(entry.isIntersecting){
+        var el = entry.target;
+        setTimeout(function(){ el.classList.add('in-view'); }, i * 60);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
