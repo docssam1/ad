@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>포스터 템플릿 테스트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="poster.css">
+<style>
+  html, body { margin: 0; padding: 0; background: #2a2a34; font-family: "Pretendard Variable", sans-serif; }
+  .test-wrap { display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 40px 0 80px; }
+  .test-card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .test-card h2 { color: #fff; font-size: 16px; margin: 0; }
+  .poster-shadow { box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+</style>
+</head>
+<body>
+  <div id="app" class="test-wrap"></div>
+
+  <script src="assets.js"></script>
+<script src="templates.js"></script>
+  <script>
+  (function () {
+    "use strict";
+
+    // SPEC 예시 데이터(15주년 폴드8 기본값)
+    var store = {
+      name: "대치동 휴대폰 할인매장",
+      years: "15",
+      phone1: "070.8883.9016",
+      phone2: "010.7563.0130",
+      address: "강남구 역삼로 443, 1층",
+      directions: "선릉역 2번 출구 도보 5분",
+      photo: window.DEFAULT_ASSETS.photo,
+      map: window.DEFAULT_ASSETS.map,
+      visitPromo: "방문만 하셔도! 무료 필름 교체",
+      visitPromoSub: "언제든 편하게 방문해주세요!",
+      footerItems: [
+        { icon: "📱", title: "최신 스마트폰", sub: "최대 할인" },
+        { icon: "🎁", title: "사전예약 혜택", sub: "풍성하게!" },
+        { icon: "✅", title: "정품 · 안심 개통", sub: "믿을 수 있는 매장" },
+        { icon: "🤝", title: "친절한 상담", sub: "15년의 노하우" }
+      ]
+    };
+
+    var posterBase = {
+      badge: "신제품",
+      brandLine: "Galaxy Z",
+      title: "Fold8 | Flip8",
+      headline: "사전예약 진행중!",
+      subline: "비교할 수 없는 압도적 성능",
+      discount: { prefix: "최대", amount: "100", unit: "만원", suffix: "할인" },
+      period: { label: "사전예약 기간", from: "07.28(화)", to: "08.03(월)" },
+      gifts: ["필름 + 케이스 + 고속충전기 증정", "Galaxy Watch 할인 혜택"],
+      benefits: [
+        { icon: "💾", title: "256GB → 512GB", sub: "업그레이드!" },
+        { icon: "🚚", title: "기기", sub: "우선배정!" },
+        { icon: "💙", title: "삼성케어+", sub: "서비스!" }
+      ],
+      deviceImage: null,
+      notice: "※ 혜택은 기종·요금제·개통 유형에 따라 상이하며 매장 상황에 따라 변경될 수 있습니다.",
+      showStoreBlock: true,
+      showFooter: true,
+      accent: ""
+    };
+
+    // 극단 케이스: gifts/benefits 0개
+    var posterEmpty = Object.assign({}, posterBase, {
+      badge: "",
+      subline: "",
+      gifts: [],
+      benefits: [],
+      deviceImage: null,
+      notice: "",
+      period: { label: "", from: "", to: "" },
+      discount: { prefix: "", amount: "", unit: "", suffix: "" }
+    });
+
+    // 극단 케이스: gifts/benefits 5개 + deviceImage 없음
+    var posterMax = Object.assign({}, posterBase, {
+      gifts: ["필름 + 케이스 증정", "고속충전기 증정", "Galaxy Watch 할인", "무선이어폰 증정", "액세서리 풀세트 증정"],
+      benefits: [
+        { icon: "💾", title: "저장공간 UP", sub: "512GB 업그레이드" },
+        { icon: "🚚", title: "우선배정", sub: "기기 우선배정!" },
+        { icon: "💙", title: "삼성케어+", sub: "서비스 제공" },
+        { icon: "🎧", title: "이어폰 증정", sub: "무선이어폰" },
+        { icon: "💳", title: "카드 할인", sub: "제휴카드 추가할인" }
+      ]
+    });
+
+    function getQueryParam(name) {
+      var m = new RegExp("[?&]" + name + "=([^&]+)").exec(window.location.search);
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    function mountPoster(container, tplId, poster, label) {
+      var card = document.createElement("div");
+      card.className = "test-card";
+      var h2 = document.createElement("h2");
+      h2.textContent = label;
+      var mount = document.createElement("div");
+      mount.className = "poster-shadow";
+      card.appendChild(h2);
+      card.appendChild(mount);
+      container.appendChild(card);
+      poster.templateId = tplId;
+      window.renderPoster(poster, store, mount);
+    }
+
+    var app = document.getElementById("app");
+    var onlyTpl = getQueryParam("tpl");
+    var ids = Object.keys(window.PosterTemplates);
+
+    if (onlyTpl) {
+      var name = (window.PosterTemplates[onlyTpl] || {}).name || onlyTpl;
+      mountPoster(app, onlyTpl, Object.assign({}, posterBase), name + " — 기본 데이터");
+    } else {
+      ids.forEach(function (id) {
+        var name = window.PosterTemplates[id].name;
+        mountPoster(app, id, Object.assign({}, posterBase), name + " (" + id + ") — 기본 데이터");
+        mountPoster(app, id, Object.assign({}, posterEmpty), name + " (" + id + ") — 빈 값(gifts/benefits 0개)");
+        mountPoster(app, id, Object.assign({}, posterMax), name + " (" + id + ") — 최대 값(gifts/benefits 5개)");
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

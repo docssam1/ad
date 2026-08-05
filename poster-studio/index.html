@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>폰샵 포스터 스튜디오</title>
+
+<!-- 본문 폰트: Pretendard Variable -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<!-- 제목용 폰트 (템플릿에서 선택 사용) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Gugi&display=swap" />
+
+<!-- 앱 UI 스타일 -->
+<link rel="stylesheet" href="app.css" />
+<!-- 포스터 템플릿 스타일 (Agent T 담당 파일) -->
+<link rel="stylesheet" href="poster.css" />
+
+<!-- 내보내기용 외부 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+<div id="appRoot" class="app-root">
+
+  <!-- 좌측(모바일: 상단) 사이드바 탭 -->
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-icon">📱</span>
+      <span class="brand-text">폰샵 포스터<br/>스튜디오</span>
+    </div>
+    <button class="tab-btn active" data-tab="make" type="button">
+      <span class="tab-icon">🖼️</span><span class="tab-label">포스터 만들기</span>
+    </button>
+    <button class="tab-btn" data-tab="store" type="button">
+      <span class="tab-icon">🏬</span><span class="tab-label">매장 정보</span>
+    </button>
+    <button class="tab-btn" data-tab="saved" type="button">
+      <span class="tab-icon">🗂️</span><span class="tab-label">보관함</span>
+    </button>
+    <button class="tab-btn" data-tab="settings" type="button">
+      <span class="tab-icon">⚙️</span><span class="tab-label">설정</span>
+    </button>
+  </nav>
+
+  <main class="content">
+
+    <!-- ① 포스터 만들기 -->
+    <section class="tab-panel active" id="panel-make" data-panel="make">
+
+      <div class="template-bar">
+        <div class="template-list" id="templateList"><!-- JS로 채움 --></div>
+        <button class="btn btn-accent" id="recommendBtn" type="button">✨ 디자인 추천</button>
+      </div>
+
+      <div class="recommend-panel hidden" id="recommendPanel">
+        <div class="recommend-panel-head">
+          <strong>디자인 추천 결과</strong>
+          <button class="icon-btn" id="recommendCloseBtn" type="button" aria-label="닫기">✕</button>
+        </div>
+        <div class="recommend-list" id="recommendList"><!-- JS로 채움 --></div>
+      </div>
+
+      <div class="make-body">
+
+        <!-- 입력 폼 -->
+        <div class="form-col" id="posterForm">
+
+          <fieldset class="form-section">
+            <legend>기본 정보</legend>
+            <label>뱃지 (좌상단, 비우면 숨김)
+              <input type="text" id="f-badge" maxlength="12" placeholder="예) 신제품" />
+            </label>
+            <label>브랜드 소제목
+              <input type="text" id="f-brandLine" maxlength="20" placeholder="예) Galaxy Z" />
+            </label>
+            <label>제품명 (메인 타이틀)
+              <input type="text" id="f-title" maxlength="30" placeholder="예) Fold8 | Flip8" />
+            </label>
+            <label>강조 헤드라인
+              <input type="text" id="f-headline" maxlength="30" placeholder="예) 사전예약 진행중!" />
+            </label>
+            <label>보조 문구 (비우면 숨김)
+              <input type="text" id="f-subline" maxlength="40" placeholder="예) 비교할 수 없는 압도적 성능" />
+            </label>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>할인 정보 (금액을 비우면 블록 숨김)</legend>
+            <div class="row-4">
+              <input type="text" id="f-disc-prefix" placeholder="접두 (최대)" />
+              <input type="text" id="f-disc-amount" placeholder="금액 (100)" />
+              <input type="text" id="f-disc-unit" placeholder="단위 (만원)" />
+              <input type="text" id="f-disc-suffix" placeholder="접미 (할인)" />
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>행사 기간 (시작일을 비우면 숨김)</legend>
+            <div class="row-3">
+              <input type="text" id="f-period-label" placeholder="라벨 (사전예약 기간)" />
+              <input type="text" id="f-period-from" placeholder="시작 (07.28(화))" />
+              <input type="text" id="f-period-to" placeholder="종료 (08.03(월))" />
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>사은품 (최대 5개, Enter로 추가)</legend>
+            <input type="text" id="giftInput" placeholder="사은품을 입력하고 Enter" />
+            <div class="chip-list" id="giftList"><!-- JS로 채움 --></div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>혜택 카드 (최대 5개)</legend>
+            <div class="benefit-list" id="benefitList"><!-- JS로 채움 --></div>
+            <button class="btn btn-ghost btn-sm" id="addBenefitBtn" type="button">+ 혜택 추가</button>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>기종 이미지</legend>
+            <div class="device-row">
+              <div class="device-thumb-wrap">
+                <img id="deviceThumb" class="device-thumb hidden" alt="기종 이미지 미리보기" />
+                <span id="deviceThumbEmpty" class="device-thumb-empty">이미지 없음</span>
+              </div>
+              <div class="device-btns">
+                <button class="btn btn-ghost btn-sm" id="searchImageBtn" type="button">🔍 구글에서 검색</button>
+                <button class="btn btn-ghost btn-sm" id="uploadImageBtn" type="button">📁 파일 업로드</button>
+                <input type="file" id="fileImageInput" accept="image/*" class="hidden" />
+                <button class="btn btn-ghost btn-sm btn-danger" id="clearImageBtn" type="button">이미지 제거</button>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>기타 옵션</legend>
+            <label>하단 안내문구
+              <textarea id="f-notice" rows="2" maxlength="120"></textarea>
+            </label>
+            <label class="checkbox-row"><input type="checkbox" id="f-showStore" /> 매장사진 + 약도 블록 표시</label>
+            <label class="checkbox-row"><input type="checkbox" id="f-showFooter" /> 하단 문의전화 + 고정 문구줄 표시</label>
+            <label>강조색 (비우면 템플릿 기본색)
+              <div class="accent-row">
+                <input type="color" id="f-accent" value="#7c3aed" />
+                <button class="btn btn-ghost btn-sm" id="accentClearBtn" type="button">기본값 사용</button>
+              </div>
+            </label>
+          </fieldset>
+
+        </div>
+
+        <!-- 실시간 미리보기 -->
+        <div class="preview-col">
+          <div class="preview-wrap" id="previewWrap">
+            <div class="preview-scaler" id="previewScaler">
+              <div id="posterMount" class="poster-page"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 하단 액션바 -->
+      <div class="action-bar">
+        <button class="btn" id="btnPng" type="button">🖼️ PNG 저장(고화질)</button>
+        <button class="btn" id="btnPdf" type="button">📄 PDF 저장(A4)</button>
+        <button class="btn" id="btnPrint" type="button">🖨️ 인쇄</button>
+        <button class="btn" id="btnSaveLib" type="button">💾 보관함에 저장</button>
+        <button class="btn btn-accent" id="btnPublish" type="button">🌐 링크 만들기</button>
+        <button class="btn btn-accent" id="btnSms" type="button">💬 문자 보내기</button>
+      </div>
+
+    </section>
+
+    <!-- ② 매장 정보 -->
+    <section class="tab-panel" id="panel-store" data-panel="store">
+      <h2 class="panel-title">매장 정보</h2>
+      <div class="store-grid">
+        <fieldset class="form-section">
+          <legend>기본 정보</legend>
+          <label>매장명 <input type="text" id="s-name" /></label>
+          <label>업력(주년) <input type="text" id="s-years" /></label>
+          <label>대표 전화 <input type="text" id="s-phone1" /></label>
+          <label>상담 전화 <input type="text" id="s-phone2" /></label>
+          <label>주소 <input type="text" id="s-address" /></label>
+          <label>오시는 길 안내 <input type="text" id="s-directions" /></label>
+          <label>방문 프로모션 문구 <input type="text" id="s-visitPromo" /></label>
+          <label>방문 프로모션 보조문구 <input type="text" id="s-visitPromoSub" /></label>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend>매장 사진 / 약도</legend>
+          <label>매장 사진
+            <input type="file" id="s-photo-file" accept="image/*" />
+          </label>
+          <img id="s-photo-preview" class="store-img-preview" alt="매장 사진 미리보기" />
+          <label>매장 약도
+            <input type="file" id="s-map-file" accept="image/*" />
+          </label>
+          <img id="s-map-preview" class="store-img-preview" alt="매장 약도 미리보기" />
+        </fieldset>
+
+        <fieldset class="form-section footer-items-section">
+          <legend>하단 고정 문구줄 (4칸)</legend>
+          <div class="footer-items-grid" id="footerItemsGrid"><!-- JS로 채움 --></div>
+        </fieldset>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn btn-accent" id="storeSaveBtn" type="button">저장하기</button>
+        <button class="btn btn-ghost btn-danger" id="storeResetBtn" type="button">기본값 복원</button>
+      </div>
+    </section>
+
+    <!-- ③ 보관함 -->
+    <section class="tab-panel" id="panel-saved" data-panel="saved">
+      <h2 class="panel-title">보관함</h2>
+      <div class="saved-list" id="savedList"><!-- JS로 채움 --></div>
+      <p class="empty-hint hidden" id="savedEmptyHint">저장된 포스터가 없습니다. "포스터 만들기" 탭에서 [💾 보관함에 저장]을 눌러보세요.</p>
+    </section>
+
+    <!-- ④ 설정 -->
+    <section class="tab-panel" id="panel-settings" data-panel="settings">
+      <h2 class="panel-title">설정</h2>
+
+      <fieldset class="form-section">
+        <legend>Google Custom Search (기종 이미지 검색)</legend>
+        <label>API 키 <input type="password" id="g-apiKey" autocomplete="off" /></label>
+        <label>검색엔진 ID (cx) <input type="text" id="g-cx" autocomplete="off" /></label>
+        <button class="btn btn-ghost btn-sm guide-toggle" data-guide="guide-google" type="button">발급 방법 보기 ▾</button>
+        <div class="guide-panel hidden" id="guide-google">
+          <ol>
+            <li><a href="https://console.cloud.google.com/" target="_blank" rel="noopener">console.cloud.google.com</a>에서 프로젝트 생성 후 "Custom Search API"를 사용 설정하고 API 키를 발급합니다.</li>
+            <li><a href="https://programmablesearchengine.google.com/" target="_blank" rel="noopener">programmablesearchengine.google.com</a>에서 검색엔진을 새로 만듭니다.</li>
+            <li>검색엔진 설정에서 "이미지 검색"을 켜고, "전체 웹 검색"도 켭니다.</li>
+            <li>검색엔진 ID(cx) 값을 복사해 위 입력란에 붙여넣습니다.</li>
+          </ol>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>GitHub (포스터 게시)</legend>
+        <label>Token (fine-grained PAT) <input type="password" id="gh-token" autocomplete="off" /></label>
+        <label>Owner <input type="text" id="gh-owner" /></label>
+        <label>Repo <input type="text" id="gh-repo" /></label>
+        <label>Branch <input type="text" id="gh-branch" /></label>
+        <label>Pages Base URL <input type="text" id="gh-pagesBase" /></label>
+        <button class="btn btn-ghost btn-sm guide-toggle" data-guide="guide-github" type="button">발급 방법 보기 ▾</button>
+        <div class="guide-panel hidden" id="guide-github">
+          <ol>
+            <li>GitHub → Settings → Developer settings → Fine-grained tokens 에서 새 토큰을 만듭니다.</li>
+            <li>대상 저장소를 지정하고, Repository permissions에서 "Contents"를 Read and write로 설정합니다.</li>
+            <li>발급된 토큰을 위 입력란에 붙여넣습니다. (토큰은 노출되지 않도록 주의하세요)</li>
+          </ol>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Solapi (문자 대량발송, 선택)</legend>
+        <label>API Key <input type="password" id="sol-apiKey" autocomplete="off" /></label>
+        <label>API Secret <input type="password" id="sol-apiSecret" autocomplete="off" /></label>
+        <label>발신번호 <input type="text" id="sol-sender" placeholder="사전 등록된 발신번호" /></label>
+        <p class="hint-text">발신번호는 Solapi에 사전 등록(발신번호 사전등록제)이 필요합니다.</p>
+      </fieldset>
+
+      <div class="action-bar">
+        <button class="btn btn-accent" id="settingsSaveBtn" type="button">설정 저장</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- 모달: 구글 이미지 검색 -->
+<div class="modal hidden" id="modalImageSearch">
+  <div class="modal-backdrop" data-close-modal="modalImageSearch"></div>
+  <div class="modal-box">
+    <div class="modal-head">
+      <strong>구글에서 기종 이미지 검색</strong>
+      <button class="icon-btn" data-close-modal="modalImageSearch" type="button" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="search-row">
+        <input type="text" id="imgSearchQuery" placeholder="검색어" />
+        <button class="btn btn-accent" id="imgSearchBtn" type="button">검색</button>
+      </div>
+      <p class="hint-text" id="imgSearchStatus"></p>
+      <div class="img-grid" id="imgSearchResults"><!-- JS로 채움 --></div>
+    </div>
+  </div>
+</div>
+
+<!-- 모달: GitHub 게시 -->
+<div class="modal hidden" id="modalPublish">
+  <div class="modal-backdrop" data-close-modal="modalPublish"></div>
+  <div class="modal-box">
+    <div class="modal-head">
+      <strong>🌐 링크 만들기 (GitHub 게시)</strong>
+      <button class="icon-btn" data-close-modal="modalPublish" type="button" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="publishStatus">준비 중...</p>
+      <div class="publish-result hidden" id="publishResult">
+        <div class="publish-link-row">
+          <input type="text" id="publishLinkText" readonly />
+          <button class="btn btn-ghost btn-sm" id="publishCopyBtn" type="button">복사</button>
+        </div>
+        <div class="qr-wrap" id="publishQr"></div>
+        <p class="hint-text">GitHub Pages 반영까지 1~2분 정도 걸릴 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 모달: 문자 보내기 -->
+<div class="modal hidden" id="modalSms">
+  <div class="modal-backdrop" data-close-modal="modalSms"></div>
+  <div class="modal-box">
+    <div class="modal-head">
+      <strong>💬 문자 보내기</strong>
+      <button class="icon-btn" data-close-modal="modalSms" type="button" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body">
+      <label>문자 문구 (편집 가능)
+        <textarea id="smsText" rows="7"></textarea>
+      </label>
+      <div class="sms-btn-row">
+        <button class="btn btn-ghost btn-sm" id="smsCopyBtn" type="button">문구 복사</button>
+        <a class="btn btn-ghost btn-sm" id="smsAppLink" href="sms:?body=" target="_blank" rel="noopener">내 폰 문자앱으로</a>
+      </div>
+      <p class="hint-text">모바일 브라우저에서만 문자앱 연결이 동작합니다.</p>
+
+      <hr class="divider" />
+
+      <div id="solapiSection" class="hidden">
+        <strong>솔라피 대량발송</strong>
+        <label>수신번호 (줄바꿈 또는 쉼표로 구분)
+          <textarea id="solapiRecipients" rows="4" placeholder="01012345678, 01098765432"></textarea>
+        </label>
+        <button class="btn btn-accent btn-sm" id="solapiSendBtn" type="button">대량발송</button>
+        <p class="hint-text" id="solapiStatus"></p>
+      </div>
+      <p class="hint-text" id="solapiHint">설정 탭에서 솔라피 apiKey / apiSecret / 발신번호를 입력하면 대량발송 기능을 사용할 수 있습니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 앱 로직 -->
+<script src="assets.js"></script>
+<script src="templates.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
