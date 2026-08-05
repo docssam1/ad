@@ -363,7 +363,7 @@
 
     var month = new Date().getMonth() + 1;
     if (month === 11) {
-      result.push({ templates: ["exam-chrome"], badge: "수험표 이벤트", note: "11월입니다. 수험표 이벤트 컸셉의 수험 크롬 템플릿을 제안합니다." });
+      result.push({ templates: ["exam-chrome"], badge: "수험표 이벤트", note: "11월입니다. 수험표 이벤트 컨셉의 수험 크롬 템플릿을 제안합니다." });
     } else if (month >= 2 && month <= 3) {
       result.push({ templates: ["pop-purple"], headline: "신학기, 지금 바꾸기 좋은 타이밍!", note: "신학기 시즌입니다. 팝 퍼플 템플릿과 신학기 문구를 제안합니다." });
     } else if (month >= 7 && month <= 8) {
