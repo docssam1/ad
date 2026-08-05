@@ -738,13 +738,19 @@
   var video = document.querySelector('.hero-video');
   if(!video) return;
 
-  video.addEventListener('playing', function(){
+  var revealIv = null;
+  function revealVideo(){
     video.classList.add('is-playing');
+    if(revealIv){ clearInterval(revealIv); revealIv = null; }
+  }
+  ['playing','canplay','loadeddata'].forEach(function(evt){
+    video.addEventListener(evt, revealVideo);
   });
-
-  video.addEventListener('error', function(){
-    video.style.display = 'none';
-  }, true);
+  /* 이벤트를 놓쳐도 재생 데이터가 준비되면 반드시 표시 */
+  revealIv = setInterval(function(){
+    if(video.currentTime > 0 || video.readyState >= 3) revealVideo();
+  }, 300);
+  /* 소스가 전부 실패해도 숨김 처리 불필요 — opacity:0 상태로 뒤의 fallback이 보임 */
 
   function tryPlay(){
     var p = video.play();
