@@ -560,7 +560,8 @@
       <span class="hero-fallback-type">FOLD8<br>ULTRA</span>
     </div>
 
-    <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" referrerpolicy="no-referrer" aria-hidden="true">
+      <source src="./fold8.mp4" type="video/mp4">
       <source src="https://images.samsung.com/kdp/cms_task/C20260703010038/73182/2b905599-8c8f-49b8-9981-fd591f0f70f2.mp4" type="video/mp4">
     </video>
 
@@ -728,6 +729,28 @@
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
   els.forEach(function(el){ io.observe(el); });
+})();
+
+(function(){
+  var video = document.querySelector('.hero-video');
+  if(!video) return;
+  var settled = false;
+  var timer = setTimeout(function(){
+    if(settled) return;
+    settled = true;
+    video.style.display = 'none';
+  }, 5000);
+  video.addEventListener('playing', function(){
+    if(settled) return;
+    settled = true;
+    clearTimeout(timer);
+  });
+  video.addEventListener('error', function(){
+    if(settled) return;
+    settled = true;
+    clearTimeout(timer);
+    video.style.display = 'none';
+  }, true);
 })();
 </script>
 </body>
